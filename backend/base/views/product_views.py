@@ -3,7 +3,6 @@ from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
 
 from ..models import Product
-from ..products import products
 from ..serializers import ProductSerializer
 
 from rest_framework import status

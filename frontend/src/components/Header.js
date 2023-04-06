@@ -19,7 +19,7 @@ function Header() {
     return (
         <>
             <header>
-                <Navbar bg="light" expand="lg">
+                <Navbar bg="light" expand="lg" className='shadow-sm'>
                     <Container>
                         <NavLink to='/' className={'link'}>
                             <Navbar.Brand className='fw-semibold'>
@@ -30,10 +30,8 @@ function Header() {
                         <Navbar.Collapse className="justify-content-end fw-semibold">
                             { userInfo ? 
                             <NavDropdown title={userInfo.name} id='username'>
-                                <NavDropdown.Item>
-                                <NavLink to='/profile' className={'link'}>
+                                <NavDropdown.Item href='/profile'>
                                     Profile
-                                </NavLink>
                                 </NavDropdown.Item>
                                 <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                             </NavDropdown>

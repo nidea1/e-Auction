@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Col, Form, FormControl, FormGroup, FormLabel, ListGroup, ListGroupItem, Modal, Row } from 'react-bootstrap';
+import { Button, Card, Col, Form, FormControl, FormGroup, FormLabel, Modal, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { detail, update } from '../actions/userActions';
@@ -104,10 +104,8 @@ function ProfileScreen() {
                       <Button className="btn-dark edit-profile" onClick={modalShow}><i class="fa-regular fa-pen-to-square"></i></Button>
                     </Col>
                     <Modal show={show} onHide={modalClose}>  
-                      <Modal.Header closeButton className='border-0'>  
-                        <Modal.Title>Edit Profile</Modal.Title>  
-                      </Modal.Header>  
-                      
+                      <Modal.Header closeButton className='border-0' />   
+                      <Col className='d-flex justify-content-center'><h4>Edit Profile</h4></Col>
                       <Modal.Body>  
                       <UpdateProfileForm>
                         {message && <Message variant='danger'>{message}</Message>}
