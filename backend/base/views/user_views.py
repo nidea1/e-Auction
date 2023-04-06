@@ -1,13 +1,9 @@
-from django.shortcuts import render, redirect
-from ..forms import NewUserForm
 from django.contrib.auth import login, authenticate, logout
-from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm
 from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
-from ..serializers import ProductSerializer, UserSerializer, UserSerializerWithToken
+from ..serializers import UserSerializer, UserSerializerWithToken
 
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
