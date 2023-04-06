@@ -1,0 +1,23 @@
+main {
+  min-height: 80vh;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.edit-profile {
+    position: absolute;
+    top: -20px;
+    right: 15px;
+    padding: 4px;
+    border: 0px;
+    box-shadow: rgba(93, 56, 192, 0.17) 0px 2px 4px;
+    border-radius: 8px;
+    background-color: rgb(255, 255, 255);
+}
+
+.divider {
+  width: 90%!important;
+}
