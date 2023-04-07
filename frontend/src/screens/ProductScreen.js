@@ -48,7 +48,7 @@ function ProductScreen() {
           </ListGroup>
         </Col>
         <Col md={3}>
-          <Card>
+          <Card className='shadow border-0'>
             <ListGroup>
               <ListGroupItem>
                 <Row className='d-flex'>

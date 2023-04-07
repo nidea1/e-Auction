@@ -6,5 +6,6 @@ from .models import *
 admin.site.register(Product)
 admin.site.register(Bid)
 admin.site.register(Order)
-admin.site.register(Orderltem)
-admin.site.register(ShippingAddress)
+admin.site.register(OrderItem)
+admin.site.register(UserAddress)
+admin.site.register(UserPayment)

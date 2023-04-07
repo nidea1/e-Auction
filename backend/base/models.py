@@ -28,7 +28,9 @@ class Bid(models.Model):
         return f'{self.user.username} bidded {self.bid} to {self.product.name}'
     
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    buyer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders_as_buyer')
+    seller = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders_as_seller')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     paymentMethod = models.CharField(max_length=200, null=True, blank=True)
     taxPrice = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     shippingPrice = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
@@ -43,7 +45,7 @@ class Order(models.Model):
     def __str__(self) -> str:
         return str(self.createdAt)
 
-class Orderltem(models.Model):
+class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
@@ -54,11 +56,27 @@ class Orderltem(models.Model):
     def __str__(self) -> str:
         return str(self.name)
     
-class ShippingAddress(models.Model):
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, null=True, blank=True)
+class UserAddress(models.Model):
+    _id = models.AutoField(primary_key=True, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='addresses')
     address = models.CharField(max_length=200, null=True, blank=True)
     city = models.CharField(max_length=200, null=True, blank=True)
     postalCode = models.CharField(max_length=200, null=True, blank=True)
-    shippingPrice = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    mobile = models.CharField(max_length=10, null=True, blank=True)
+    name = models.CharField(max_length=200, null=True, blank=True)
+
+    def __str__(self) -> str:
+        return str(self.name)
+    
+class UserPayment(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payments')
+    cardOwner = models.CharField(max_length=200, null=True, blank=True)
+    cardNumber = models.CharField(max_length=16, null=True, blank=True)
+    expDate = models.CharField(max_length=5, null=True, blank=True)
+    ccv = models.CharField(max_length=3, null=True, blank=True)
+
+    def __str__(self) -> str:
+        return str(self.cardOwner)
+
 

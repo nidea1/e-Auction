@@ -18,8 +18,8 @@ function Header() {
     }
     return (
         <>
-            <header>
-                <Navbar bg="light" expand="lg" className='shadow-sm'>
+            <header class='my-5'>
+                <Navbar bg="light" expand="lg" className='shadow-sm fixed-top'>
                     <Container>
                         <NavLink to='/' className={'link'}>
                             <Navbar.Brand className='fw-semibold'>
