@@ -9,14 +9,19 @@ import {
     userRegisterRequest,
     userRegisterSuccess,
     userRegisterFail,
+
     userDetailsRequest,
     userDetailsSuccess,
     userDetailsFail,
+    userDetailsReset,
+
     userUpdateProfileRequest,
     userUpdateProfileSuccess,
     userUpdateProfileFail,
-    userUpdateProfileReset,
-    userDetailsReset,
+    
+    userDeleteRequest,
+    userDeleteSuccess,
+    userDeleteFail,
  } from '../reducers/userReducers'
 
 export const login = (email, password) => async (dispatch) => {
@@ -132,7 +137,7 @@ export const update = (user) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.put(
-            `/api/users/profile/update/`,
+            `/api/users/profile/`,
             user,
             config
         )
@@ -145,6 +150,45 @@ export const update = (user) => async (dispatch, getState) => {
 
     }catch(error){
         dispatch(userUpdateProfileFail(error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+                )
+        );
+    }
+}
+
+export const deleteUser = (id, confirm) => async (dispatch, getState) => {
+    try{
+        dispatch(userDeleteRequest())
+
+        const {
+            userLogin: {userInfo},
+        } = getState()
+
+        const config = {
+            headers:{
+                'Content-type':'application/json',
+                Authorization : `Bearer ${userInfo.token}` 
+            }
+        }
+
+        const { data } = await axios.delete(
+            `/api/users/profile/`, {
+                params: {
+                    confirm: true,
+                },
+                headers: config.headers
+            }
+        )
+
+        dispatch(userDeleteSuccess(data))
+
+        localStorage.removeItem('userInfo')
+        dispatch(userLogout())
+        dispatch(userDetailsReset())
+
+    }catch(error){
+        dispatch(userDeleteFail(error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message,
                 )

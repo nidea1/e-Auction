@@ -104,3 +104,25 @@ export const userUpdateProfileSlice = createSlice({
 });
 
 export const { userUpdateProfileRequest, userUpdateProfileSuccess, userUpdateProfileFail, userUpdateProfileReset } = userUpdateProfileSlice.actions;
+
+export const userDeleteSlice = createSlice({
+  name: 'userDelete',
+  initialState: {
+    userInfo: null,
+  },
+  reducers: {
+    userDeleteRequest: (state) => {
+      state.loading = true;
+    },
+    userDeleteSuccess: (state, action) => {
+      state.loading = false;
+      state.userInfo = action.payload;
+    },
+    userDeleteFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+  },
+});
+
+export const { userDeleteRequest, userDeleteSuccess, userDeleteFail } = userDeleteSlice.actions;

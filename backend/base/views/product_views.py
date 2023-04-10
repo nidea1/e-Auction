@@ -1,21 +1,28 @@
-from django.shortcuts import render
-from django.core.cache import cache
-from django.contrib.auth.decorators import login_required
-
 from ..models import Product
 from ..serializers import ProductSerializer
 
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.response import Response
 
-@api_view(['GET'])
-def getProducts(request):
-	products = Product.objects.all()
-	serializer = ProductSerializer(products, many = True)
-	return Response(serializer.data)
+class ProductList(APIView):
 
-@api_view(['GET'])
-def getProduct(request, pk):
-	product = Product.objects.get(_id = pk)
-	serializer = ProductSerializer(product, many = False)
-	return Response(serializer.data)
+	def get(self, request):
+		products = Product.objects.all()
+		serializer = ProductSerializer(products, many=True)
+		return Response(serializer.data)
+
+class ProductDetail(APIView):
+
+	def get_product(self,pk):
+		try:
+			return Product.objects.get(_id = pk)
+		except:
+			message = {'detail' : 'Product not found.'}
+			return Response(message, status=status.HTTP_404_NOT_FOUND)
+
+
+	def get(self, request, pk):
+		product = self.get_product(pk)
+		serializer = ProductSerializer(product)
+		return Response(serializer.data)

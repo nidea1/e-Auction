@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Form, FormControl, FormGroup, FormLabel, Modal, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { detail, update } from '../actions/userActions';
+import { useNavigate } from 'react-router-dom';
+import { deleteUser, detail, update } from '../actions/userActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import UpdateProfileForm from '../components/UpdateProfileForm';
@@ -11,10 +11,20 @@ import { userUpdateProfileReset } from '../reducers/userReducers';
 
 function ProfileScreen() {
 
-  const [show, setShow] = useState(false);  
-  
-  const modalClose = () => setShow(false);  
-  const modalShow = () => setShow(true);  
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+
+  const updateModalClose = () => setShowUpdateModal(false)
+  const updateModalShow = () => setShowUpdateModal(true)
+
+  const deleteModalClose = () => {
+    updateModalShow()
+    setShowDeleteModal(false)
+  }; 
+  const deleteModalShow = () => {
+    updateModalClose()
+    setShowDeleteModal(true)
+  }
 
   const [name,setName] = useState('')
   const [email,setEmail] = useState('')
@@ -22,7 +32,6 @@ function ProfileScreen() {
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [message, setMessage] = useState('')
 
-  const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -61,7 +70,18 @@ function ProfileScreen() {
         'email': email,
         'password':password,
       }))
-      modalClose()
+      updateModalClose()
+    }
+  }
+
+  const deleteSubmit = (e) => {
+    e.preventDefault()
+    
+    if(password !== passwordConfirm){
+      setMessage('Password does not match!')
+    }else{
+      dispatch(deleteUser(user._id))
+      navigate('/')
     }
   }
 
@@ -101,9 +121,9 @@ function ProfileScreen() {
                   </Row>
                   <Row>
                     <Col>
-                      <Button className="btn-dark edit-profile" onClick={modalShow}><i class="fa-regular fa-pen-to-square"></i></Button>
+                      <Button className="btn-dark edit-profile" onClick={updateModalShow}><i class="fa-regular fa-pen-to-square"></i></Button>
                     </Col>
-                    <Modal show={show} onHide={modalClose}>  
+                    <Modal show={showUpdateModal} onHide={updateModalClose}>  
                       <Modal.Header closeButton className='border-0' />   
                       <Col className='d-flex justify-content-center'><h4>Edit Profile</h4></Col>
                       <Modal.Body>  
@@ -160,11 +180,64 @@ function ProfileScreen() {
                             </FormControl>
                           </FormGroup>
 
-                          <Col className='d-flex justify-content-center'>
-                            <Button type='submit' variant='dark' className='mt-3 mb-2 w-50'>
-                              Update Profile            
+                          <Row className='d-flex flex-column justify-content-center'>
+                            <Col className='d-flex justify-content-center'>
+                              <Button type='submit' variant='primary' className='my-3 w-50'>
+                                Update Profile            
+                              </Button>
+                            </Col>  
+                            <Col className='d-flex justify-content-center'>
+                              <Button variant='danger' className='mb-2 fw-semibold' onClick={deleteModalShow}>
+                                <i class="fa-regular fa-triangle-exclamation" /> Delete Profile            
+                              </Button>
+                            </Col>                  
+                          </Row>
+                                
+                        </Form>
+                      </UpdateProfileForm>
+                      </Modal.Body>                   
+                    </Modal>  
+
+                    <Modal show={showDeleteModal} onHide={deleteModalClose} size='sm'>  
+                      <Modal.Header closeButton className='border-0' />   
+                      <Col className='d-flex justify-content-center'><h5>Delete Profile</h5></Col>
+                      <Modal.Body>  
+                      <UpdateProfileForm>
+                        {message && <Message variant='danger'>{message}</Message>}
+                        {error && <Message variant='danger'>{error}</Message>}
+                        {loading && <Loader />}
+                        <Form onSubmit={deleteSubmit}>
+                          
+                          <FormGroup controlId='password'>
+                            <FormLabel className='my-2 fw-semibold'>Password</FormLabel>
+                            <FormControl
+                                required
+                                type='password'
+                                placeholder='Enter Password'
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                >
+                            </FormControl>
+                          </FormGroup>
+
+                          <FormGroup controlId='passwordConfirm'>
+                            <FormLabel className='my-2 fw-semibold'>Confirm Password</FormLabel>
+                            <FormControl
+                                required
+                                type='password'
+                                placeholder='Confirm Password'
+                                value={passwordConfirm}
+                                onChange={(e) => setPasswordConfirm(e.target.value)}
+                                >
+                            </FormControl>
+                          </FormGroup>
+                            
+                          <Col className='mt-3 d-flex justify-content-center'>
+                            <Button type='submit' variant='danger' className='mb-2 fw-semibold'>
+                              <i class="fa-regular fa-triangle-exclamation" /> Are you sure?            
                             </Button>
-                          </Col>                          
+                          </Col>        
+
                         </Form>
                       </UpdateProfileForm>
                       </Modal.Body>                   
