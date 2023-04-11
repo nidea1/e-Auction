@@ -61,6 +61,7 @@ class UserAddress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='addresses')
     address = models.CharField(max_length=200, null=True, blank=True)
     city = models.CharField(max_length=200, null=True, blank=True)
+    district = models.CharField(max_length=200, null=True, blank=True)
     postalCode = models.CharField(max_length=200, null=True, blank=True)
     mobile = models.CharField(max_length=10, null=True, blank=True)
     name = models.CharField(max_length=200, null=True, blank=True)

@@ -21,3 +21,21 @@ main {
 .divider {
   width: 90%!important;
 }
+
+.edit-address {
+  position: absolute;
+  top: -20px;
+  left: 15px;
+  border: 0px;
+  border-radius: 8px;
+  background-color: rgb(255, 255, 255);
+}
+
+.delete-address {
+  position: absolute;
+  top: -20px;
+  right: 15px;
+  border: 0px;
+  border-radius: 8px;
+  background-color: rgb(255, 255, 255);
+}

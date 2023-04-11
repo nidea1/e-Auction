@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk'
+import { addressListSlice, addressUpdateSlice } from './reducers/addressReducer';
 import { productListSlice, productDetailsSlice } from './reducers/productReducers'
 import { userLoginSlice, userRegisterSlice, userDetailsSlice, userUpdateProfileSlice, userDeleteSlice } from './reducers/userReducers'
 
@@ -12,6 +13,8 @@ const store = configureStore({
         userDetails: userDetailsSlice.reducer,
         userUpdateProfile: userUpdateProfileSlice.reducer,
         userDelete : userDeleteSlice.reducer,
+        addressList: addressListSlice.reducer,
+        addressUpdate: addressUpdateSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(thunk),

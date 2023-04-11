@@ -25,6 +25,7 @@ class UserAddressesList(APIView):
 				user = request.user,
 				address = data['address'],
 				city = data['city'],
+				district = data['district'],
 				postalCode = data['postalCode'],
 				mobile = data['mobile'],
 				name = data['addressName']
@@ -62,6 +63,8 @@ class UserAddressDetail(APIView):
 			userAddress.address = data['address']
 		if 'city' in data:
 			userAddress.city = data['city']
+		if 'district' in data:
+			userAddress.district = data['district']
 		if 'postalCode' in data:
 			userAddress.postalCode = data['postalCode']
 		if 'mobile' in data:

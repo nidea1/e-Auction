@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Button, Image } from 'react-bootstrap'
+import { Card, Button, Image, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 
 function Product({ product }) {
@@ -17,9 +17,12 @@ function Product({ product }) {
                 <Card.Text className='my-3'>
                 {product.description}
                 </Card.Text>
-                <Link to={`/product/${product._id}`}>
-                  <Button variant="dark" className='shadow'>Detail</Button>
-                </Link>
+                <Row>
+                  <Col>
+                    <Button className="btn-dark"><i class="fa-regular fa-pen-to-square"></i></Button>
+                  </Col>
+                </Row>
+                
             </Card.Body>
         </Card>
     </>

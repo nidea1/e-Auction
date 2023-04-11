@@ -1,5 +1,4 @@
 import React from 'react'
-import logo from '../logo.svg'
 import { Container, Navbar, NavDropdown } from "react-bootstrap";
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,7 +22,7 @@ function Header() {
                     <Container>
                         <NavLink to='/' className={'link'}>
                             <Navbar.Brand className='fw-semibold'>
-                            <i class="fa-sharp fa-solid fa-gavel fa-shake" /> E-Auction
+                            <i class="fa-sharp fa-solid fa-gavel fa-shake" /> e-Auction
                             </Navbar.Brand>
                         </NavLink>
                         <Navbar.Toggle />
