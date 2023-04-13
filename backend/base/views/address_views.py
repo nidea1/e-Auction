@@ -59,17 +59,17 @@ class UserAddressDetail(APIView):
 		userAddress = self.get_user_adress(pk)
 		data = request.data
 
-		if 'address' in data:
-			userAddress.address = data['address']
-		if 'city' in data:
+		if data['description'] != '':
+			userAddress.description = data['description']
+		if data['province'] != '':
+			userAddress.province = data['province']
+		if data['city'] != '':
 			userAddress.city = data['city']
-		if 'district' in data:
-			userAddress.district = data['district']
-		if 'postalCode' in data:
+		if data['postalCode'] != '':
 			userAddress.postalCode = data['postalCode']
-		if 'mobile' in data:
+		if data['mobile'] != '':
 			userAddress.mobile = data['mobile']
-		if 'addressName' in data:
+		if data['addressName'] != '':
 			userAddress.name = data['addressName']
 		
 		userAddress.save()

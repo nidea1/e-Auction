@@ -67,11 +67,6 @@ class UserProfile(APIView):
 	def delete(self, request):
 
 		user = self.get_user()
-
-		if request.query_params.get('confirm') != 'true':
-			message = {'detail': 'Please confirm deletion by sending "confirm: true" in the request body.'}
-			return Response(message, status=status.HTTP_400_BAD_REQUEST)
-
 		
 		user.delete()
 

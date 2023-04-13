@@ -157,7 +157,7 @@ export const update = (user) => async (dispatch, getState) => {
     }
 }
 
-export const deleteUser = (id, confirm) => async (dispatch, getState) => {
+export const deleteUser = () => async (dispatch, getState) => {
     try{
         dispatch(userDeleteRequest())
 
@@ -173,12 +173,8 @@ export const deleteUser = (id, confirm) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.delete(
-            `/api/users/profile/`, {
-                params: {
-                    confirm: true,
-                },
-                headers: config.headers
-            }
+            `/api/users/profile/`,
+            config
         )
 
         dispatch(userDeleteSuccess(data))

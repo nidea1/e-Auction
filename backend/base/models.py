@@ -3,12 +3,22 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class ProductCategory(models.Model):
+    _id = models.AutoField(primary_key=True, editable=False)
+    name = models.CharField(max_length=200, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self) -> str:
+        return str(self.name)
+
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(null=True,blank=True)
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, null=True, blank=True, related_name='categories')
     endDate = models.DateTimeField()
     createdAt = models.DateTimeField(auto_now_add=True)
     currentHighestBid = models.IntegerField(null=True, blank=True, default=0)
@@ -16,7 +26,7 @@ class Product(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self) -> str:
-        return self.name
+        return str(self.name)
     
 class Bid(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
@@ -59,15 +69,15 @@ class OrderItem(models.Model):
 class UserAddress(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='addresses')
-    address = models.CharField(max_length=200, null=True, blank=True)
+    description = models.CharField(max_length=200, null=True, blank=True)
+    province = models.CharField(max_length=200, null=True, blank=True)
     city = models.CharField(max_length=200, null=True, blank=True)
-    district = models.CharField(max_length=200, null=True, blank=True)
     postalCode = models.CharField(max_length=200, null=True, blank=True)
-    mobile = models.CharField(max_length=10, null=True, blank=True)
+    mobile = models.CharField(max_length=12, null=True, blank=True)
     name = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self) -> str:
-        return str(self.name)
+        return f'{self.user.username}: {self.name}'
     
 class UserPayment(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)

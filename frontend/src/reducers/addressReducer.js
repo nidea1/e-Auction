@@ -19,6 +19,17 @@ export const addressListSlice = createSlice({
       state.error = action.payload;
     },
   },
+  extraReducers: (builder) => {
+        builder.addCase(addressUpdateSlice.actions.addressUpdateSuccess, (state, action) => {
+        const index = state.addresses.findIndex((address) => address._id === action.payload._id);
+        if (index !== -1) {
+            state.addresses[index] = action.payload;
+        }
+    });
+        builder.addCase(addressCreateSlice.actions.addressCreateSuccess, (state,action) => {
+            state.addresses.push(action.payload);
+        })
+  }
 });
 
 export const { addressListRequest, addressListSuccess, addressListFail } = addressListSlice.actions;
@@ -48,4 +59,50 @@ export const addressUpdateSlice = createSlice({
     },
 });
 
-export const { addressUpdateRequest, addressUpdateSuccess, addressUpdateFail } = addressUpdateSlice.actions;
+export const { addressUpdateRequest, addressUpdateSuccess, addressUpdateFail, addressUpdateReset } = addressUpdateSlice.actions;
+
+export const addressCreateSlice = createSlice({
+  name: 'addressCreate',
+  initialState : {
+      address: null
+  },
+  reducers: {
+      addressCreateRequest: (state) => {
+          state.loading = true;
+      },
+      addressCreateSuccess: (state,action) => {
+          state.loading = false;
+          state.success = true;
+          state.address = action.payload
+      },
+      addressCreateFail: (state, action) => {
+          state.loading = false;
+          state.error = action.payload
+      },
+  },
+});
+
+export const { addressCreateRequest, addressCreateSuccess, addressCreateFail, addressCreateReset } = addressCreateSlice.actions;
+
+export const addressDeleteSlice = createSlice({
+  name: 'addressDelete',
+  initialState : {
+      address: null
+  },
+  reducers: {
+      addressDeleteRequest: (state) => {
+          state.loading = true;
+      },
+      addressDeleteSuccess: (state,action) => {
+          state.loading = false;
+          state.success = true;
+          state.address = action.payload
+      },
+      addressDeleteFail: (state, action) => {
+          state.loading = false;
+          state.error = action.payload
+      },
+  },
+});
+
+export const { addressDeleteRequest, addressDeleteSuccess, addressDeleteFail, addressDeleteReset } = addressDeleteSlice.actions;

@@ -48,6 +48,9 @@ export const userRegisterSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       },
+      userLogout: (state) => {
+        state.userInfo = null
+      }
     },
   });
   
@@ -71,7 +74,7 @@ export const userDetailsSlice = createSlice({
       state.error = action.payload;
     },
     userDetailsReset: (state) => {
-      state.user = { }
+      state.user = null
     },
   },
 });

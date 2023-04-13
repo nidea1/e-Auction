@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Button, Image, Row, Col } from 'react-bootstrap'
+import { Card, Button, Image, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 
 function Product({ product }) {
@@ -14,14 +14,12 @@ function Product({ product }) {
                   <Card.Title>{product.name}</Card.Title>
                 </Link>
                 <hr />
-                <Card.Text className='my-3'>
+                <Col className='my-3 fw-semibold'>
                 {product.description}
-                </Card.Text>
-                <Row>
-                  <Col>
-                    <Button className="btn-dark"><i class="fa-regular fa-pen-to-square"></i></Button>
-                  </Col>
-                </Row>
+                </Col>
+                <Link to={`/product/${product._id}`}>
+                  <Button variant="dark">Detail</Button>
+                </Link>
                 
             </Card.Body>
         </Card>

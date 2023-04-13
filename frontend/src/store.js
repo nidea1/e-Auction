@@ -1,20 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk'
-import { addressListSlice, addressUpdateSlice } from './reducers/addressReducer';
+import { addressListSlice, addressUpdateSlice, addressCreateSlice, addressDeleteSlice } from './reducers/addressReducer';
 import { productListSlice, productDetailsSlice } from './reducers/productReducers'
 import { userLoginSlice, userRegisterSlice, userDetailsSlice, userUpdateProfileSlice, userDeleteSlice } from './reducers/userReducers'
 
 const store = configureStore({
     reducer: {
-        productList: productListSlice.reducer,
-        productDetails: productDetailsSlice.reducer,
-        userLogin: userLoginSlice.reducer,
-        userRegister: userRegisterSlice.reducer, 
-        userDetails: userDetailsSlice.reducer,
-        userUpdateProfile: userUpdateProfileSlice.reducer,
-        userDelete : userDeleteSlice.reducer,
+        addressCreate: addressCreateSlice.reducer,
+        addressDelete: addressDeleteSlice.reducer,
         addressList: addressListSlice.reducer,
         addressUpdate: addressUpdateSlice.reducer,
+        productDetails: productDetailsSlice.reducer,
+        productList: productListSlice.reducer,
+        userDetails: userDetailsSlice.reducer,
+        userDelete: userDeleteSlice.reducer,
+        userLogin: userLoginSlice.reducer,
+        userRegister: userRegisterSlice.reducer,
+        userUpdateProfile: userUpdateProfileSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(thunk),

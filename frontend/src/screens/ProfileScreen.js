@@ -81,7 +81,7 @@ function ProfileScreen() {
     if(password !== passwordConfirm){
       setMessage('Password does not match!')
     }else{
-      dispatch(deleteUser(user._id))
+      dispatch(deleteUser())
       navigate('/')
     }
   }
@@ -97,7 +97,7 @@ function ProfileScreen() {
                   <i class="fa-solid fa-user"></i>
                   </Col>
                   <Col md={8} className='text-muted'>
-                    <Card.Text>{user.name}</Card.Text>
+                    {user.name}
                   </Col>
                 </Row>   
 
@@ -110,7 +110,7 @@ function ProfileScreen() {
                   <i class="fa-sharp fa-solid fa-envelope" />
                   </Col>
                   <Col md={8} className='text-muted'>
-                    <Card.Text>{user.email}</Card.Text>
+                    {user.email}
                   </Col>
                 </Row>
 
@@ -266,7 +266,7 @@ function ProfileScreen() {
                 </Row>
               </Card>
             </Col>
-            <Col md={8} className='text-center'>
+            <Col md={8}>
               <Outlet />
             </Col>
         </Row>
