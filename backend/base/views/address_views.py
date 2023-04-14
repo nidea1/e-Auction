@@ -23,9 +23,9 @@ class UserAddressesList(APIView):
 		try:
 			userAddress = UserAddress.objects.create(
 				user = request.user,
-				address = data['address'],
+				description = data['description'],
+				province = data['province'],
 				city = data['city'],
-				district = data['district'],
 				postalCode = data['postalCode'],
 				mobile = data['mobile'],
 				name = data['addressName']

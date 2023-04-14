@@ -1,28 +1,28 @@
-from ..models import Product
-from ..serializers import ProductSerializer
+from ..models import Product, Brand
+from ..serializers import ProductSerializer, BrandSerializer
 
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
+from rest_framework.filters import SearchFilter, OrderingFilter
 
-class ProductList(APIView):
+class ProductList(ListCreateAPIView):
 
-	def get(self, request):
-		products = Product.objects.all()
-		serializer = ProductSerializer(products, many=True)
-		return Response(serializer.data)
+	queryset = Product.objects.all()
+	serializer_class = ProductSerializer
+	filter_backends = [SearchFilter, OrderingFilter]
+	search_fields = ['name', 'description', 'brand__name', 'category__name']
+	ordering_fields = ['name', 'price']
 
-class ProductDetail(APIView):
+class ProductDetail(RetrieveUpdateDestroyAPIView):
 
-	def get_product(self,pk):
-		try:
-			return Product.objects.get(_id = pk)
-		except:
-			message = {'detail' : 'Product not found.'}
-			return Response(message, status=status.HTTP_404_NOT_FOUND)
+	queryset = Product.objects.all()
+	serializer_class = ProductSerializer
 
+class BrandList(ListCreateAPIView):
 
-	def get(self, request, pk):
-		product = self.get_product(pk)
-		serializer = ProductSerializer(product)
-		return Response(serializer.data)
+	queryset = Brand.objects.all()
+	serializer_class = BrandSerializer
+
+class BrandDetail(RetrieveAPIView):
+
+	queryset = Brand.objects.all()
+	serializer_class = BrandSerializer

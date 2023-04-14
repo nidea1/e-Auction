@@ -3,9 +3,18 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-class ProductCategory(models.Model):
+class Brand(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     name = models.CharField(max_length=200, null=True, blank=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self) -> str:
+        return str(self.name)
+
+class Category(models.Model):
+    _id = models.AutoField(primary_key=True, editable=False)
+    name = models.CharField(max_length=200, null=True, blank=True)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='children')
     description = models.TextField(null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     
@@ -18,7 +27,8 @@ class Product(models.Model):
     image = models.ImageField(null=True,blank=True)
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
-    category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, null=True, blank=True, related_name='categories')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='categories')
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True, related_name='brands')
     endDate = models.DateTimeField()
     createdAt = models.DateTimeField(auto_now_add=True)
     currentHighestBid = models.IntegerField(null=True, blank=True, default=0)
@@ -68,7 +78,7 @@ class OrderItem(models.Model):
     
 class UserAddress(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='addresses')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='addresses', null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
     province = models.CharField(max_length=200, null=True, blank=True)
     city = models.CharField(max_length=200, null=True, blank=True)

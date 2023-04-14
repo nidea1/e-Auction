@@ -36,7 +36,7 @@ function AddressScreen() {
     e.preventDefault()
 
     dispatch(createAddress({
-      'address': addressDetail,
+      'description': addressDetail,
       'province': province,
       'city': city,
       'postalCode': postalCode,

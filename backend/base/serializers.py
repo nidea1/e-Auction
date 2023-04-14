@@ -51,8 +51,47 @@ class UserSerializerWithToken(UserSerializer):
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
+    
+class BrandSerializer(serializers.ModelSerializer):
+    products = serializers.SerializerMethodField(read_only = True)
+
+    class Meta:
+        model = Brand
+        fields = ['_id','name','products']
+
+    def get_products(self, obj):
+        products = Product.objects.filter(brand = obj)
+        return ProductDetailSerializer(products,many=True).data
+
+class ProductDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = ['_id','name','image','description','price','endDate','currentHighestBid','totalBids','brand']
+
+class CategorySerializer(serializers.ModelSerializer):
+    products = serializers.SerializerMethodField(read_only = True)
+
+    class Meta:
+        model = Category
+        fields = ['_id','name','description','parent','products']
+
+    def get_products(self, obj):
+        products = Product.objects.filter(category = obj)
+        return ProductDetailSerializer(products,many=True).data
+    
+class CategoryListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = ['_id','name','description','parent']
+        depth = 1
+    
 
 class ProductSerializer(serializers.ModelSerializer):
+    category = CategoryListSerializer()
+    brand = BrandSerializer()
+
     class Meta:
         model = Product
         fields = '__all__'

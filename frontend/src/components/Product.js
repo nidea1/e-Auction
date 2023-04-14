@@ -10,7 +10,7 @@ function Product({ product }) {
               <Image variant="top" src={product.image} height={300} fluid/>
             </Link>
             <Card.Body>
-                <Link className='link' to={`/product/${product._id}`}>
+                <Link className='link-dark text-decoration-none' to={`/product/${product._id}`}>
                   <Card.Title>{product.name}</Card.Title>
                 </Link>
                 <hr />

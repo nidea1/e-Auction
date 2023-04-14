@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/products/', include('base.urls.product_urls')),
     path('api/users/', include('base.urls.user_urls')),
     path('api/addresses/', include('base.urls.address_urls')),
+    path('api/categories/', include('base.urls.category_urls')),
     path('__debug__/', include(debug_toolbar.urls)),
 ]
 

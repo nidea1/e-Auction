@@ -3,6 +3,7 @@ from ..serializers import UserSerializer, UserSerializerWithToken, MyTokenObtain
 
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
@@ -73,11 +74,7 @@ class UserProfile(APIView):
 		message = {'detail' : 'User has been deleted.'}
 		return Response(message, status=status.HTTP_204_NO_CONTENT)
 
-class UserList(APIView):
-
+class UserList(ListAPIView):
+	serializer_class = UserSerializer
+	queryset = User.objects.all()
 	permission_classes = [IsAdminUser]
-
-	def get(self, request):
-		users = User.objects.all()
-		serializer = UserSerializer(users, many = True)
-		return Response(serializer.data)

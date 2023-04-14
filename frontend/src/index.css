@@ -2,11 +2,6 @@ main {
   min-height: 80vh;
 }
 
-.link {
-  text-decoration: none;
-  color: inherit;
-}
-
 .edit-profile {
     position: absolute;
     top: -20px;
