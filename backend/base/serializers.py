@@ -53,48 +53,53 @@ class UserSerializerWithToken(UserSerializer):
         return str(token.access_token)
     
 class BrandSerializer(serializers.ModelSerializer):
-    products = serializers.SerializerMethodField(read_only = True)
 
     class Meta:
         model = Brand
-        fields = ['_id','name','products']
+        fields = '__all__'
 
-    def get_products(self, obj):
-        products = Product.objects.filter(brand = obj)
-        return ProductDetailSerializer(products,many=True).data
 
-class ProductDetailSerializer(serializers.ModelSerializer):
-
+class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
-        fields = ['_id','name','image','description','price','endDate','currentHighestBid','totalBids','brand']
+        model = Category
+        fields = ['_id','name','description','createdAt','subCategory']
+
+    subCategory = serializers.SerializerMethodField()
+
+    def get_subCategory(self, obj):
+        if obj.children.exists():
+            return SubCategorySerializer(obj.children.all(), many=True, context=self.context).data
+        else:
+            return None
+          
 
 class CategorySerializer(serializers.ModelSerializer):
-    products = serializers.SerializerMethodField(read_only = True)
-
+    subCategory = SubCategorySerializer(many=True, read_only=True, source='children')
     class Meta:
         model = Category
-        fields = ['_id','name','description','parent','products']
-
-    def get_products(self, obj):
-        products = Product.objects.filter(category = obj)
-        return ProductDetailSerializer(products,many=True).data
-    
-class CategoryListSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Category
-        fields = ['_id','name','description','parent']
-        depth = 1
-    
+        fields = ['_id','name','description','createdAt','subCategory']
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategoryListSerializer()
-    brand = BrandSerializer()
 
     class Meta:
         model = Product
         fields = '__all__'
+
+class CategoryDetailSerializer(serializers.ModelSerializer):
+    products = ProductSerializer(many=True, read_only = True, source = 'categories')
+    subCategory = SubCategorySerializer(many=True, read_only=True, source='children')
+
+    class Meta:
+        model = Category
+        fields = ['_id','name','description','createdAt','products','subCategory']
+    
+class CategoryProductsSerializer(serializers.ModelSerializer):
+    products = ProductSerializer(many=True, read_only = True, source = 'categories')
+
+    class Meta:
+        model = Category
+        fields = ['products']
+    
 
 class UserAddressSerializer(serializers.ModelSerializer):
     class Meta:

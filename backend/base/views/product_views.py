@@ -21,8 +21,3 @@ class BrandList(ListCreateAPIView):
 
 	queryset = Brand.objects.all()
 	serializer_class = BrandSerializer
-
-class BrandDetail(RetrieveAPIView):
-
-	queryset = Brand.objects.all()
-	serializer_class = BrandSerializer

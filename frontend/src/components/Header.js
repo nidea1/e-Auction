@@ -1,16 +1,16 @@
 import React from 'react'
-import { Col, Container, Form, FormControl, ListGroupItem, Navbar, NavDropdown, Row } from "react-bootstrap";
+import { Col, Container, Form, FormControl, ListGroupItem, Navbar, NavDropdown } from "react-bootstrap";
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/userActions';
+import CategoryMenu from './CategoryMenu';
 
 
 function Header() {
 
+    const dispatch = useDispatch()
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
-
-    const dispatch = useDispatch()
 
     const logoutHandler = () => {
         dispatch(logout())
@@ -59,18 +59,7 @@ function Header() {
                     </Col>
                 </Container>
             </header>
-            <Container>
-                <Row className='border-bottom'>
-                    <ul className='d-flex flex-wrap align-items-center justify-content-center me-lg-auto mb-2'>
-                        <ListGroupItem className='px-2'>
-                            Electronics
-                        </ListGroupItem>
-                        <ListGroupItem className='px-2'>
-                            Electronics
-                        </ListGroupItem>
-                    </ul>
-                </Row>
-            </Container>
+            <CategoryMenu />
         </>
     )
 }

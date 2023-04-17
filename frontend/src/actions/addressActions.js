@@ -12,7 +12,7 @@ import {
     addressDeleteRequest,
     addressDeleteSuccess,
     addressDeleteFail,
-} from '../reducers/addressReducer'
+} from '../reducers/addressReducers'
 
 export const listAddresses = () => async (dispatch, getState) => {
     try{

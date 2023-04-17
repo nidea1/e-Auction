@@ -7,7 +7,7 @@ import UpdateProfileForm from './UpdateProfileForm'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/bootstrap.css'
 import { deleteAddress, listAddresses, updateAddress } from '../actions/addressActions'
-import { addressUpdateReset } from '../reducers/addressReducer'
+import { addressUpdateReset } from '../reducers/addressReducers'
 
 
 function Address({ address }) {
