@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Col, Container, Form, FormControl, ListGroupItem, Navbar, NavDropdown } from "react-bootstrap";
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/userActions';
-import CategoryMenu from './CategoryMenu';
+import CategoryMenu from './Category/CategoryMenu';
+import { listCategories } from '../actions/categoryActions';
 
 
 function Header() {
@@ -15,6 +16,13 @@ function Header() {
     const logoutHandler = () => {
         dispatch(logout())
     }
+
+    const categoryList = useSelector(state => state.categoryList)
+    const { categories } = categoryList
+
+    useEffect(() => {
+        dispatch(listCategories())
+    }, [dispatch])
     return (
         <>
             <header class='p-3 mb-3 border-bottom shadow-sm'>
@@ -59,7 +67,7 @@ function Header() {
                     </Col>
                 </Container>
             </header>
-            <CategoryMenu />
+            <CategoryMenu categories={categories}/>
         </>
     )
 }
