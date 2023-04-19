@@ -123,7 +123,7 @@ function ProfileScreen() {
                   <i class="fa-solid fa-location-dot" />
                   </Col>
                   <Col md={8}>
-                    <Link to={'/profile/addresses'} className='text-muted link'>Address List</Link>
+                    <Link to={'/profile/addresses'} className='text-muted text-decoration-none'>Address List</Link>
                   </Col>
                 </Row>
 
@@ -136,7 +136,7 @@ function ProfileScreen() {
                   <i class="fa-solid fa-hand-sparkles" />
                   </Col>
                   <Col md={8}>
-                    <Link to={'./'} className='text-muted link'>My Bids</Link>
+                    <Link to={'./'} className='text-muted text-decoration-none'>My Bids</Link>
                   </Col>
                 </Row>
 

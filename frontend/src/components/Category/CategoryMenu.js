@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Container } from 'react-bootstrap';
+import { Col, Container } from 'react-bootstrap';
 import styles from './CategoryMenu.module.css'
 import SubCategoryMenu from './SubCategoryMenu';
 
@@ -16,7 +16,7 @@ function CategoryMenu({categories}) {
                         onMouseEnter={() => setActiveCategory(category._id)}
                         onMouseLeave={() => setActiveCategory(null)}
                     >
-                        <a href='/#'>{category.name}</a>
+                        <Col>{category.name}</Col>
                         {activeCategory === category._id && (
                             <SubCategoryMenu subCategories={category.subCategory}/>
                         )}

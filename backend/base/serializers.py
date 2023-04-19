@@ -62,7 +62,7 @@ class BrandSerializer(serializers.ModelSerializer):
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['_id','name','description','createdAt','subCategory']
+        fields = ['_id','name', 'slug', 'description', 'createdAt',  'subCategory']
 
     subCategory = serializers.SerializerMethodField()
 
@@ -77,7 +77,7 @@ class CategorySerializer(serializers.ModelSerializer):
     subCategory = SubCategorySerializer(many=True, read_only=True, source='children')
     class Meta:
         model = Category
-        fields = ['_id','name','description','createdAt','subCategory']
+        fields = ['_id','name', 'slug', 'description', 'createdAt', 'subCategory']
 
 class ProductSerializer(serializers.ModelSerializer):
 
@@ -91,7 +91,7 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['_id','name','description','createdAt','products','subCategory']
+        fields = ['_id','name', 'slug','description', 'createdAt', 'products', 'subCategory']
     
 class CategoryProductsSerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True, read_only = True, source = 'categories')

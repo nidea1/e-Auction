@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 function SubCategoryMenu({ subCategories }) {
     if (!subCategories || subCategories.length === 0) return null;
 
@@ -7,7 +8,7 @@ function SubCategoryMenu({ subCategories }) {
       <ul>
         {subCategories.map((subCategory) => (
           <li key={subCategory._id}>
-            <a href="/#">{subCategory.name}</a>
+            <a href={`/categories/${subCategory.slug}-c-${subCategory._id}`}>{subCategory.name}</a>
             <SubCategoryMenu subCategories={subCategory.subCategory} />
           </li>
         ))}

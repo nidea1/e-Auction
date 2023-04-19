@@ -1,8 +1,10 @@
 import React from 'react'
-import { Card, Button, Image, Col } from 'react-bootstrap'
+import { Card, Button, Image, Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 
 function Product({ product }) {
+  const endDate = new Date(product.endDate)
+  const formattedEndDate = endDate.toLocaleDateString()
   return (
     <>
         <Card className='p-4 my-3 shadow border-0'>
@@ -15,7 +17,22 @@ function Product({ product }) {
                 </Link>
                 <hr />
                 <Col className='my-3 fw-semibold'>
-                {product.description}
+                  <Row>
+                    <Col md={8}>
+                      Current max bid:
+                    </Col>
+                    <Col md={4}>
+                      ${product.currentHighestBid}
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={8}>
+                      End date:
+                    </Col>
+                    <Col md={4}>
+                      {formattedEndDate}
+                    </Col>
+                  </Row>
                 </Col>
                 <Link to={`/product/${product._id}`}>
                   <Button variant="dark">Detail</Button>

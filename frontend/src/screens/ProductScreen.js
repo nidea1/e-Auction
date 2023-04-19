@@ -9,7 +9,8 @@ import Message from '../components/Message';
 
 
 function ProductScreen() {
-  let { id } = useParams();
+  let { productParams } = useParams();
+  let [ slug, id ] = productParams.split('-p-')
   
   const dispatch = useDispatch()
   const productDetails = useSelector(state => state.productDetails)

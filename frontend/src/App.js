@@ -10,6 +10,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import MyBids from "./components/MyBids";
 import AddressScreen from "./screens/AddressScreen";
+import CategoryScreen from "./screens/CategoryScreen";
 
 
 function App() {
@@ -26,7 +27,8 @@ function App() {
               <Route index element={<MyBids />}/>
               <Route path="addresses" element={<AddressScreen />} />
             </Route>
-            <Route path="product/:id" element={<ProductScreen />}/>
+            <Route path="/product/:productParams" element={<ProductScreen />}/>
+            <Route path="/categories/:categoryParams" element={<CategoryScreen />}/>
           </Routes>
         </Container>
       </main>

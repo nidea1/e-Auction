@@ -16,10 +16,19 @@
   background-color: #eee;
 }
 
+.categoryMenuNav div {
+  display: block;
+  padding: 8px 16px;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .categoryMenuNav li {
   position: relative;
-  border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color)
+  border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
 }
+
 
 .categoryMenuNav li > ul {
   display: none;

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 # Create your models here.
 
@@ -14,16 +15,23 @@ class Brand(models.Model):
 class Category(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     name = models.CharField(max_length=200, null=True, blank=True)
+    slug = models.SlugField(null=True,blank=True,unique=True)
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='children')
     description = models.TextField(null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     
     def __str__(self) -> str:
         return str(self.name)
+    
+    def save(self, *args, **kwargs) -> str:
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
+    slug = models.SlugField(null=True,blank=True,unique=True)
     image = models.ImageField(null=True,blank=True)
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
@@ -37,6 +45,11 @@ class Product(models.Model):
 
     def __str__(self) -> str:
         return str(self.name)
+    
+    def save(self, *args, **kwargs) -> str:
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
     
 class Bid(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)

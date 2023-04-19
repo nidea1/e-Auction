@@ -30,7 +30,7 @@ function Header() {
                     <Col className='d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start'>
                         <NavLink to='/' className={'nav-link link-dark d-flex align-items-center mb-2 mb-lg-0 fs-5'}>
                             <Navbar.Brand className='fw-semibold'>
-                            <i class="fa-sharp fa-solid fa-gavel fa-shake"/> &nbsp;e-Auction
+                            <i class="fa-sharp fa-solid fa-gavel fa-shake"/> &nbsp;eAuction
                             </Navbar.Brand>
                         </NavLink>
                         &nbsp;&nbsp;
