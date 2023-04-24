@@ -39,5 +39,59 @@ main {
   background-color: rgb(255, 255, 255);
 }
 
-/* Category Menu */
+/* Category Section */
 
+.category-section {
+  display: flex;
+  font-family: Arial, sans-serif;
+}
+
+.category-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: small;
+}
+
+
+.category-section div {
+  display: block;
+  padding: 8px 16px;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.category-section div .arrow:hover {
+  background-color: rgba(187, 175, 175, 0.527);
+  border-radius: 45%;
+}
+
+.category-section li > ul {
+  background-color: #fff;
+  display: block;
+}
+
+.category-section li > ul > li {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.category-item:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.category-section li > ul > li > ul > li {
+  position: relative;
+}
+
+.category-section li > ul > li > ul > li:before {
+  content: '•';
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2em;
+  color: #333;
+}

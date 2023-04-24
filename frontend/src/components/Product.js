@@ -8,11 +8,11 @@ function Product({ product }) {
   return (
     <>
         <Card className='p-4 my-3 shadow border-0'>
-            <Link to={`/product/${product._id}`}>
+            <Link to={`/product/${product.slug}-p-${product._id}`}>
               <Image variant="top" src={product.image} height={300} fluid/>
             </Link>
             <Card.Body>
-                <Link className='link-dark text-decoration-none' to={`/product/${product._id}`}>
+                <Link className='link-dark text-decoration-none' to={`/product/${product.slug}-p-${product._id}`}>
                   <Card.Title>{product.name}</Card.Title>
                 </Link>
                 <hr />
@@ -34,7 +34,7 @@ function Product({ product }) {
                     </Col>
                   </Row>
                 </Col>
-                <Link to={`/product/${product._id}`}>
+                <Link to={`/product/${product.slug}-p-${product._id}`}>
                   <Button variant="dark">Detail</Button>
                 </Link>
                 
