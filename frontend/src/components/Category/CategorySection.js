@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function CategorySection({ topLevelCategory }) {
@@ -13,11 +13,12 @@ function CategorySection({ topLevelCategory }) {
     if (!category) return null;
 
     return (
-      <ul style={{width:'175px'}}>
+      <ul className='list-unstyled m-0' style={isTopLevel ? { width: '100%' } : { }}>
         {isTopLevel && (
           <li className='text-center'>
-            <span className='fs-6 fw-semibold'>{category.name}</span>
-            <hr />
+            <Col className='border-bottom border-top py-2 fs-6 fw-semibold'>
+              <span className='d-flex justify-content-center'>{category.name}</span>
+            </Col>
             {category.subCategory && renderCategories(category)}
           </li>
         )}

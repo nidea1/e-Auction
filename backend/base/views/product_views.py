@@ -9,7 +9,7 @@ class ProductList(ListCreateAPIView):
 	queryset = Product.objects.all()
 	serializer_class = ProductSerializer
 	filter_backends = [SearchFilter, OrderingFilter]
-	search_fields = ['name', 'description', 'brand__name', 'category__name']
+	search_fields = ['name', 'brand__name', 'category__name']
 	ordering_fields = ['name', 'price']
 
 class ProductDetail(RetrieveUpdateDestroyAPIView):

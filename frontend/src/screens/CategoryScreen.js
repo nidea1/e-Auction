@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { detailCategories } from "../actions/categoryActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import CategorySection from "../components/Category/CategorySection";
+import ProductByCategory from "../components/Category/ProductByCategory";
 
 function CategoryScreen() {
   const { categoryParams } = useParams();
@@ -38,6 +39,18 @@ function CategoryScreen() {
 
   const topLevelCategory = findTopLevelCategory(categories, parseInt(id));
 
+  const collectSubcategoryProducts = (category) => {
+    let allProducts = category.products || [];
+    if (category.subCategory && category.subCategory.length > 0) {
+      category.subCategory.forEach((subCategory) => {
+        allProducts = allProducts.concat(collectSubcategoryProducts(subCategory));
+      });
+    }
+    return allProducts;
+  };
+
+  const productsToShow = collectSubcategoryProducts(category);
+
   return (
     <>
       {loading ? (
@@ -45,17 +58,25 @@ function CategoryScreen() {
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Row style={{maxHeight:'75vh'}}>
-          <span className="text-center">{category.name}</span>
-          <Col className="category-container d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <Col className="col-2 flex-shrink-0 p-3 shadow rounded">
+        <Container>
+          <div className="search-info">
+            You search for <strong>{category.name}</strong> lists {productsToShow.length} results
+          </div>
+          <Row>
+            <Col xs={12} md={2} className="p-3 my-3 shadow rounded">
               <CategorySection topLevelCategory={topLevelCategory} />
             </Col>
-            <Col className="col-9 ms-4">
-              Products by Category
+            <Col xs={12} md={9} className="ms-md-4">
+              <Row>
+                {productsToShow.map((product) => (
+                  <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                    <ProductByCategory product={product} />
+                  </Col>
+                ))}
+              </Row>
             </Col>
-          </Col>
-        </Row>
+          </Row>
+        </Container>
       )}
     </>
   );
