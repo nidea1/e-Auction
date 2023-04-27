@@ -59,7 +59,7 @@ main {
   padding: 8px 16px;
   color: black;
   text-decoration: none;
-  cursor: pointer;
+  cursor: default;
 }
 
 .category-section div .arrow:hover {

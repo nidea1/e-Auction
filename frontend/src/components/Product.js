@@ -12,10 +12,9 @@ function Product({ product }) {
               <Image variant="top" src={product.image} height={200} fluid/>
             </Link>
             <Card.Body className="d-flex flex-column">
-                <Link className='link-dark text-decoration-none mb-auto' to={`/product/${product.slug}-p-${product._id}`}>
+                <Link className='link-dark text-decoration-none border-bottom pb-2' to={`/product/${product.slug}-p-${product._id}`}>
                   <Card.Title>{product.name}</Card.Title>
                 </Link>
-                <hr />
                 <Col className='my-3 fw-semibold'>
                   <Row>
                     <Col md={8}>
