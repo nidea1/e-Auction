@@ -8,11 +8,11 @@ import {
     productDetailsFail,
  } from '../reducers/productReducers'
 
-export const listProducts = () => async (dispatch) => {
+export const listProducts = (keyword = '') => async (dispatch) => {
     try{
         dispatch(productListRequest())
 
-        const { data } = await axios.get('/api/products/')
+        const { data } = await axios.get(`/api/products/?search=${keyword}`)
 
         dispatch(productListSuccess(data))
     }catch(error){

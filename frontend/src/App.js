@@ -29,6 +29,7 @@ function App() {
             </Route>
             <Route path="/product/:productParams" element={<ProductScreen />}/>
             <Route path="/categories/:categoryParams" element={<CategoryScreen />}/>
+            <Route path="/?search=:keywordParams" element={<CategoryScreen />}/>
           </Routes>
         </Container>
       </main>

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, Container, Form, FormControl, ListGroupItem, Navbar, NavDropdown } from "react-bootstrap";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/userActions';
 import CategoryMenu from './Category/CategoryMenu';
@@ -23,6 +23,20 @@ function Header() {
     useEffect(() => {
         dispatch(listCategories())
     }, [dispatch])
+
+    const [keyword, setKeyword] = useState('')
+    const navigate = useNavigate()
+
+    const submitHandler = (e) => {
+        e.preventDefault()
+
+        if(keyword.trim()){
+            navigate(`/categories/all-c-all?search=${keyword}`)
+        }else{
+            navigate('/')
+        }
+    }
+
     return (
         <>
             <header class='p-3 mb-3 border-bottom shadow-sm'>
@@ -45,11 +59,12 @@ function Header() {
                                 <NavLink to={'/sss'} className={({isActive, isPending}) => isPending ? "" : isActive ? "nav-link px-2 link-secondary" : "nav-link px-2 link-dark" }>FAQs</NavLink>
                             </ListGroupItem>
                         </ul>
-                        <Form className='col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3' role={'search'}>
+                        <Form className='col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3' role={'search'} onSubmit={submitHandler}>
                             <FormControl
                             type='search'
                             placeholder='Search a product, category or brand'
                             aria-label='Search'
+                            onChange={(e) => setKeyword(e.target.value)}
                             />
                         </Form>
                         { userInfo ? 

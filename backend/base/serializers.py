@@ -86,19 +86,24 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['_id','name', 'slug', 'description', 'createdAt', 'subCategory']
 
 class CategoryDetailSerializer(serializers.ModelSerializer):
-    products = ProductSerializer(many=True, read_only = True, source = 'categories')
     subCategory = SubCategorySerializer(many=True, read_only=True, source='children')
 
     class Meta:
         model = Category
-        fields = ['_id','name', 'slug','description', 'createdAt', 'products', 'subCategory']
-    
-class CategoryProductsSerializer(serializers.ModelSerializer):
-    products = ProductSerializer(many=True, read_only = True, source = 'categories')
+        fields = ['_id', 'name', 'slug', 'description', 'createdAt', 'subCategory']
 
-    class Meta:
-        model = Category
-        fields = ['products']
+    def to_representation(self, obj):
+        data = super().to_representation(obj)
+        request = self.context.get('request')
+        brand = request.query_params.getlist('brand', [])
+
+        if brand:
+            products = Product.objects.filter(category=obj, brand__name__in=brand)
+        else:
+            products = Product.objects.filter(category=obj)
+
+        data['products'] = ProductSerializer(products, many=True).data
+        return data
     
 
 class UserAddressSerializer(serializers.ModelSerializer):

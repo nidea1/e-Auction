@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { detailCategories } from "../actions/categoryActions";
@@ -7,6 +7,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import CategorySection from "../components/Category/CategorySection";
 import ProductByCategory from "../components/Category/ProductByCategory";
+import { listProducts } from "../actions/productActions";
 
 function CategoryScreen() {
   const { categoryParams } = useParams();
@@ -16,12 +17,22 @@ function CategoryScreen() {
   const categoryDetails = useSelector((state) => state.categoryDetails);
   const { error, loading, category } = categoryDetails;
 
+  const productList = useSelector((state) => state.productList);
+  const { products: allProducts } = productList;
+
   const categoryList = useSelector((state) => state.categoryList);
   const { categories } = categoryList;
 
+  const [searchParams] = useSearchParams()
+  const keyword = searchParams.get('search')
+
   useEffect(() => {
-    dispatch(detailCategories(id));
-  }, [dispatch, id]);
+    if (keyword) {
+      dispatch(listProducts(keyword));
+    } else {
+      dispatch(detailCategories(id));
+    }
+  }, [dispatch, id, keyword]);
 
   const findTopLevelCategory = (categories, categoryId) => {
     for (const category of categories) {
@@ -37,8 +48,6 @@ function CategoryScreen() {
     return null;
   };
 
-  const topLevelCategory = findTopLevelCategory(categories, parseInt(id));
-
   const collectSubcategoryProducts = (category) => {
     let allProducts = category.products || [];
     if (category.subCategory && category.subCategory.length > 0) {
@@ -49,7 +58,16 @@ function CategoryScreen() {
     return allProducts;
   };
 
-  const productsToShow = collectSubcategoryProducts(category);
+  let productsToShow;
+  let topLevelCategory;
+
+  if (keyword) {
+    productsToShow = allProducts;
+    topLevelCategory = categories;
+  } else {
+    productsToShow = collectSubcategoryProducts(category);
+    topLevelCategory = findTopLevelCategory(categories, parseInt(id));
+  }
 
   return (
     <>
@@ -60,11 +78,15 @@ function CategoryScreen() {
       ) : (
         <Container>
           <div className="search-info">
-            You search for <strong>{category.name}</strong> lists {productsToShow.length} results
+            You search for <strong>{keyword ? keyword : category.name}</strong> lists {productsToShow.length} results
           </div>
           <Row>
             <Col xs={12} md={2} className="p-3 my-3 shadow rounded">
-              <CategorySection topLevelCategory={topLevelCategory} />
+              <CategorySection
+                topLevelCategory={topLevelCategory}
+                searchMode={keyword}
+              />
+              <Col className="text-center border-top border-bottom py-2 fw-bold">Filter by Brand</Col>
             </Col>
             <Col xs={12} md={9} className="ms-md-4">
               <Row>

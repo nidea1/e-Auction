@@ -44,4 +44,4 @@ export const productDetailsSlice = createSlice({
     },
   });
   
-  export const { productDetailsRequest, productDetailsSuccess, productDetailsFail } = productDetailsSlice.actions;
+export const { productDetailsRequest, productDetailsSuccess, productDetailsFail } = productDetailsSlice.actions;
