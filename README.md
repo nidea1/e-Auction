@@ -11,4 +11,5 @@ My e-auction project that I am currently developing.
 ![img5](https://cdn.discordapp.com/attachments/1035852765756411995/1095062541421514853/image.png)
 ![img6](https://cdn.discordapp.com/attachments/1035852765756411995/1100358660129046628/image.png)
 ![img7](https://cdn.discordapp.com/attachments/1035852765756411995/1100359054527840256/image.png)
-![img8](https://cdn.discordapp.com/attachments/1035852765756411995/1100358866820157470/image.png)
+![img8](https://cdn.discordapp.com/attachments/1035852765756411995/1101573884072960010/image.png)
+![img9](https://cdn.discordapp.com/attachments/1035852765756411995/1100358866820157470/image.png)
