@@ -49,7 +49,7 @@ function CategorySection({ topLevelCategory, searchMode }) {
   };
 
   return (
-    <div className='category-section mt-2 justify-content-center'>
+    <div className='category-section my-2 justify-content-center'>
       {renderCategories(topLevelCategory)}
     </div>
   );

@@ -66,10 +66,9 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class SubCategorySerializer(serializers.ModelSerializer):
-    products = ProductSerializer(many=True, read_only = True, source = 'categories')
     class Meta:
         model = Category
-        fields = ['_id','name', 'slug', 'description', 'createdAt',  'subCategory', 'products']
+        fields = ['_id','name', 'slug', 'description', 'createdAt',  'subCategory']
 
     subCategory = serializers.SerializerMethodField()
 
@@ -91,19 +90,6 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['_id', 'name', 'slug', 'description', 'createdAt', 'subCategory']
-
-    def to_representation(self, obj):
-        data = super().to_representation(obj)
-        request = self.context.get('request')
-        brand = request.query_params.getlist('brand', [])
-
-        if brand:
-            products = Product.objects.filter(category=obj, brand__name__in=brand)
-        else:
-            products = Product.objects.filter(category=obj)
-
-        data['products'] = ProductSerializer(products, many=True).data
-        return data
     
 
 class UserAddressSerializer(serializers.ModelSerializer):

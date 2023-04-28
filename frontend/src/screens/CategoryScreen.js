@@ -8,6 +8,7 @@ import Message from "../components/Message";
 import CategorySection from "../components/Category/CategorySection";
 import ProductByCategory from "../components/Category/ProductByCategory";
 import { listProducts } from "../actions/productActions";
+import FilterByBrand from "../components/Category/FilterByBrand";
 
 function CategoryScreen() {
   const { categoryParams } = useParams();
@@ -18,7 +19,7 @@ function CategoryScreen() {
   const { error, loading, category } = categoryDetails;
 
   const productList = useSelector((state) => state.productList);
-  const { products: allProducts } = productList;
+  const { products } = productList;
 
   const categoryList = useSelector((state) => state.categoryList);
   const { categories } = categoryList;
@@ -28,9 +29,10 @@ function CategoryScreen() {
 
   useEffect(() => {
     if (keyword) {
-      dispatch(listProducts(keyword));
+      dispatch(listProducts(keyword, undefined));
     } else {
-      dispatch(detailCategories(id));
+      dispatch(listProducts(undefined, id));
+      dispatch(detailCategories(id))
     }
   }, [dispatch, id, keyword]);
 
@@ -48,24 +50,11 @@ function CategoryScreen() {
     return null;
   };
 
-  const collectSubcategoryProducts = (category) => {
-    let allProducts = category.products || [];
-    if (category.subCategory && category.subCategory.length > 0) {
-      category.subCategory.forEach((subCategory) => {
-        allProducts = allProducts.concat(collectSubcategoryProducts(subCategory));
-      });
-    }
-    return allProducts;
-  };
-
-  let productsToShow;
   let topLevelCategory;
 
   if (keyword) {
-    productsToShow = allProducts;
     topLevelCategory = categories;
   } else {
-    productsToShow = collectSubcategoryProducts(category);
     topLevelCategory = findTopLevelCategory(categories, parseInt(id));
   }
 
@@ -78,19 +67,23 @@ function CategoryScreen() {
       ) : (
         <Container>
           <div className="search-info">
-            You search for <strong>{keyword ? keyword : category.name}</strong> lists {productsToShow.length} results
+            You search for <strong>{keyword ? keyword : category.name}</strong> lists {products.length} results
           </div>
           <Row>
             <Col xs={12} md={2} className="p-3 my-3 shadow rounded">
-              <CategorySection
-                topLevelCategory={topLevelCategory}
-                searchMode={keyword}
-              />
-              <Col className="text-center border-top border-bottom py-2 fw-bold">Filter by Brand</Col>
+              <Col>
+                <CategorySection
+                  topLevelCategory={topLevelCategory}
+                  searchMode={keyword}
+                />
+              </Col>
+              <Col>
+                <FilterByBrand category_id={id} searchParams={keyword} />
+              </Col>
             </Col>
             <Col xs={12} md={9} className="ms-md-4">
               <Row>
-                {productsToShow.map((product) => (
+                {products.map((product) => (
                   <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                     <ProductByCategory product={product} />
                   </Col>

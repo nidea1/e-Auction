@@ -45,3 +45,26 @@ export const productDetailsSlice = createSlice({
   });
   
 export const { productDetailsRequest, productDetailsSuccess, productDetailsFail } = productDetailsSlice.actions;
+
+export const brandListSlice = createSlice({
+  name: 'brandList',
+  initialState:{
+    brands: [],
+  },
+  reducers: {
+    brandListRequest: (state) => {
+      state.loading = true;
+      state.brands = []
+    },
+    brandListSuccess: (state, action) => {
+      state.loading = false;
+      state.brands = action.payload;
+    },
+    brandListFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+  },
+});
+
+export const { brandListRequest, brandListSuccess, brandListFail } = brandListSlice.actions;
