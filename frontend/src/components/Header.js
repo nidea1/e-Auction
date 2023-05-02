@@ -75,7 +75,7 @@ function Header() {
                             <NavDropdown.Divider />
                             <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                         </NavDropdown>
-                        :   <NavLink to="/login" className={'link fw-semibold'}>
+                        :   <NavLink to="/login" className={'link-dark text-decoration-none fw-semibold'}>
                                 <i className='fa-regular fa-user' /> Login
                             </NavLink>
                         }

@@ -9,6 +9,7 @@ import {
     userRegisterRequest,
     userRegisterSuccess,
     userRegisterFail,
+    userRegisterReset,
 
     userDetailsRequest,
     userDetailsSuccess,
@@ -56,6 +57,7 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = ()  => async (dispatch) => {
     localStorage.removeItem('userInfo')
     dispatch(userLogout())
+    dispatch(userRegisterReset())
     dispatch(userDetailsReset())
 }
 
@@ -181,6 +183,7 @@ export const deleteUser = () => async (dispatch, getState) => {
 
         localStorage.removeItem('userInfo')
         dispatch(userLogout())
+        dispatch(userRegisterReset())
         dispatch(userDetailsReset())
 
     }catch(error){

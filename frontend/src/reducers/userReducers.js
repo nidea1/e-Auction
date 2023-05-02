@@ -48,13 +48,13 @@ export const userRegisterSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       },
-      userLogout: (state) => {
+      userRegisterReset: (state) => {
         state.userInfo = null
       }
     },
   });
   
-export const { userRegisterRequest, userRegisterSuccess, userRegisterFail } = userRegisterSlice.actions;
+export const { userRegisterRequest, userRegisterSuccess, userRegisterFail, userRegisterReset } = userRegisterSlice.actions;
 
 export const userDetailsSlice = createSlice({
   name: 'userDetails',
