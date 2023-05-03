@@ -172,4 +172,12 @@ main {
   text-overflow: ellipsis;
 }
 
-/* Filter by Brand */
+/* Credit Card */
+
+.edit-card {
+  position: absolute;
+  height: 10px;
+  padding: 4px;
+  top: 50px;
+  right: 1px;
+}

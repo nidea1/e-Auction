@@ -34,6 +34,19 @@ function ProfileDetails({ user, updateModalShow }) {
 
             <Row>
                 <Col md={4} className='text-center'>
+                    <i class="fa-solid fa-credit-card"></i>
+                </Col>
+                <Col md={8}>
+                    <Link to={'/profile/cards'} className='text-muted text-decoration-none'>My Cards</Link>
+                </Col>
+            </Row>
+
+            <Col className='d-flex justify-content-center'>
+                <hr className='divider'/>
+            </Col>
+
+            <Row>
+                <Col md={4} className='text-center'>
                     <i className="fa-solid fa-location-dot" />
                 </Col>
                 <Col md={8}>

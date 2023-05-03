@@ -25,11 +25,11 @@ export const listAddresses = () => async (dispatch, getState) => {
         const config = {
             headers:{
                 'Content-type':'application/json',
-                Authorization : `Bearer ${userInfo.token}` 
+                'Authorization' : `Bearer ${userInfo.token}` 
             }
         }
 
-        const { data } = await axios.get('/api/addresses/',
+        const { data } = await axios.get('/api/users/addresses/',
         config
         )
 
@@ -54,12 +54,12 @@ export const updateAddress = (address) => async (dispatch, getState) => {
         const config = {
             headers:{
                 'Content-type':'application/json',
-                Authorization : `Bearer ${userInfo.token}` 
+                'Authorization' : `Bearer ${userInfo.token}` 
             }
         }
 
         const { data } = await axios.put(
-            `/api/addresses/${address._id}/`,
+            `/api/users/addresses/${address._id}/`,
             address,
             config
         )
@@ -86,12 +86,12 @@ export const createAddress = (address) => async (dispatch, getState) => {
         const config = {
             headers:{
                 'Content-type':'application/json',
-                Authorization : `Bearer ${userInfo.token}` 
+                'Authorization' : `Bearer ${userInfo.token}` 
             }
         }
 
         const { data } = await axios.post(
-            `/api/addresses/`,
+            `/api/users/addresses/`,
             address,
             config
         )
@@ -118,12 +118,12 @@ export const deleteAddress = (id) => async (dispatch, getState) => {
         const config = {
             headers:{
                 'Content-type':'application/json',
-                Authorization : `Bearer ${userInfo.token}` 
+                'Authorization' : `Bearer ${userInfo.token}` 
             }
         }
 
         const { data } = await axios.delete(
-            `/api/addresses/${id}/`,
+            `/api/users/addresses/${id}/`,
             config
         )
 

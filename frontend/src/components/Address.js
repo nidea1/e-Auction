@@ -39,7 +39,7 @@ function Address({ address }) {
         if(success){
             dispatch(addressUpdateReset())
         }
-    })
+    }, [success, dispatch])
 
     const submitHandler = (e) => {
         e.preventDefault()

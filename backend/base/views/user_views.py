@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from ..serializers import UserSerializer, UserSerializerWithToken, MyTokenObtainPairSerializer
+from rest_framework import serializers
 
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -34,8 +35,16 @@ class UserProfile(RetrieveUpdateDestroyAPIView):
 		if data.get('name', None):
 			user.first_name = data['name']
 		if data.get('email', None):
-			user.username = data['email']
-			user.email = data['email']
+			new_email = data['email']
+			if User.objects.filter(email=new_email).exclude(pk=user.pk).exists():
+				raise serializers.ValidationError(
+					{
+						'email': 'A user with this email already exists.'
+					}
+				)
+			else:
+				user.username = new_email
+				user.email = new_email
 
 		user.save()
 		serializer.save()

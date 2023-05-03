@@ -8,7 +8,7 @@ export const addressListSlice = createSlice({
   reducers: {
     addressListRequest: (state) => {
       state.loading = true;
-      state.addresses = []
+      state.addresses = [];
     },
     addressListSuccess: (state, action) => {
       state.loading = false;
@@ -105,4 +105,4 @@ export const addressDeleteSlice = createSlice({
   },
 });
 
-export const { addressDeleteRequest, addressDeleteSuccess, addressDeleteFail, addressDeleteReset } = addressDeleteSlice.actions;
+export const { addressDeleteRequest, addressDeleteSuccess, addressDeleteFail } = addressDeleteSlice.actions;

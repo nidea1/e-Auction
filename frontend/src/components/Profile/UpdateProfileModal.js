@@ -38,7 +38,7 @@ function UpdateProfileModal({show, onHide, user, deleteModalShow}) {
     return (
         <Modal show={show} onHide={onHide}>  
             <Modal.Header closeButton className='border-0'></Modal.Header>   
-            <Col className='d-flex justify-content-center'><h4>Edit Profile</h4></Col>
+            <Col className='text-center fw-bold fs-4'>Edit Profile</Col>
             <Modal.Body>  
                 <UpdateProfileForm>
                     {message && <Message variant='danger'>{message}</Message>}
@@ -48,7 +48,6 @@ function UpdateProfileModal({show, onHide, user, deleteModalShow}) {
                     <FormGroup controlId='name'>
                         <FormLabel className='my-2 fw-semibold'>Name</FormLabel>
                         <FormControl
-                            required
                             type='name'
                             placeholder='Enter Full Name'
                             value={name}
@@ -60,7 +59,6 @@ function UpdateProfileModal({show, onHide, user, deleteModalShow}) {
                     <FormGroup controlId='email'>
                         <FormLabel className='my-2 fw-semibold'>Email Address</FormLabel>
                         <FormControl
-                            required
                             type='email'
                             placeholder='Enter Email'
                             value={email}

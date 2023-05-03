@@ -21,10 +21,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source = 'first_name')
+    name = serializers.CharField(source = 'first_name', required=False)
     _id = serializers.SerializerMethodField(read_only = True)
     isAdmin = serializers.SerializerMethodField(read_only = True)
-    email = serializers.EmailField(required=True)
     username = serializers.CharField(required=False)
 
     class Meta:
@@ -48,7 +47,11 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError({'email': 'A user with this email already exists.'})
+            raise serializers.ValidationError(
+                {
+                    'email': 'A user with this email already exists.'
+                }
+            )
         return value
     
     def create(self, validated_data):

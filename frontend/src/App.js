@@ -11,6 +11,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import MyBids from "./components/MyBids";
 import AddressScreen from "./screens/AddressScreen";
 import CategoryScreen from "./screens/CategoryScreen";
+import CreditCardScreen from "./screens/CreditCardScreen";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="/register" element={<RegisterScreen />}/>
             <Route path="/profile" element={<ProfileScreen />}>
               <Route index element={<MyBids />}/>
+              <Route path="cards" element={<CreditCardScreen />} />
               <Route path="addresses" element={<AddressScreen />} />
             </Route>
             <Route path="/product/:productParams" element={<ProductScreen />}/>
