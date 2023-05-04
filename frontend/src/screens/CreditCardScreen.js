@@ -11,8 +11,8 @@ function CreditCardScreen() {
 
     const dispatch = useDispatch()
 
-    const cardList = useSelector((state) => state.cardList)
-    const { error, loading, cards } = cardList
+    const cardReducers = useSelector((state) => state.cardReducers)
+    const { error, loading, success, cards } = cardReducers
 
     const [showCreateModal, setShowCreateModal] = useState(false)
 
@@ -39,10 +39,12 @@ function CreditCardScreen() {
                     <CreateCCModal 
                         show={showCreateModal}
                         onHide={createModalClose}
+                        dispatch={dispatch}
+                        loading={loading}
                     />
                     {cards.map(card => (
                         <Col sm="12" md="4" lg="3" className='border rounded mb-4 mx-3'>
-                            <CreditCard card={card} />
+                            <CreditCard card={card} loading={loading} success={success} />
                         </Col>
                     ))}
                 </Row>

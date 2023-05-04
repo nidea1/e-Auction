@@ -4,7 +4,7 @@ import CreditCardDetails from './CreditCardDetails'
 import DeleteCCModal from './DeleteCCModal'
 import UpdateCCModal from './UpdateCCModal'
 
-function CreditCard({card}) {
+function CreditCard({card, loading, error, success}) {
 
     const [showUpdateModal, setShowUpdateModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -50,12 +50,15 @@ function CreditCard({card}) {
                     onHide={updateModalClose}
                     deleteModalShow={deleteModalShow}
                     dispatch={dispatch}
+                    loading={loading}
+                    success={success}
                 />
             }
             <DeleteCCModal
                 show={showDeleteModal}
                 onHide={deleteModalClose}
                 dispatch={dispatch}
+                loading={loading}
                 id={card._id}
             />
         </>

@@ -1,26 +1,46 @@
 import axios from "axios";
-import { cardDeleteFail, cardDeleteRequest, cardDeleteSuccess, cardListFail, cardListRequest, cardListSuccess, cardUpdateFail, cardUpdateRequest, cardUpdateSuccess } from "../reducers/cardReducers";
+import {
+
+    cardDeleteFail,
+    cardDeleteRequest,
+    cardDeleteSuccess,
+
+    cardListFail,
+    cardListRequest,
+    cardListSuccess,
+
+    cardUpdateFail,
+    cardUpdateRequest,
+    cardUpdateSuccess,
+
+    cardCreateRequest,
+    cardCreateSuccess,
+    cardCreateFail,
+
+} from "../reducers/cardReducers";
+
+const createAPIinstance = (getState) => {
+
+    const {
+        userLogin: { userInfo }
+    } = getState();
+
+    return axios.create({
+        baseURL: '/api/users/cards',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${userInfo.token}`
+        }
+    })
+};
 
 export const listCards = () => async (dispatch, getState) => {
     try{
-        dispatch(cardListRequest())
+        dispatch(cardListRequest());
 
-        const {
-            userLogin: {userInfo}
-        } = getState()
+        const api = createAPIinstance(getState);
+        const { data } = await api.get('/');
 
-        const config = {
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${userInfo.token}`
-            }
-        }
-
-        const { data } = await axios.get(
-            '/api/users/cards/',
-            config
-        )
-        
         dispatch(cardListSuccess(data))
     }catch(error){
         dispatch(cardListFail(
@@ -29,65 +49,61 @@ export const listCards = () => async (dispatch, getState) => {
             : error.message
         ))
     }
-}
+};
 
 export const updateCard = (card) => async (dispatch, getState) => {
     try{
-        dispatch(cardUpdateRequest())
+        dispatch(cardUpdateRequest());
 
-        const {
-            userLogin: {userInfo}
-        } = getState()
-
-        const config = {
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${userInfo.token}`
-            }
-        }
-
-        const { data } = await axios.put(
-            `/api/users/cards/${card._id}/`,
-            card,
-            config
-        )
+        const api = createAPIinstance(getState);
+        const { data } = await api.put(
+            `/${card._id}/`,
+            card
+        );
 
         dispatch(cardUpdateSuccess(data))
-
     }catch(error){
         dispatch(cardUpdateFail(
+            error.response && error.response.data.cardNumber.detail
+            ? error.response.data.cardNumber.detail
+            : error.message
+        ))
+    }
+};
+
+export const deleteCard = (id) => async (dispatch, getState) => {
+    try{
+        dispatch(cardDeleteRequest());
+
+        const api = createAPIinstance(getState);
+        const { data } = await api.delete(`/${id}/`);
+
+        dispatch(cardDeleteSuccess(data))
+    }catch(error){
+        dispatch(cardDeleteFail(
             error.response && error.response.data.detail
             ? error.response.data.detail
             : error.message
         ))
     }
-}
+};
 
-export const deleteCard = (id) => async (dispatch, getState) => {
+export const createCard = (card) => async (dispatch, getState) => {
     try{
-        dispatch(cardDeleteRequest())
+        dispatch(cardCreateRequest());
 
-        const { 
-            userLogin: {userInfo}
-        } = getState()
+        const api = createAPIinstance(getState);
+        const { data } = await api.post(
+            '/',
+            card
+        );
 
-        const config = {
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${userInfo.token}`
-            }
-        }
-
-        const { data } = await axios.delete(
-            `/api/users/cards/${id}/`,
-            config
-        )
-
-        dispatch(cardDeleteSuccess(data))
+        dispatch(cardCreateSuccess(data))
     }catch(error){
-        dispatch(cardDeleteFail(error.response && error.response.data.detail
-            ? error.response.data.detail
-            : error.message    
+        dispatch(cardCreateFail(
+            error.response && error.response.data.cardNumber.detail
+            ? error.response.data.cardNumber.detail
+            : error.message
         ))
     }
-}
+};

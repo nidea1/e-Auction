@@ -1,73 +1,53 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { listCards, updateCard } from '../../actions/cardActions'
-import { cardUpdateReset } from '../../reducers/cardReducers'
+import { createCard, listCards } from '../../actions/cardActions'
+import { cardCreateReset } from '../../reducers/cardReducers'
 import Loader from '../Loader'
 import Message from '../Message'
 import UpdateProfileForm from '../UpdateProfileForm'
 
-function UpdateCCModal({card, pvCardNumber, show, onHide, deleteModalShow, dispatch}) {
-
-    const [cardNumber, setCardNumber] = useState(pvCardNumber);
-    const [cardOwner, setCardOwner] = useState(card.cardOwner);
-    const [expDate, setExpDate] = useState(card.expDate);
-    const [ccv, setCcv] = useState(card.ccv);
-    const [message, setMessage] = useState('');
+function CreateCCModal({show, onHide, dispatch}) {
+    
+    const [cardNumber, setCardNumber] = useState('');
+    const [cardOwner, setCardOwner] = useState('');
+    const [expDate, setExpDate] = useState('');
+    const [ccv, setCcv] = useState('');
 
     const {
-        cardReducers: { cardUpdateError, cardUpdateSuccess, createUpdateLoading }
+        cardReducers: { cardCreateSuccess, cardCreateError, cardCreateLoading }
     } = useSelector((state) => state);
 
     useEffect(() => {
-        if(cardUpdateSuccess){
+        if(cardCreateSuccess){
+            onHide()
             dispatch(listCards())
-            dispatch(cardUpdateReset())
+            dispatch(cardCreateReset())
         }
-    },[dispatch, cardUpdateSuccess]);
+    }, [cardCreateSuccess, dispatch, onHide]);
 
-    useEffect(() => {
-        if(cardUpdateError){
-            setMessage('')
-        }
-    }, [cardUpdateError])
+    const submitHandler = (e) => {
+        e.preventDefault()
 
-    useEffect(() => {
-        if(message){
-            dispatch(cardUpdateReset())
-        }
-    },[message, dispatch])
+        const clearCardNumber = cardNumber.replaceAll(' ', '')
 
-    const submitHandler = (e) =>{
-        e.preventDefault();
-
-        let clearCardNumber = cardNumber.replaceAll(' ', '');
-
-        const updatedCardInfo = {
-            "_id": card._id,
-            "cardOwner": cardOwner,
-            "expDate": expDate,
-            "ccv": ccv,
-        };
-
-        if(cardNumber !== pvCardNumber && clearCardNumber !== card.cardNumber){
-            updatedCardInfo.cardNumber = clearCardNumber
-        };
-
-        dispatch(updateCard(updatedCardInfo))
-        
+        dispatch(createCard({
+            'cardOwner': cardOwner,
+            'cardNumber': clearCardNumber,
+            'expDate': expDate,
+            'ccv': ccv
+        }))
     };
 
     return (
+        <>
         <Modal show={show} onHide={onHide}>
-            <Modal.Header closeButton className='border-0' />            
-            <Col className='fw-bold fs-4 text-center'>Update CC</Col>
+            <Modal.Header className='border-0' closeButton />
+            <Col className='fs-4 fw-bold text-center'>Add a CC</Col>
             <Modal.Body>
-                <UpdateProfileForm>
-                    {cardUpdateError ? (<Message variant='danger'>{cardUpdateError}</Message>)
-                    : message ? (<Message variant='danger'>{message}</Message>)
-                    : null }
-                    {createUpdateLoading && <Loader />}
+                <UpdateProfileForm> 
+                    {cardCreateError && <Message variant='danger'>{cardCreateError}</Message>}
+                    {cardCreateLoading && <Loader />}
                     <Form onSubmit={submitHandler}>
                         <Form.Group controlId='CC Number'>
                             <Form.Label className='my-2 fw-semibold'>CC Number</Form.Label>
@@ -142,20 +122,16 @@ function UpdateCCModal({card, pvCardNumber, show, onHide, deleteModalShow, dispa
                         <Row className='d-flex flex-column justify-content-center'>
                             <Col className='d-flex justify-content-center'>
                                 <Button type='submit' variant='primary' className='my-3 w-50'>
-                                    Update CC            
+                                    Save a credit card
                                 </Button>
-                            </Col>  
-                            <Col className='d-flex justify-content-center'>
-                                <Button variant='danger' className='mb-2 fw-semibold' style={{width:'130px'}} onClick={deleteModalShow}>
-                                    <i class="fa-regular fa-triangle-exclamation" /> Delete CC            
-                                </Button>
-                            </Col>                  
+                            </Col>               
                         </Row>
                     </Form>
                 </UpdateProfileForm>
-            </Modal.Body>          
+            </Modal.Body>
         </Modal>
+        </>
     )
-};
+}
 
-export default UpdateCCModal
+export default CreateCCModal
