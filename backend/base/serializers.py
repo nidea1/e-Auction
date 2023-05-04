@@ -140,10 +140,11 @@ class UserPaymentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate_cardNumber(self, value):
-        if UserPayment.objects.filter(cardNumber=value).exists():
+        user = self.context['request'].user
+        if UserPayment.objects.filter(user=user, cardNumber=value).exists():
             raise serializers.ValidationError(
                 {
-                    'detail': 'User card with this card number already exist.'
+                    'detail': 'A card with the same number is already associated with your account.'
                 }
             )
         return value
