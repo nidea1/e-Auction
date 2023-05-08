@@ -1,18 +1,32 @@
 import React from 'react'
-import { Button, Card, Col, Row, Image } from 'react-bootstrap';
+import { Button, Card, Col, Row, Image, Carousel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function ProductByCategory({product}) {
   const endDate = new Date(product.endDate)
   const formattedEndDate = endDate.toLocaleDateString()
+
+  const renderImages = () =>{
+    return product.images.map((image) => (
+      <Carousel.Item key={image.id}>
+        <Image className="d-block w-100" src={image.image} alt="Product Image" height={200} fluid />
+      </Carousel.Item>
+    ))
+  }
   return (
     <>
       <Card className='product-card p-4 my-3 shadow border-0'>
-          <div className="card-image">
+          <Col className="card-image">
             <Link to={`/product/${product.slug}-p-${product._id}`}>
-              <Image src={product.image} fluid />
+              {product.images.length === 1 ?
+                <Image className="d-block w-100" src={product.images[0].image} alt="Product Image" height={200} fluid />
+              :
+                <Carousel className='carousel-custom' variant='dark' interval={null}>
+                  {renderImages()}
+                </Carousel>
+              }
             </Link>
-          </div>
+          </Col>
           <Card.Body>
               <Link className='link-dark text-decoration-none' to={`/product/${product.slug}-p-${product._id}`}>
                 <Col className='card-title fw-bold text-center'>{product.name}</Col>

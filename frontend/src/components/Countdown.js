@@ -7,6 +7,12 @@ function Countdown({ endDate, onCountdownUpdate }) {
   const [countdown, setCountdown] = useState(calculateCountdown(endDate));
 
   useEffect(() => {
+    // Başlangıçta handleCountdownUpdate işleyicisini çalıştır
+    const initialCountdown = calculateCountdown(endDate);
+    if (onCountdownUpdate) {
+      onCountdownUpdate(initialCountdown);
+    }
+  
     const timer = setInterval(() => {
       const newCountdown = calculateCountdown(endDate);
       setCountdown(newCountdown);
@@ -14,7 +20,7 @@ function Countdown({ endDate, onCountdownUpdate }) {
         onCountdownUpdate(newCountdown);
       }
     }, 1000);
-
+  
     return () => {
       clearInterval(timer);
     };

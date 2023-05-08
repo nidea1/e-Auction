@@ -70,7 +70,10 @@ function Header() {
                         { userInfo ? 
                         <NavDropdown className='text-end' title={userInfo.name}>
                             <NavDropdown.Item href='/profile'>
-                                    Profile
+                                Profile
+                            </NavDropdown.Item>
+                            <NavDropdown.Item href='/product/upload'>
+                                Sell a product
                             </NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>

@@ -207,3 +207,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+TIME_ZONE = 'Europe/Istanbul'
+USE_TZ = True

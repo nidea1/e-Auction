@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Row, Col, Image, ListGroup, Button, Card, ListGroupItem, InputGroup, Form} from 'react-bootstrap'
+import { Row, Col, Image, ListGroup, Button, Card, ListGroupItem, InputGroup, Form, Carousel} from 'react-bootstrap'
 import Countdown from '../components/Countdown'
 import { useDispatch, useSelector } from 'react-redux';
 import { detailProducts } from '../actions/productActions';
@@ -26,13 +26,28 @@ function ProductScreen() {
     const isFinished = countdown.days === 0 && countdown.hours === 0 && countdown.minutes === 0 && countdown.seconds === 0;
     setCountdownFinished(isFinished);
   };
+
+  const renderImages = () => {
+    return product.images && product.images.map((image) => (
+      <Carousel.Item key={image.id}>
+        <Image className="d-block w-100" src={image.image} alt="Product Image" height={200} fluid />
+      </Carousel.Item>
+    ))
+  }
+
   return (
     <>
       { loading ? <Loader />
         : error ? <Message variant='danger'>{error}</Message>  
         : <Row className='my-5'>
         <Col md={6}>
-          <Image src={product.image} alt={product.name} fluid/>
+          {product.images.length === 1 ?
+            <Image className="d-block w-100" src={product.images[0].image} alt="Product Image" height={200} fluid />
+          :
+            <Carousel className='carousel-custom' variant='dark' interval={null}>
+              {renderImages()}
+            </Carousel>
+          }
         </Col>
         <Col md={3}>
           <ListGroup variant='flush'>

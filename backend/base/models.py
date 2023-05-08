@@ -32,13 +32,13 @@ class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
     slug = models.SlugField(null=True,blank=True,unique=True)
-    image = models.ImageField(null=True,blank=True)
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='categories')
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True, related_name='brands')
     endDate = models.DateTimeField()
     createdAt = models.DateTimeField(auto_now_add=True)
+    startDate = models.DateTimeField(null=True, blank=True)
     currentHighestBid = models.IntegerField(null=True, blank=True, default=0)
     totalBids = models.IntegerField(default=0)
     _id = models.AutoField(primary_key=True, editable=False)
@@ -50,6 +50,14 @@ class Product(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(null=True,blank=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+    
+    def __str__(self) -> str:
+        return f'{self.product.name} - Image {self.pk}'
     
 class Bid(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)

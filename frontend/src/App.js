@@ -12,6 +12,7 @@ import MyBids from "./components/MyBids";
 import AddressScreen from "./screens/AddressScreen";
 import CategoryScreen from "./screens/CategoryScreen";
 import CreditCardScreen from "./screens/CreditCardScreen";
+import SellingScreen from "./screens/SellingScreen";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
               <Route path="addresses" element={<AddressScreen />} />
             </Route>
             <Route path="/product/:productParams" element={<ProductScreen />}/>
+            <Route path="/product/upload" element={<SellingScreen />}/>
             <Route path="/categories/:categoryParams" element={<CategoryScreen />}/>
             <Route path="/?search=:keywordParams" element={<CategoryScreen />}/>
           </Routes>
