@@ -1,8 +1,12 @@
 import React from 'react'
+import { Outlet } from 'react-router-dom';
 
 function SellingScreen() {
+
     return (
-        <div>SellingScreen</div>
+        <>
+            <Outlet />
+        </>
     )
 }
 

@@ -24,7 +24,7 @@ function AddressScreen() {
   const [addressName, setAddressName] = useState('')
   const [mobile, setMobile] = useState('')
   const [province, setProvince] = useState('')
-  const [city, setCity] = useState('')
+  const [district, setDistrict] = useState('')
   const [postalCode, setPostalCode] = useState('')
   const [addressDetail, setAddressDetail] = useState('')
  
@@ -38,7 +38,7 @@ function AddressScreen() {
     dispatch(createAddress({
       'description': addressDetail,
       'province': province,
-      'city': city,
+      'district': district,
       'postalCode': postalCode,
       'mobile': mobile,
       'addressName': addressName,
@@ -97,14 +97,14 @@ function AddressScreen() {
                         </FormControl>
                     </FormGroup>
 
-                    <FormGroup controlId='city'>
-                        <FormLabel className='my-2 fw-semibold'>City</FormLabel>
+                    <FormGroup controlId='district'>
+                        <FormLabel className='my-2 fw-semibold'>District</FormLabel>
                         <FormControl
                             required
-                            type='city'
-                            placeholder='Enter City'
-                            value={city}
-                            onChange={(e) => setCity(e.target.value)}
+                            type='district'
+                            placeholder='Enter District'
+                            value={district}
+                            onChange={(e) => setDistrict(e.target.value)}
                             >
                         </FormControl>
                     </FormGroup>

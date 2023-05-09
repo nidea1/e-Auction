@@ -35,47 +35,48 @@ function LoginScreen() {
 
   return (
     <>
+        {loading ? loading && <Loader />:
         <FormContainer>
             <h1>Sign In</h1>
 
             {error && <Message variant='danger'>{error}</Message>}
-            {loading && <Loader />}
-            <Form onSubmit={submitHandler}>
-                <FormGroup controlId='email'>
-                    <FormLabel className='my-2 fw-semibold'>Email Address</FormLabel>
-                    <FormControl
-                        type='email'
-                        placeholder='Enter Email'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        >
-                    </FormControl>
-                </FormGroup>
+                <Form onSubmit={submitHandler}>
+                    <FormGroup controlId='email'>
+                        <FormLabel className='my-2 fw-semibold'>Email Address</FormLabel>
+                        <FormControl
+                            type='email'
+                            placeholder='Enter Email'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            >
+                        </FormControl>
+                    </FormGroup>
 
-                <FormGroup controlId='password'>
-                    <FormLabel className='my-2 fw-semibold'>Password</FormLabel>
-                    <FormControl
-                        type='password'
-                        placeholder='Enter Password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        >
-                    </FormControl>
-                </FormGroup>
+                    <FormGroup controlId='password'>
+                        <FormLabel className='my-2 fw-semibold'>Password</FormLabel>
+                        <FormControl
+                            type='password'
+                            placeholder='Enter Password'
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            >
+                        </FormControl>
+                    </FormGroup>
 
-                <Button type='submit' variant='dark' className='my-2'>
-                    Sign In
-                </Button>
-            </Form>
+                    <Button type='submit' variant='dark' className='my-2'>
+                        Sign In
+                    </Button>
+                </Form>
 
-            <Row className='py-3'>
-                <Col>
-                    New at here? <Link to={redirect ? `/register?redirect=${redirect}` : '/register'} className='link fw-semibold'>
-                        Register
-                    </Link>
-                </Col>
-            </Row>
-        </FormContainer>
+                <Row className='py-3'>
+                    <Col>
+                        New at here? <Link to={redirect ? `/register?redirect=${redirect}` : '/register'} className='link fw-semibold'>
+                            Register
+                        </Link>
+                    </Col>
+                </Row>
+            </FormContainer>
+        }
     </>
   )
 }
