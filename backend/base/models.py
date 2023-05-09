@@ -6,7 +6,7 @@ from django.utils.text import slugify
 
 class Brand(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
-    name = models.CharField(max_length=200, null=True, blank=True)
+    name = models.CharField(max_length=50, null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     
     def __str__(self) -> str:
@@ -14,7 +14,7 @@ class Brand(models.Model):
 
 class Category(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
-    name = models.CharField(max_length=200, null=True, blank=True)
+    name = models.CharField(max_length=100, null=True, blank=True)
     slug = models.SlugField(null=True,blank=True,unique=True)
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='children')
     description = models.TextField(null=True, blank=True)
@@ -41,6 +41,8 @@ class Product(models.Model):
     startDate = models.DateTimeField(null=True, blank=True)
     currentHighestBid = models.IntegerField(null=True, blank=True, default=0)
     totalBids = models.IntegerField(default=0)
+    province = models.CharField(max_length=100, null=True, blank=True)
+    district = models.CharField(max_length=100, null=True, blank=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self) -> str:
@@ -101,9 +103,9 @@ class UserAddress(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='addresses', null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
-    province = models.CharField(max_length=200, null=True, blank=True)
-    city = models.CharField(max_length=200, null=True, blank=True)
-    postalCode = models.CharField(max_length=200, null=True, blank=True)
+    province = models.CharField(max_length=100, null=True, blank=True)
+    district = models.CharField(max_length=100, null=True, blank=True)
+    postalCode = models.CharField(max_length=50, null=True, blank=True)
     mobile = models.CharField(max_length=12, null=True, blank=True)
     name = models.CharField(max_length=200, null=True, blank=True)
 
@@ -113,7 +115,7 @@ class UserAddress(models.Model):
 class UserPayment(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payments')
-    cardOwner = models.CharField(max_length=200, null=True, blank=True)
+    cardOwner = models.CharField(max_length=75, null=True, blank=True)
     cardNumber = models.CharField(max_length=16, null=True, blank=True)
     expDate = models.CharField(max_length=5, null=True, blank=True)
     ccv = models.CharField(max_length=3, null=True, blank=True)
