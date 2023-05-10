@@ -31,12 +31,15 @@ function Categories() {
         }
     };
 
-    const handleThirdLevelClick = (id) => {
+    const handleThirdLevelClick = (id, name) => {
         navigate(
             '/product/upload/attr',
             {
-                state: { categoryID: id }
-            }
+                state: {
+                    categoryID: id,
+                    categoryName: name,
+                },
+            },
         )
     }
 
@@ -77,22 +80,33 @@ function Categories() {
                         ))}
                     </Col>
                     <Col className="mb-2 ms-2 level-three">
-                    {activeSubCategory !== null &&
-                        categories
+                    {activeSubCategory !== null && (() => {
+                        const subCategory = categories
                         .find((category) => category._id === activeCategory)
                         .subCategory.find((sub) => sub._id === activeSubCategory)
-                        .subCategory.map((sub2) => (
-                            <Col
-                                className={`my-2 p-2 rounded`}
-                                key={sub2._id}
-                                onClick={() => handleThirdLevelClick(sub2._id)}
-                            >
-                                {sub2.name}
-                            </Col>
-                        ))}
+                        .subCategory;
+
+                        return (
+                            subCategory && subCategory.length > 0
+                                ? subCategory.map((sub2) => (
+                                    <Col
+                                        className={`my-2 p-2 rounded`}
+                                        key={sub2._id}
+                                        onClick={() => handleThirdLevelClick(sub2._id, sub2.name)}
+                                    >
+                                        {sub2.name}
+                                    </Col>
+                                ))
+                                : (
+                                    <Col className={`my-2 p-2 rounded fw-bolder h4`}>
+                                        This category is currently unavailable.
+                                    </Col>
+                                )
+                        );
+                    })()}
                     </Col>
                 </Col>
-        </Row>
+                </Row>
         </>
     );
 }

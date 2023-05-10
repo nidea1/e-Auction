@@ -35,7 +35,7 @@ function LoginScreen() {
 
   return (
     <>
-        {loading ? loading && <Loader />:
+        {loading ? <Loader />:
         <FormContainer>
             <h1>Sign In</h1>
 

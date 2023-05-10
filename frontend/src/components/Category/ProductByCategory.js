@@ -29,7 +29,9 @@ function ProductByCategory({product}) {
           </Col>
           <Card.Body>
               <Link className='link-dark text-decoration-none' to={`/product/${product.slug}-p-${product._id}`}>
-                <Col className='card-title fw-bold text-center'>{product.name}</Col>
+                <Col className='card-title fw-bold text-center'>
+                  {product.name.substring(0,35)}{product.name.length > 35 ? '...' : ''}
+                </Col>
               </Link>
               <hr />
               <Col className='my-3'>

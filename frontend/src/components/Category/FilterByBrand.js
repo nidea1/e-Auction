@@ -7,9 +7,9 @@ function FilterByBrand({category_id, searchParams}) {
 
     const dispatch = useDispatch()
 
-    const brandList = useSelector(state => state.brandList)
-    const {brands} = brandList
-
+    const {
+        brandReducers: { brands }
+    } = useSelector((state) => state)
 
     const [selectedBrands, setSelectedBrands] = useState([]);
 

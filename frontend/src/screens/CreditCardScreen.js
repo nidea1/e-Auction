@@ -11,8 +11,9 @@ function CreditCardScreen() {
 
     const dispatch = useDispatch()
 
-    const cardReducers = useSelector((state) => state.cardReducers)
-    const { error, loading, success, cards } = cardReducers
+    const {
+        cardReducers: { error, loading, success, cards }
+    } = useSelector((state) => state)
 
     const [showCreateModal, setShowCreateModal] = useState(false)
 

@@ -18,14 +18,15 @@ function CategoryScreen() {
   const categoryDetails = useSelector((state) => state.categoryDetails);
   const { error, loading, category } = categoryDetails;
 
-  const productList = useSelector((state) => state.productList);
-  const { products } = productList;
-
   const categoryList = useSelector((state) => state.categoryList);
   const { categories } = categoryList;
 
   const [searchParams] = useSearchParams()
   const keyword = searchParams.get('search')
+
+  const {
+    productReducers: { products }
+  } = useSelector((state) => state)
 
   useEffect(() => {
     if (keyword) {
@@ -66,9 +67,9 @@ function CategoryScreen() {
         <Message variant="danger">{error}</Message>
       ) : (
         <Container>
-          <div className="search-info">
+          <Col className="search-info">
             You search for <strong>{keyword ? keyword : category.name}</strong> lists {products.length} results
-          </div>
+          </Col>
           <Row>
             <Col xs={12} md={2} className="p-3 my-3 shadow rounded">
               <Col>

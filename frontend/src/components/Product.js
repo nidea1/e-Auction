@@ -29,7 +29,7 @@ function Product({ product }) {
             </Link>
             <Card.Body className="d-flex flex-column">
                 <Link className='link-dark text-decoration-none border-bottom pb-2' to={`/product/${product.slug}-p-${product._id}`}>
-                  <Card.Title>{product.name}</Card.Title>
+                  <Card.Title>{product.name.substring(0,55)}{product.name.length > 55 ? '...' : ''}</Card.Title>
                 </Link>
                 <Col className='my-3 fw-semibold'>
                   <Row>
