@@ -1,18 +1,39 @@
 import axios from 'axios'
-import qs, { parse } from 'qs'
+import qs from 'qs'
 import { 
     productListRequest,
     productListSuccess,
     productListFail,
+
     productDetailsRequest,
     productDetailsSuccess,
     productDetailsFail,
+
+    productPublishRequest,
+    productPublishSuccess,
+    productPublishFail,
+
     brandListRequest,
     brandListSuccess,
     brandListFail,
- } from '../reducers/productReducers'
+} from '../reducers/productReducers'
 
- export const listProducts = (keyword, category, brands) => async (dispatch) => {
+const createAPIinstance = (getState, isMultipart) => {
+    
+    const {
+        userLogin: { userInfo }
+    } = getState()
+
+    return axios.create({
+        baseURL: '/api/products',
+        headers: {
+            "Content-Type": isMultipart ? 'multipart/form-data' : 'application/json',
+            'Authorization': `Bearer ${userInfo.token}`
+        }
+    })
+}
+
+ export const listProducts = (keyword, category, brands) => async (dispatch, getState) => {
     try {
         dispatch(productListRequest());
 
@@ -27,8 +48,9 @@ import {
         if (brands) {
             params.brand = brands;
         }
-
-        const { data } = await axios.get(`/api/products/?${qs.stringify(params, { arrayFormat: 'repeat' })}`);
+        
+        const api = createAPIinstance(getState)
+        const { data } = await api.get(`/?${qs.stringify(params, { arrayFormat: 'repeat' })}`);
 
         dispatch(productListSuccess(data));
     } catch (error) {
@@ -40,21 +62,38 @@ import {
     }
 };
 
-export const detailProducts = (id) => async (dispatch) => {
+export const detailProducts = (id) => async (dispatch, getState) => {
     try{
         dispatch(productDetailsRequest())
 
-        const { data } = await axios.get(`/api/products/${id}`)
+        const api = createAPIinstance(getState)
+        const { data } = await api.get(`/${id}`)
 
         dispatch(productDetailsSuccess(data))
     }catch(error){
         dispatch(productDetailsFail(error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message,
-                )
-            );
-        }
+        ));
     }
+}
+
+export const publishProduct = (product) => async (dispatch, getState) => {
+    try{
+        dispatch(productPublishRequest())
+
+        const api = createAPIinstance(getState, true)
+        const { data } = await api.post('/', product)
+
+        dispatch(productPublishSuccess(data))
+    }catch(error){
+        dispatch(productPublishFail(
+            error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message
+        ))
+    }
+}
 
 export const listBrands = () => async (dispatch) => {
     try{

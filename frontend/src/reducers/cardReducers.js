@@ -6,7 +6,7 @@ export const cardSlice = createSlice({
         error: null,
         loading: false,
         success: false,
-        card: null,
+        card: {},
         cards: []
     },
     reducers: {
@@ -34,7 +34,7 @@ export const cardSlice = createSlice({
         // Reset Actions
         cardListReset: (state) => { state.loading = false; state.success = false; state.error = null },
         cardUpdateReset: (state) => { state.cardUpdateLoading = false; state.cardUpdateSuccess = false; state.cardUpdateError = null },
-        cardDeleteReset: (state) => { state.loading = false; state.cardDeleteSuccess = false; state.cardDeleteError = null },
+        cardDeleteReset: (state) => { state.cardDeleteLoading = false; state.cardDeleteSuccess = false; state.cardDeleteError = null },
         cardCreateReset: (state) => { state.cardCreateLoading = false; state.cardCreateSuccess = false; state.cardCreateError = null },
 
         // Reset Slice
