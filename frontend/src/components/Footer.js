@@ -6,9 +6,14 @@ function Footer() {
     <>
         <footer>
             <Container>
-                <Row>
-                    <Col className='text-center py-3'>
-                    Copyright &copy; NiDea1 | Doruk Çoralı
+                <Row className='justify-content-center'>
+                    <Col sm={3} className='text-center py-3'>
+                      <Col className='border-bottom pb-2'>
+                        Development Still Ongoing
+                      </Col>
+                      <Col className='mt-1'>
+                        Copyright &copy; NiDea1 | Doruk Çoralı
+                      </Col>
                     </Col>
                 </Row>
             </Container>

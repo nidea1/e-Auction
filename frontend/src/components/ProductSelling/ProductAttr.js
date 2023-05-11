@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Form, FormGroup, FormLabel, Button, Row, Col, FormSelect, InputGroup, Figure } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { detailProducts, listBrands, publishProduct } from '../../actions/productActions'
+import { listBrands, publishProduct } from '../../actions/productActions'
 import { productPublishReset } from '../../reducers/productReducers'
 import FormContainer from '../FormContainer'
 import Loader from '../Loader'
@@ -20,7 +20,7 @@ function ProductAttr() {
     const {
         brandReducers : { brands, loading, error},
         userLogin: { userInfo },
-        productReducers: { product, productPublishLoading, productPublishSuccess}
+        productReducers: { product, productPublishSuccess}
     } = useSelector((state) => state)
 
     const [productBrand, setProductBrand] = useState(null)
@@ -124,7 +124,7 @@ function ProductAttr() {
                                         onChange={(e) => setProductBrand(e.target.value)}
                                     >
                                         <option />
-                                        {brands.map((brand) => (
+                                        {brands && brands.map((brand) => (
                                             <option value={brand._id}>{brand.name}</option>
                                         ))}
                                     </FormSelect>
@@ -260,7 +260,7 @@ function ProductAttr() {
                                         onChange={(e) => setProductProvince(e.target.value)}
                                     >
                                         <option />
-                                        {provinces.map((province) => (
+                                        {provinces && provinces.map((province) => (
                                             <option value={province.name}>{province.name}</option>
                                         ))}
                                     </FormSelect>
@@ -276,7 +276,7 @@ function ProductAttr() {
                                         onChange={(e) => setProductDistrict(e.target.value)}
                                     >
                                         <option />
-                                        {provinces.find((province) => province.name === productProvince).districts.map((district) => (
+                                        {provinces && provinces.find((province) => province.name === productProvince).districts.map((district) => (
                                             <option value={district.name}>{district.name}</option>
                                         ))}
                                     </FormSelect>
