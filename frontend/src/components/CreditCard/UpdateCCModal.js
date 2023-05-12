@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { listCards, updateCard } from '../../actions/cardActions'
+import { updateCard } from '../../actions/cardActions'
 import { cardUpdateReset } from '../../reducers/cardReducers'
 import Loader from '../Loader'
 import Message from '../Message'
@@ -21,10 +21,10 @@ function UpdateCCModal({card, pvCardNumber, show, onHide, deleteModalShow, dispa
 
     useEffect(() => {
         if(cardUpdateSuccess){
-            dispatch(listCards())
             dispatch(cardUpdateReset())
+            onHide()
         }
-    },[dispatch, cardUpdateSuccess]);
+    },[dispatch, cardUpdateSuccess, onHide]);
 
     useEffect(() => {
         if(cardUpdateError){
@@ -55,7 +55,6 @@ function UpdateCCModal({card, pvCardNumber, show, onHide, deleteModalShow, dispa
         };
 
         dispatch(updateCard(updatedCardInfo))
-        
     };
 
     return (

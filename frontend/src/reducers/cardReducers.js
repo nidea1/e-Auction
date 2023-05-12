@@ -23,12 +23,12 @@ export const cardSlice = createSlice({
 
         // Delete Card
         cardDeleteRequest: (state) => { state.cardDeleteLoading = true },
-        cardDeleteSuccess: (state, action) => { state.cardDeleteLoading = false; state.cardDeleteSuccess = true; state.cards = state.cards.filter((card) => card._id !== action.payload._id) },
+        cardDeleteSuccess: (state, action) => { state.cardDeleteLoading = false; state.cardDeleteSuccess = true; state.cards = state.cards.filter(card => card._id !== action.payload) },
         cardDeleteFail: (state, action) => { state.cardDeleteLoading = false; state.cardDeleteError = action.payload},
 
         // Create Card
         cardCreateRequest: (state) => { state.cardCreateLoading = true },
-        cardCreateSuccess: (state, action) => { state.cardCreateLoading = false; state.cardCreateSuccess = true; state.card = action.payload },
+        cardCreateSuccess: (state, action) => { state.cardCreateLoading = false; state.cardCreateSuccess = true; state.cards = [...state.cards, action.payload] },
         cardCreateFail: (state, action) => { state.cardCreateLoading = false; state.cardCreateError = action.payload},
 
         // Reset Actions
@@ -39,7 +39,7 @@ export const cardSlice = createSlice({
 
         // Reset Slice
         cardSliceReset: (state) => {
-            state.loading = false; state.success = false; state.error = null; state.card = null; state.cards = [];
+            state.loading = false; state.success = false; state.error = null; state.card = {}; state.cards = [];
             state.cardUpdateLoading = false; state.cardUpdateSuccess = false; state.cardUpdateError = null;
             state.cardDeleteLoading = false; state.cardDeleteSuccess = false; state.cardDeleteError = null;
             state.cardCreateLoading = false; state.cardCreateSuccess = false; state.cardCreateError = null

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { deleteCard, listCards } from '../../actions/cardActions'
+import { deleteCard } from '../../actions/cardActions'
 import { cardDeleteReset } from '../../reducers/cardReducers'
 import Loader from '../Loader'
 import Message from '../Message'
@@ -14,7 +14,6 @@ function DeleteCCModal({show, onHide, dispatch, id}) {
 
     useEffect(() => {
         if(cardDeleteSuccess){
-            dispatch(listCards())
             dispatch(cardDeleteReset())
         }
     },[dispatch, cardDeleteSuccess])

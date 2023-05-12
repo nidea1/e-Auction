@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { createCard, listCards } from '../../actions/cardActions'
+import { createCard } from '../../actions/cardActions'
 import { cardCreateReset } from '../../reducers/cardReducers'
 import Loader from '../Loader'
 import Message from '../Message'
@@ -20,9 +20,8 @@ function CreateCCModal({show, onHide, dispatch}) {
 
     useEffect(() => {
         if(cardCreateSuccess){
-            onHide()
-            dispatch(listCards())
             dispatch(cardCreateReset())
+            onHide()
         }
     }, [cardCreateSuccess, dispatch, onHide]);
 
@@ -55,6 +54,7 @@ function CreateCCModal({show, onHide, dispatch}) {
                                 type='text'
                                 placeholder='Enter CC Number'
                                 maxLength={19}
+                                minLength={19}
                                 value={cardNumber}
                                 onChange={
                                     (e) => {
@@ -84,6 +84,7 @@ function CreateCCModal({show, onHide, dispatch}) {
                             <Form.Control
                             type='text'
                             placeholder='Enter CC Exp. Date'
+                            minLength={5}
                             maxLength={5}
                             value={expDate}
                             onChange={(e) => {
@@ -108,6 +109,7 @@ function CreateCCModal({show, onHide, dispatch}) {
                             <Form.Control
                             type='text'
                             placeholder='Enter CCV'
+                            minLength={3}
                             maxLength={3}
                             value={ccv}
                             onChange={(e) => {

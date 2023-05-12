@@ -51,6 +51,26 @@ export const listCards = () => async (dispatch, getState) => {
     }
 };
 
+export const createCard = (card) => async (dispatch, getState) => {
+    try{
+        dispatch(cardCreateRequest());
+
+        const api = createAPIinstance(getState);
+        const { data } = await api.post(
+            '/',
+            card
+        );
+
+        dispatch(cardCreateSuccess(data))
+    }catch(error){
+        dispatch(cardCreateFail(
+            error.response && error.response.data.cardNumber.detail
+            ? error.response.data.cardNumber.detail
+            : error.message
+        ))
+    }
+};
+
 export const updateCard = (card) => async (dispatch, getState) => {
     try{
         dispatch(cardUpdateRequest());
@@ -61,7 +81,8 @@ export const updateCard = (card) => async (dispatch, getState) => {
             card
         );
 
-        dispatch(cardUpdateSuccess(data))
+        await dispatch(cardUpdateSuccess(data))
+        dispatch(listCards())
     }catch(error){
         dispatch(cardUpdateFail(
             error.response && error.response.data.cardNumber.detail
@@ -78,31 +99,12 @@ export const deleteCard = (id) => async (dispatch, getState) => {
         const api = createAPIinstance(getState);
         const { data } = await api.delete(`/${id}/`);
 
-        dispatch(cardDeleteSuccess(data))
+        await dispatch(cardDeleteSuccess(data))
+        dispatch(listCards())
     }catch(error){
         dispatch(cardDeleteFail(
             error.response && error.response.data.detail
             ? error.response.data.detail
-            : error.message
-        ))
-    }
-};
-
-export const createCard = (card) => async (dispatch, getState) => {
-    try{
-        dispatch(cardCreateRequest());
-
-        const api = createAPIinstance(getState);
-        const { data } = await api.post(
-            '/',
-            card
-        );
-
-        dispatch(cardCreateSuccess(data))
-    }catch(error){
-        dispatch(cardCreateFail(
-            error.response && error.response.data.cardNumber.detail
-            ? error.response.data.cardNumber.detail
             : error.message
         ))
     }
