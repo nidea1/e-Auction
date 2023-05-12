@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk'
-import { addressListSlice, addressUpdateSlice, addressCreateSlice, addressDeleteSlice } from './reducers/addressReducers';
+import { addressSlice } from './reducers/addressReducers';
 import { cardSlice } from './reducers/cardReducers';
 import { categoryListSlice, categoryDetailsSlice } from './reducers/categoryReducers';
 import { brandSlice, productSlice } from './reducers/productReducers'
@@ -8,10 +8,7 @@ import { userLoginSlice, userRegisterSlice, userDetailsSlice, userUpdateProfileS
 
 const store = configureStore({
     reducer: {
-        addressCreate: addressCreateSlice.reducer,
-        addressDelete: addressDeleteSlice.reducer,
-        addressList: addressListSlice.reducer,
-        addressUpdate: addressUpdateSlice.reducer,
+        addressReducers: addressSlice.reducer,
         brandReducers: brandSlice.reducer,
         cardReducers: cardSlice.reducer,
         categoryDetails: categoryDetailsSlice.reducer,

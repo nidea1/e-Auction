@@ -1,108 +1,74 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const addressListSlice = createSlice({
-  name: 'addressList',
-  initialState:{
-    addresses: [],
-  },
-  reducers: {
-    addressListRequest: (state) => {
-      state.loading = true;
-      state.addresses = [];
-    },
-    addressListSuccess: (state, action) => {
-      state.loading = false;
-      state.addresses = action.payload;
-    },
-    addressListFail: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-  },
-  extraReducers: (builder) => {
-        builder.addCase(addressUpdateSlice.actions.addressUpdateSuccess, (state, action) => {
-        const index = state.addresses.findIndex((address) => address._id === action.payload._id);
-        if (index !== -1) {
-            state.addresses[index] = action.payload;
-        }
-    });
-        builder.addCase(addressCreateSlice.actions.addressCreateSuccess, (state,action) => {
-            state.addresses.push(action.payload);
-        })
-  }
-});
 
-export const { addressListRequest, addressListSuccess, addressListFail } = addressListSlice.actions;
-
-export const addressUpdateSlice = createSlice({
-    name: 'addressUpdate',
-    initialState : {
-        address: null
+export const addressSlice = createSlice({
+    name: 'addressReducers',
+    initialState: {
+        loading: false,
+        success: false,
+        error: null,
+        address: {},
+        addresses: []
     },
     reducers: {
-        addressUpdateRequest: (state) => {
-            state.loading = true;
+
+        // Addresses
+        addressListRequest: (state) => { state.loading = true },
+        addressListSuccess: (state, action) => { state.loading = false; state.success = true; state.addresses = action.payload },
+        addressListFail: (state, action) => { state.loading = false; state.error = action.payload },
+
+        // Update Address
+        addressUpdateRequest: (state) => { state.addressUpdateLoading = true },
+        addressUpdateSuccess: (state, action) => { state.addressUpdateLoading = false; state.addressUpdateSuccess = true; state.address = action.payload},
+        addressUpdateFail: (state, action) => { state.addressUpdateLoading = false; state.addressUpdateError = action.payload},
+
+        // Delete Address
+        addressDeleteRequest: (state) => { state.addressDeleteLoading = true },
+        addressDeleteSuccess: (state, action) => { state.addressDeleteLoading = false; state.addressDeleteSuccess = true; state.addresses = state.addresses.filter((address) => address._id !== action.payload._id) },
+        addressDeleteFail: (state, action) => { state.addressDeleteLoading = false; state.addressDeleteError = action.payload},
+
+        // Create Address
+        addressCreateRequest: (state) => { state.addressCreateLoading = true },
+        addressCreateSuccess: (state, action) => { state.addressCreateLoading = false; state.addressCreateSuccess = true; state.addresses = [...state.addresses, action.payload] },
+        addressCreateFail: (state, action) => { state.addressCreateLoading = false; state.addressCreateError = action.payload},
+
+        // Reset Actions
+        addressListReset: (state) => { state.loading = false; state.success = false; state.error = null },
+        addressUpdateReset: (state) => { state.addressUpdateLoading = false; state.addressUpdateSuccess = false; state.addressUpdateError = null },
+        addressDeleteReset: (state) => { state.addressDeleteLoading = false; state.addressDeleteSuccess = false; state.addressDeleteError = null },
+        addressCreateReset: (state) => { state.addressCreateLoading = false; state.addressCreateSuccess = false; state.addressCreateError = null },
+
+        // Reset Slice
+        addressSliceReset: (state) => {
+            state.loading = false; state.success = false; state.error = null; state.address = {}; state.addresses = [];
+            state.addressUpdateLoading = false; state.addressUpdateSuccess = false; state.addressUpdateError = null;
+            state.addressDeleteLoading = false; state.addressDeleteSuccess = false; state.addressDeleteError = null;
+            state.addressCreateLoading = false; state.addressCreateSuccess = false; state.addressCreateError = null
         },
-        addressUpdateSuccess: (state,action) => {
-            state.loading = false;
-            state.success = true;
-            state.address = action.payload
-        },
-        addressUpdateFail: (state, action) => {
-            state.loading = false;
-            state.error = action.payload
-        },
-        addressUpdateReset: (state) => {
-            state.success = false;
-            state.error = null;
-        },
-    },
-});
+    }
+})
 
-export const { addressUpdateRequest, addressUpdateSuccess, addressUpdateFail, addressUpdateReset } = addressUpdateSlice.actions;
+export const {
+    addressListRequest,
+    addressListSuccess,
+    addressListFail,
+    addressListReset,
 
-export const addressCreateSlice = createSlice({
-  name: 'addressCreate',
-  initialState : {
-      address: null
-  },
-  reducers: {
-      addressCreateRequest: (state) => {
-          state.loading = true;
-      },
-      addressCreateSuccess: (state,action) => {
-          state.loading = false;
-          state.success = true;
-          state.address = action.payload
-      },
-      addressCreateFail: (state, action) => {
-          state.loading = false;
-          state.error = action.payload
-      },
-  },
-});
+    addressUpdateRequest,
+    addressUpdateSuccess,
+    addressUpdateFail,
+    addressUpdateReset,
 
-export const { addressCreateRequest, addressCreateSuccess, addressCreateFail, addressCreateReset } = addressCreateSlice.actions;
+    addressDeleteRequest,
+    addressDeleteSuccess,
+    addressDeleteFail,
+    addressDeleteReset,
 
-export const addressDeleteSlice = createSlice({
-  name: 'addressDelete',
-  initialState : {
-      address: null
-  },
-  reducers: {
-      addressDeleteRequest: (state) => {
-          state.loading = true;
-      },
-      addressDeleteSuccess: (state,action) => {
-          state.loading = false;
-          state.success = true;
-          state.address = action.payload
-      },
-      addressDeleteFail: (state, action) => {
-          state.loading = false;
-          state.error = action.payload
-      },
-  },
-});
+    addressCreateRequest,
+    addressCreateSuccess,
+    addressCreateFail,
+    addressCreateReset,
 
-export const { addressDeleteRequest, addressDeleteSuccess, addressDeleteFail } = addressDeleteSlice.actions;
+    addressSliceReset,
+} = addressSlice.actions;
+
