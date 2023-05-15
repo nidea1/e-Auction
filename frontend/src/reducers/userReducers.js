@@ -4,128 +4,89 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null
 
-
-
-export const userLoginSlice = createSlice({
-  name: 'userLogin',
+export const userSlice = createSlice({
+  name: 'userReducers',
   initialState: {
+    loading: false,
+    success: false,
+    error: null,
+    user: {},
     userInfo: userInfoFromStorage
   },
   reducers: {
-    userLoginRequest: (state) => {
-      state.loading = true;
-    },
-    userLoginSuccess: (state, action) => {
-      state.loading = false;
-      state.userInfo = action.payload;
-    },
-    userLoginFail: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    userLogout: (state) => {
-        state.userInfo = null;
-      },
-  },
-});
 
-export const { userLoginRequest, userLoginSuccess, userLoginFail, userLogout } = userLoginSlice.actions;
+    // Login
+    userLoginRequest: (state) => { state.loading = true },
+    userLoginSuccess: (state, action) => { state.loading = false; state.userInfo = action.payload; state.success = true },
+    userLoginFail: (state, action) => { state.loading = false; state.error = action.payload },
 
-export const userRegisterSlice = createSlice({
-    name: 'userRegister',
-    initialState: {
-      userInfo: userInfoFromStorage
-    },
-    reducers: {
-      userRegisterRequest: (state) => {
-        state.loading = true;
-      },
-      userRegisterSuccess: (state, action) => {
-        state.loading = false;
-        state.userInfo = action.payload;
-      },
-      userRegisterFail: (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      },
-      userRegisterReset: (state) => {
-        state.userInfo = null
-      }
-    },
-  });
+    // Logout
+    userLogout: (state) => { state.userInfo = {} },
+
+    // Register
+    userRegisterRequest: (state) => { state.userRegisterLoading = true },
+    userRegisterSuccess: (state, action) => { state.userRegisterLoading = false; state.userInfo = action.payload; state.userRegisterSuccess = true },
+    userRegisterFail: (state, action) => { state.userRegisterLoading = false; state.userRegisterError = action.payload },
+
+    // Profile
+    userDetailsRequest: (state) => { state.userDetailsLoading = true },
+    userDetailsSuccess: (state, action) => { state.userDetailsLoading = false; state.user = action.payload; state.userDetailsSuccess = true },
+    userDetailsFail: (state, action) => { state.userDetailsLoading = false; state.userDetailsError = action.payload },
+
+    // Update Profile
+    userUpdateProfileRequest: (state) => { state.userUpdateProfileLoading = true },
+    userUpdateProfileSuccess: (state, action) => { state.userUpdateProfileLoading = false; state.userInfo = action.payload; state.userUpdateProfileSuccess = true },
+    userUpdateProfileFail: (state, action) => { state.userUpdateProfileLoading = false; state.userUpdateProfileError = action.payload },
+
+    // Delete Account
+    userDeleteRequest: (state) => { state.userDeleteLoading = true },
+    userDeleteSuccess: (state, action) => { state.userDeleteLoading = false; state.userInfo = action.payload; state.userDeleteSuccess = true },
+    userDeleteFail: (state, action) => { state.userDeleteLoading = false; state.userDeleteError = action.payload },
+
+    // Reset Actions
+    userLoginReset: (state) => { state.loading = false; state.success = false; state.error = null },
+    userRegisterReset: (state) => { state.userRegisterLoading = false; state.userRegisterSuccess = false; state.userRegisterError = null },
+    userDetailsReset: (state) => { state.userDetailsLoading = false; state.userRegisterSuccess = false; state.userDetailsError = null },
+    userUpdateProfileReset: (state) => { state.userUpdateProfileLoading = false; state.userUpdateProfileSuccess = false; state.userUpdateProfileError = null },
+    userDeleteReset: (state) => { state.userDeleteLoading = false; state.userDeleteSuccess = false; state.userDeleteError = null },
+
+    // Reset Slice
+    userSliceReset: (state) => {
+      state.loading = false; state.success = false; state.error = null; state.user = {}; state.userInfo = {};
+      state.userRegisterLoading = false; state.userRegisterSuccess = false; state.userRegisterError = null;
+      state.userDetailsLoading = false; state.userRegisterSuccess = false; state.userDetailsError = null;
+      state.userUpdateProfileLoading = false; state.userUpdateProfileSuccess = false; state.userUpdateProfileError = null;
+      state.userDeleteLoading = false; state.userDeleteSuccess = false; state.userDeleteError = null
+    }
+  }
+})
+
+export const {
+  userLoginRequest,
+  userLoginSuccess,
+  userLoginFail,
+  userLoginReset,
+
+  userRegisterRequest,
+  userRegisterSuccess,
+  userRegisterFail,
+  userRegisterReset,
+
+  userDetailsRequest,
+  userDetailsSuccess,
+  userDetailsFail,
+  userDetailsReset,
+
+  userUpdateProfileRequest,
+  userUpdateProfileSuccess,
+  userUpdateProfileFail,
+  userUpdateProfileReset,
   
-export const { userRegisterRequest, userRegisterSuccess, userRegisterFail, userRegisterReset } = userRegisterSlice.actions;
+  userDeleteRequest,
+  userDeleteSuccess,
+  userDeleteFail,
+  userDeleteReset,
 
-export const userDetailsSlice = createSlice({
-  name: 'userDetails',
-  initialState: {
-    user : { }
-  },
-  reducers: {
-    userDetailsRequest: (state) => {
-      state.loading = true;
-    },
-    userDetailsSuccess: (state, action) => {
-      state.loading = false;
-      state.user = action.payload;
-    },
-    userDetailsFail: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    userDetailsReset: (state) => {
-      state.user = null
-    },
-  },
-});
-
-export const { userDetailsRequest, userDetailsSuccess, userDetailsFail, userDetailsReset } = userDetailsSlice.actions;
-
-export const userUpdateProfileSlice = createSlice({
-  name: 'userUpdateProfile',
-  initialState: {
-    userInfo: null,
-  },
-  reducers: {
-    userUpdateProfileRequest: (state) => {
-      state.loading = true;
-    },
-    userUpdateProfileSuccess: (state, action) => {
-      state.loading = false;
-      state.success = true;
-      state.userInfo = action.payload;
-    },
-    userUpdateProfileFail: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    userUpdateProfileReset: (state) => {
-      state.success = false;
-      state.error = null;
-    },
-  },
-});
-
-export const { userUpdateProfileRequest, userUpdateProfileSuccess, userUpdateProfileFail, userUpdateProfileReset } = userUpdateProfileSlice.actions;
-
-export const userDeleteSlice = createSlice({
-  name: 'userDelete',
-  initialState: {
-    userInfo: null,
-  },
-  reducers: {
-    userDeleteRequest: (state) => {
-      state.loading = true;
-    },
-    userDeleteSuccess: (state, action) => {
-      state.loading = false;
-      state.userInfo = action.payload;
-    },
-    userDeleteFail: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-  },
-});
-
-export const { userDeleteRequest, userDeleteSuccess, userDeleteFail } = userDeleteSlice.actions;
+  userSliceReset,
+  userLogout,
+} = userSlice.actions

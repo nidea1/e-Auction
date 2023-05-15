@@ -6,13 +6,24 @@ import {
     categoryDetailsRequest,
     categoryDetailsSuccess,
     categoryDetailsFail,
- } from '../reducers/categoryReducers'
+} from '../reducers/categoryReducers'
+
+const createAPIinstance = () => {
+
+    return axios.create({
+        baseURL: '/api/categories',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+}
 
 export const listCategories = () => async (dispatch) => {
     try{
         dispatch(categoryListRequest())
 
-        const { data } = await axios.get('/api/categories/')
+        const api = createAPIinstance()
+        const { data } = await api.get('/')
 
         dispatch(categoryListSuccess(data))
     }catch(error){
@@ -28,7 +39,8 @@ export const detailCategories = (id) => async (dispatch) => {
     try{
         dispatch(categoryDetailsRequest())
 
-        const { data } = await axios.get(`/api/categories/${id}`)
+        const api = createAPIinstance()
+        const { data } = await api.get(`/${id}`)
 
         dispatch(categoryDetailsSuccess(data))
     }catch(error){

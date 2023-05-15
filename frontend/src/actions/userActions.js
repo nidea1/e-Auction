@@ -3,42 +3,50 @@ import {
     userLoginRequest,
     userLoginSuccess,
     userLoginFail,
-    
+
     userLogout,
 
     userRegisterRequest,
     userRegisterSuccess,
     userRegisterFail,
-    userRegisterReset,
 
     userDetailsRequest,
     userDetailsSuccess,
     userDetailsFail,
-    userDetailsReset,
 
     userUpdateProfileRequest,
     userUpdateProfileSuccess,
     userUpdateProfileFail,
-    
+
     userDeleteRequest,
     userDeleteSuccess,
     userDeleteFail,
- } from '../reducers/userReducers'
+} from '../reducers/userReducers'
 
-export const login = (email, password) => async (dispatch) => {
+const createAPIinstance = (getState, profile) => {
+
+    const {
+        userReducers: { userInfo }
+    } = getState()
+
+    return axios.create({
+        baseURL: '/api/users',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': profile ? `Bearer ${userInfo.token}`: ''
+        }
+    })
+
+}
+
+export const login = (email, password) => async (dispatch, getState) => {
     try{
         dispatch(userLoginRequest())
 
-        const config = {
-            headers:{
-                'Content-type':'application/json'
-            }
-        }
-
-        const { data } = await axios.post(
-            '/api/users/login/',
-            {'username':email,'password':password},
-            config
+        const api = createAPIinstance(getState);
+        const { data } = await api.post(
+            '/login/',
+            { 'username': email, 'password': password }
         )
 
         dispatch(userLoginSuccess(data))
@@ -57,29 +65,19 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = ()  => async (dispatch) => {
     localStorage.removeItem('userInfo')
     dispatch(userLogout())
-    dispatch(userRegisterReset())
-    dispatch(userDetailsReset())
 }
 
-export const register = (name, email, password) => async (dispatch) => {
+export const register = (name, email, password) => async (dispatch, getState) => {
     try{
         dispatch(userRegisterRequest())
 
-        const config = {
-            headers:{
-                'Content-type':'application/json'
-            }
-        }
-
-        const { data } = await axios.post(
-            '/api/users/register/',
-            {'name':name,'email':email,'password':password},
-            config
+        const api = createAPIinstance(getState);
+        const { data } = await api.post(
+            '/register/',
+            { 'name': name, 'email': email, 'password': password }
         )
 
         dispatch(userRegisterSuccess(data))
-        
-        dispatch(userLoginSuccess(data))
 
         localStorage.setItem('userInfo', JSON.stringify(data))
 
@@ -96,20 +94,9 @@ export const detail = (id) => async (dispatch, getState) => {
     try{
         dispatch(userDetailsRequest())
 
-        const {
-            userLogin: {userInfo},
-        } = getState()
-
-        const config = {
-            headers:{
-                'Content-type':'application/json',
-                'Authorization' : `Bearer ${userInfo.token}` 
-            }
-        }
-
-        const { data } = await axios.get(
-            `/api/users/${id}/`,
-            config
+        const api = createAPIinstance(getState, true);
+        const { data } = await api.get(
+            `/${id}`,
         )
 
         dispatch(userDetailsSuccess(data))
@@ -127,26 +114,13 @@ export const update = (user) => async (dispatch, getState) => {
     try{
         dispatch(userUpdateProfileRequest())
 
-        const {
-            userLogin: {userInfo},
-        } = getState()
-
-        const config = {
-            headers:{
-                'Content-type':'application/json',
-                'Authorization' : `Bearer ${userInfo.token}` 
-            }
-        }
-
-        const { data } = await axios.put(
-            `/api/users/profile/`,
-            user,
-            config
+        const api = createAPIinstance(getState, true);
+        const { data } = await api.put(
+            '/profile/',
+            user
         )
 
         dispatch(userUpdateProfileSuccess(data))
-
-        dispatch(userLoginSuccess(data))
 
         localStorage.setItem('userInfo', JSON.stringify(data))
 
@@ -163,29 +137,15 @@ export const deleteUser = () => async (dispatch, getState) => {
     try{
         dispatch(userDeleteRequest())
 
-        const {
-            userLogin: {userInfo},
-        } = getState()
-
-        const config = {
-            headers:{
-                'Content-type':'application/json',
-                'Authorization' : `Bearer ${userInfo.token}` 
-            }
-        }
-
-        const { data } = await axios.delete(
-            `/api/users/profile/`,
-            config
+        const api = createAPIinstance(getState, true);
+        const { data } = await api.delete(
+            '/profile/',
         )
 
         dispatch(userDeleteSuccess(data))
 
         localStorage.removeItem('userInfo')
         dispatch(userLogout())
-        dispatch(userRegisterReset())
-        dispatch(userDetailsReset())
-
     }catch(error){
         dispatch(userDeleteFail(error.response && error.response.data.detail
                 ? error.response.data.detail
