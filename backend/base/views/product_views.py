@@ -17,7 +17,7 @@ class ProductList(ListCreateAPIView):
     filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
     filterset_class = ProductFilter
     search_fields = ['name', 'brand__name', 'category__name']
-    ordering_fields = ['name', 'price']
+    ordering_fields = ['name', 'price', 'endDate']
 
     def perform_create(self, serializer):
 
