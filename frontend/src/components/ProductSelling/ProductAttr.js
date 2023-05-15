@@ -19,7 +19,7 @@ function ProductAttr() {
 
     const {
         brandReducers : { brands, loading, error},
-        userLogin: { userInfo },
+        userReducers: { userInfo },
         productReducers: { product, productPublishSuccess}
     } = useSelector((state) => state)
 

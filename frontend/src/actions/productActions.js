@@ -21,7 +21,7 @@ import {
 const createAPIinstance = (getState, isMultipart) => {
     
     const {
-        userLogin: { userInfo }
+        userReducers: { userInfo }
     } = getState()
 
     return axios.create({
@@ -33,7 +33,7 @@ const createAPIinstance = (getState, isMultipart) => {
     })
 }
 
- export const listProducts = (keyword, category, brands) => async (dispatch, getState) => {
+ export const listProducts = (keyword= undefined, category= undefined, brands= undefined, userID= undefined, status= undefined, ordering = 'endDate') => async (dispatch, getState) => {
     try {
         dispatch(productListRequest());
 
@@ -47,6 +47,15 @@ const createAPIinstance = (getState, isMultipart) => {
         }
         if (brands) {
             params.brand = brands;
+        }
+        if (userID) {
+            params.user = userID;
+        }
+        if (status) {
+            params.status = status;
+        }
+        if (ordering) {
+            params.ordering = ordering;
         }
         
         const api = createAPIinstance(getState)

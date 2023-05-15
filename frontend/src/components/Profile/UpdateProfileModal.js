@@ -16,8 +16,9 @@ function UpdateProfileModal({show, onHide, user, deleteModalShow}) {
 
     const dispatch = useDispatch();
 
-    const userDetails = useSelector(state => state.userDetails);
-    const { error, loading } = userDetails;
+    const {
+        userReducers: { userDetailsLoading, userDetailsError }
+    } = useSelector((state) => state)
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -25,12 +26,20 @@ function UpdateProfileModal({show, onHide, user, deleteModalShow}) {
         if (password !== passwordConfirm) {
             setMessage('Password does not match!');
         } else {
-            dispatch(update({
+
+            const newProfile = {
                 'id': user._id,
                 'name': name,
-                'email': email,
                 'password': password,
-            }));
+            }
+
+            const sameEmail = email === user.email
+
+            if(!sameEmail){
+                newProfile.email = email
+            }
+
+            dispatch(update(newProfile));
             onHide();
         }
     }
@@ -42,8 +51,8 @@ function UpdateProfileModal({show, onHide, user, deleteModalShow}) {
             <Modal.Body>  
                 <UpdateProfileForm>
                     {message && <Message variant='danger'>{message}</Message>}
-                    {error && <Message variant='danger'>{error}</Message>}
-                    {loading && <Loader />}
+                    {userDetailsError && <Message variant='danger'>{userDetailsError}</Message>}
+                    {userDetailsLoading && <Loader />}
                     <Form onSubmit={submitHandler}>
                     <FormGroup controlId='name'>
                         <FormLabel className='my-2 fw-semibold'>Name</FormLabel>

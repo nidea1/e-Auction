@@ -20,7 +20,7 @@ import {
 const createAPIinstance = (getState) => {
 
     const {
-        userLogin: { userInfo }
+        userReducers: { userInfo }
     } = getState();
 
     return axios.create({

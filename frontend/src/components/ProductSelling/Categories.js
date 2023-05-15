@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 function Categories() {
     const {
-        categoryList: { categories },
+        categoryReducers: { categories },
     } = useSelector((state) => state);
 
     const [activeCategory, setActiveCategory] = useState(null);

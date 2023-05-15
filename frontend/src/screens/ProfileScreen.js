@@ -8,15 +8,15 @@ import ProfileCard from '../components/Profile/ProfileCard';
 
 
 function ProfileScreen() {
-
+  
   const {
-    userDetails: { loading, error }
+    userReducers: { userDetailsLoading, userDetailsError }
   } = useSelector((state) => state)
 
   return (
     <>
-        {loading ? <Loader />
-        : error ? <Message>{error}</Message>
+        {userDetailsLoading ? <Loader />
+        : userDetailsError ? <Message variant={'danger'}>{userDetailsError}</Message>
         :
         <Row className='justify-content-center my-3 py-3'>
             <Col md={4}>

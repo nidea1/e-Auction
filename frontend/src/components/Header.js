@@ -10,15 +10,15 @@ import { listCategories } from '../actions/categoryActions';
 function Header() {
 
     const dispatch = useDispatch()
-    const userLogin = useSelector(state => state.userLogin)
-    const { userInfo } = userLogin
 
     const logoutHandler = () => {
         dispatch(logout())
     }
 
-    const categoryList = useSelector(state => state.categoryList)
-    const { categories } = categoryList
+    const {
+        categoryReducers: { categories },
+        userReducers: { userInfo }
+    } = useSelector((state) => state)
 
     useEffect(() => {
         dispatch(listCategories())

@@ -15,11 +15,10 @@ function CategoryScreen() {
   const [slug, id] = categoryParams.split("-c-");
 
   const dispatch = useDispatch();
-  const categoryDetails = useSelector((state) => state.categoryDetails);
-  const { error, loading, category } = categoryDetails;
 
-  const categoryList = useSelector((state) => state.categoryList);
-  const { categories } = categoryList;
+  const {
+    categoryReducers: { categoryDetailsLoading, categoryDetailsError, category, categories }
+  } = useSelector((state) => state)
 
   const [searchParams] = useSearchParams()
   const keyword = searchParams.get('search')
@@ -61,10 +60,10 @@ function CategoryScreen() {
 
   return (
     <>
-      {loading ? (
+      {categoryDetailsLoading ? (
         <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
+      ) : categoryDetailsError ? (
+        <Message variant="danger">{categoryDetailsError}</Message>
       ) : (
         <Container>
           <Col className="search-info">

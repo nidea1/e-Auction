@@ -58,6 +58,19 @@ function ProfileDetails({ user, updateModalShow }) {
                 <hr className='divider'/>
             </Col>
 
+            <Row>
+                <Col md={4} className='text-center'>
+                    <i class="fa-solid fa-badge-dollar"></i>
+                </Col>
+                <Col md={8}>
+                    <Link to={'./selling'} className='text-muted text-decoration-none'>My Products</Link>
+                </Col>
+            </Row>
+
+            <Col className='d-flex justify-content-center'>
+                <hr className='divider'/>
+            </Col>
+
             <Row className='mb-3'>
                 <Col md={4} className='text-center'>
                     <i className="fa-solid fa-hand-sparkles" />

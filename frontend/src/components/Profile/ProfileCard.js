@@ -26,25 +26,20 @@ function ProfileCard() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const userDetails = useSelector(state => state.userDetails);
-    const { user } = userDetails;
-
-    const userLogin = useSelector(state => state.userLogin);
-    const { userInfo } = userLogin;
-
-    const userUpdateProfile = useSelector(state => state.userUpdateProfile);
-    const { success } = userUpdateProfile;
+    const {
+        userReducers: { user, userInfo, userUpdateProfileSuccess }
+    } = useSelector((state) => state)
 
     useEffect(() => {
         if (!userInfo) {
             navigate('/login');
         } else {
-            if (!user || !user.name || success) {
+            if (!user || !user.name || userUpdateProfileSuccess) {
                 dispatch(userUpdateProfileReset());
                 dispatch(detail('profile'));
             }
         }
-    }, [dispatch, navigate, userInfo, user, success]);
+    }, [dispatch, navigate, userInfo, user, userUpdateProfileSuccess]);
 
     return (
         <>

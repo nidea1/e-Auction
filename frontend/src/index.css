@@ -193,7 +193,7 @@ main {
 }
 
 .carousel-custom .carousel-indicators button {
-  background-color: rgb(51, 51, 51, 1)!important;
+  background-color: rgb(51, 51, 51)!important;
   border-radius: 50%;
   margin-right: 6px;
   height: 6px;
@@ -203,7 +203,7 @@ main {
 
 .carousel-custom .carousel-indicators .active {
   box-shadow: 0px 0px 10px 4px rgba(199, 199, 199);
-  background-color: rgba(250, 250, 250, 0.2)!important;
+  background-color: rgba(250, 250, 250)!important;
 }
 
 /* Selling Categories */

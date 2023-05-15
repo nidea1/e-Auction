@@ -16,8 +16,9 @@ function DeleteProfileModal({ show, onHide }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const userDetails = useSelector(state => state.userDetails);
-    const { error, loading } = userDetails;
+    const {
+        userReducers: { userDetailsLoading, userDetailsError }
+    } = useSelector((state) => state)
 
     const deleteSubmit = (e) => {
         e.preventDefault();
@@ -36,8 +37,8 @@ function DeleteProfileModal({ show, onHide }) {
             <Modal.Body>  
                 <UpdateProfileForm>
                     {message && <Message variant='danger'>{message}</Message>}
-                    {error && <Message variant='danger'>{error}</Message>}
-                    {loading && <Loader />}
+                    {userDetailsError && <Message variant='danger'>{userDetailsError}</Message>}
+                    {userDetailsLoading && <Loader />}
                     <Form onSubmit={deleteSubmit}>
                     
                     <FormGroup controlId='password'>

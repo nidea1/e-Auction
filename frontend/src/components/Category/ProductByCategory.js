@@ -47,7 +47,7 @@ function ProductByCategory({product}) {
                   <Col md={6} className='card-text'>
                     End date:
                   </Col>
-                  <Col md={6} className='card-text d-flex align-items-center'>
+                  <Col md={6} className='card-text d-flex'>
                     {formattedEndDate}
                   </Col>
                 </Row>

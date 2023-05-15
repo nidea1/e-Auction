@@ -21,8 +21,9 @@ function RegisterScreen() {
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
-  const userRegister = useSelector(state => state.userRegister)
-  const { error, loading, userInfo} = userRegister
+  const {
+    userReducers: { userRegisterLoading, userRegisterError, userInfo }
+  } = useSelector((state) => state)
 
   useEffect(() => {
     if(userInfo){
@@ -48,8 +49,8 @@ function RegisterScreen() {
         <h1>Sign Up</h1>
 
         {message && <Message variant='danger'>{message}</Message>}
-        {error && <Message variant='danger'>{error}</Message>}
-        {loading && <Loader />}
+        {userRegisterError && <Message variant='danger'>{userRegisterError}</Message>}
+        {userRegisterLoading && <Loader />}
         <Form onSubmit={submitHandler}>
           <FormGroup controlId='name'>
             <FormLabel className='my-2 fw-semibold'>Name</FormLabel>
