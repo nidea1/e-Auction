@@ -6,6 +6,7 @@ function Product({ product }) {
 
   const endDate = new Date(product.endDate)
   const formattedEndDate = endDate.toLocaleDateString()
+  const today = new Date()
 
   const renderImages = () => {
     return product.images.map((image) => (
@@ -32,22 +33,44 @@ function Product({ product }) {
                   <Card.Title>{product.name.substring(0,55)}{product.name.length > 55 ? '...' : ''}</Card.Title>
                 </Link>
                 <Col className='my-3 fw-semibold'>
+                { product.currentHighestBid !== 0 ? 
                   <Row>
                     <Col md={8}>
                       Current max bid:
                     </Col>
-                    <Col md={4}>
+                    <Col md={4} className='d-flex justify-content-end'>
                       ${product.currentHighestBid}
                     </Col>
                   </Row>
+                :
                   <Row>
                     <Col md={8}>
-                      End date:
+                      Starting bid:
                     </Col>
-                    <Col md={4}>
+                    <Col md={4} className='d-flex justify-content-end'>
+                      ${product.price}
+                    </Col>
+                  </Row>
+                }
+                { endDate < today ? 
+                  <Row className='my-3'>
+                    <Col md={8} className='card-text'>
+                      Ended at:
+                    </Col>
+                    <Col md={4} className='card-text d-flex justify-content-end'>
                       {formattedEndDate}
                     </Col>
                   </Row>
+                :
+                  <Row className='my-3'>
+                    <Col md={8} className='card-text'>
+                      End date:
+                    </Col>
+                    <Col md={4} className='card-text d-flex justify-content-end'>
+                      {formattedEndDate}
+                    </Col>
+                  </Row>
+                }
                 </Col>
                 <Link to={`/product/${product.slug}-p-${product._id}`}>
                   <Button variant="dark" className="mt-auto">Detail</Button>

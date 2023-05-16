@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 function ProductByCategory({product}) {
   const endDate = new Date(product.endDate)
   const formattedEndDate = endDate.toLocaleDateString()
+  const today = new Date()
 
   const renderImages = () =>{
     return product.images.map((image) => (
@@ -30,19 +31,40 @@ function ProductByCategory({product}) {
           <Card.Body>
               <Link className='link-dark text-decoration-none' to={`/product/${product.slug}-p-${product._id}`}>
                 <Col className='card-title fw-bold text-center'>
-                  {product.name.substring(0,35)}{product.name.length > 35 ? '...' : ''}
+                  {product.name.substring(0,30)}{product.name.length > 30 ? '...' : ''}
                 </Col>
               </Link>
               <hr />
               <Col className='my-3'>
+              { product.currentHighestBid !== 0 ? 
                 <Row>
                   <Col md={6} className='card-text'>
                     Current max bid:
                   </Col>
-                  <Col md={6} className='card-text'>
+                  <Col md={6} className='card-text d-flex'>
                     ${product.currentHighestBid}
                   </Col>
                 </Row>
+              :
+                <Row>
+                  <Col md={6} className='card-text'>
+                    Starting bid:
+                  </Col>
+                  <Col md={6} className='card-text d-flex'>
+                    ${product.price}
+                  </Col>
+                </Row>
+              }
+              { endDate < today ? 
+                <Row className='my-3'>
+                  <Col md={6} className='card-text'>
+                    Ended at:
+                  </Col>
+                  <Col md={6} className='card-text d-flex'>
+                    {formattedEndDate}
+                  </Col>
+                </Row>
+                :
                 <Row className='my-3'>
                   <Col md={6} className='card-text'>
                     End date:
@@ -51,6 +73,7 @@ function ProductByCategory({product}) {
                     {formattedEndDate}
                   </Col>
                 </Row>
+              }
               </Col>
               <Col className='d-flex justify-content-center'>
                 <Link to={`/product/${product.slug}-p-${product._id}`}>
