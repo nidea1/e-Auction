@@ -153,3 +153,18 @@ class UserPaymentSerializer(serializers.ModelSerializer):
                 }
             )
         return value
+
+class BidSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Bid
+        fields = '__all__'
+    
+    def validate_bid(self, value):
+        if Bid.objects.filter(bid=value).exists() or Bid.objects.filter(bid__gte = value).exists():
+            raise serializers.ValidationError(
+                {
+                    'detail': 'A offer with the greater than this value or same value already exists.'
+                }
+            )
+        return value
