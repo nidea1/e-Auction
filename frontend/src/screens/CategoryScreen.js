@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,8 @@ import CategorySection from "../components/Category/CategorySection";
 import ProductByCategory from "../components/Category/ProductByCategory";
 import { listProducts } from "../actions/productActions";
 import FilterByBrand from "../components/Category/FilterByBrand";
+import FilterByStatus from "../components/Category/FilterByStatus";
+import FilterContext from "../contexts/FilterContext";
 
 function CategoryScreen() {
   const { categoryParams } = useParams();
@@ -23,18 +25,21 @@ function CategoryScreen() {
   const [searchParams] = useSearchParams()
   const keyword = searchParams.get('search')
 
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState('');
+
   const {
     productReducers: { products }
   } = useSelector((state) => state)
 
   useEffect(() => {
     if (keyword) {
-      dispatch(listProducts(keyword, undefined));
+      dispatch(listProducts(keyword, undefined, selectedBrands, undefined, selectedStatus));
     } else {
-      dispatch(listProducts(undefined, id));
+      dispatch(listProducts(undefined, id, selectedBrands, undefined, selectedStatus));
       dispatch(detailCategories(id))
     }
-  }, [dispatch, id, keyword]);
+  }, [dispatch, id, keyword, selectedBrands, selectedStatus]);
 
   const findTopLevelCategory = (categories, categoryId) => {
     for (const category of categories) {
@@ -60,11 +65,10 @@ function CategoryScreen() {
 
   return (
     <>
-      {categoryDetailsLoading ? (
-        <Loader />
-      ) : categoryDetailsError ? (
+      <FilterContext.Provider value={{ selectedBrands, setSelectedBrands, selectedStatus, setSelectedStatus }}>
+      { categoryDetailsError ? 
         <Message variant="danger">{categoryDetailsError}</Message>
-      ) : (
+       : 
         <Container>
           <Col className="search-info">
             You search for <strong>{keyword ? keyword : category.name}</strong> lists {products.length} results
@@ -78,21 +82,29 @@ function CategoryScreen() {
                 />
               </Col>
               <Col>
-                <FilterByBrand category_id={id} searchParams={keyword} />
+                <FilterByBrand searchParams={keyword} />
+              </Col>
+              <Col>
+                <FilterByStatus />
               </Col>
             </Col>
             <Col xs={12} md={9} className="ms-md-4">
-              <Row>
-                {products.map((product) => (
-                  <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                    <ProductByCategory product={product} />
-                  </Col>
-                ))}
-              </Row>
+              {categoryDetailsLoading ?
+                <Loader />
+              :
+                <Row>
+                  {products.map((product) => (
+                    <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                      <ProductByCategory product={product} />
+                    </Col>
+                  ))}
+                </Row>
+              }
             </Col>
           </Row>
         </Container>
-      )}
+      }
+      </FilterContext.Provider>
     </>
   );
 }

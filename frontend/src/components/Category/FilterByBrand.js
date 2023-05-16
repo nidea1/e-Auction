@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Col, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { listBrands, listProducts } from '../../actions/productActions'
+import { listBrands} from '../../actions/productActions'
+import FilterContext from '../../contexts/FilterContext'
 
-function FilterByBrand({category_id, searchParams}) {
+function FilterByBrand() {
 
     const dispatch = useDispatch()
 
@@ -11,19 +12,11 @@ function FilterByBrand({category_id, searchParams}) {
         brandReducers: { brands }
     } = useSelector((state) => state)
 
-    const [selectedBrands, setSelectedBrands] = useState([]);
+    const { selectedBrands, setSelectedBrands } = useContext(FilterContext);
 
     useEffect(() => {
         dispatch(listBrands())
     },[dispatch])
-
-    useEffect(() => {
-        if(searchParams){
-            dispatch(listProducts(searchParams, undefined, selectedBrands))
-        }else{
-            dispatch(listProducts(undefined, category_id, selectedBrands))
-        }
-    }, [dispatch, category_id, selectedBrands, searchParams])
 
     const handleBrandSelect = (e) => {
         const brandId = e.target.id;
