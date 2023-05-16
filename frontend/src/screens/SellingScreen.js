@@ -15,12 +15,12 @@ function SellingScreen() {
 
     const statuses = [
         {
-            'name': 'Active',
+            'name': 'Ongoing',
             'value': true,
             'id': 1
         },
         {
-            'name': 'Passive',
+            'name': 'Finished',
             'value': false,
             'id': 2
         },
@@ -49,34 +49,32 @@ function SellingScreen() {
                         You listing {products.length} {products.length === 1 ? 'product:': 'products:'}
                     </Col>
                     <Col md={8} className='d-flex flex-column justify-content-end'>
-                        <Form>
-                            <Row>
-                                {statuses.map((status) => (
-                                    <Col key='active'>
-                                        {status.id !== 3 ?                                        
-                                            <Form.Check
-                                                type='radio'
-                                                id={status.id.toString()}
-                                                value={status.value.toString()}
-                                                label={status.name}
-                                                name='statusGroup'
-                                                onChange={(e) => setSelectedStatus(e.target.value)}
-                                            />                                        
-                                        :                                       
-                                            <Form.Check
-                                                defaultChecked
-                                                type='radio'
-                                                id={status.id.toString()}
-                                                value={status.value.toString()}
-                                                label={status.name}
-                                                name='statusGroup'
-                                                onChange={(e) => setSelectedStatus(e.target.value)}
-                                            />
-                                        }
-                                    </Col>
-                                ))}
-                            </Row>
-                        </Form>
+                        <Row>
+                            {statuses.map((status) => (
+                                <Col>
+                                    {status.id !== 3 ?                                        
+                                        <Form.Check
+                                            type='radio'
+                                            id={status.id.toString()}
+                                            value={status.value.toString()}
+                                            label={status.name}
+                                            name='statusGroup'
+                                            onChange={(e) => setSelectedStatus(e.target.value)}
+                                        />                                        
+                                    :                                       
+                                        <Form.Check
+                                            defaultChecked
+                                            type='radio'
+                                            id={status.id.toString()}
+                                            value={status.value.toString()}
+                                            label={status.name}
+                                            name='statusGroup'
+                                            onChange={(e) => setSelectedStatus(e.target.value)}
+                                        />
+                                    }
+                                </Col>
+                            ))}
+                        </Row>
                     </Col>
                 </Row>
                 <Row className='my-3'>
