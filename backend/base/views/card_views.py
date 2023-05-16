@@ -12,11 +12,6 @@ class CardList(ListCreateAPIView):
 
     def get_queryset(self):
         return UserPayment.objects.filter(user=self.request.user)
-    
-    def list(self, request):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
