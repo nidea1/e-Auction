@@ -6,6 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { detailProducts } from '../actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { placeBid } from '../actions/bidActions';
+import { bidPlaceReset } from '../reducers/bidReducers';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function ProductScreen() {
@@ -14,7 +18,8 @@ function ProductScreen() {
     
     const dispatch = useDispatch()
     const {
-      productReducers : { productDetailsError, productDetailsLoading, product }
+      productReducers : { productDetailsError, productDetailsLoading, product },
+      bidReducers: { bidPlaceError, bidPlaceLoading, bidPlaceSuccess, bid }
     } = useSelector((state) => state)
 
     useEffect(() =>{
@@ -36,8 +41,86 @@ function ProductScreen() {
       ))
     }
 
+    const [offer, setOffer] = useState('')
+
+    const submitHandler = (e) => {
+      e.preventDefault()
+      
+      let bid = {
+        'product': id,
+        'bid': offer,
+      }
+
+      dispatch(placeBid(bid))
+    }
+
+    const loadingToast = () =>{
+      toast.info("Response is pending...", {
+        position: "top-right",
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        theme: "dark",
+      })
+    }
+    
+
+    useEffect(() => {
+      if (bidPlaceLoading) {
+        loadingToast()
+      }
+    
+      if (!bidPlaceLoading) {
+        toast.dismiss()
+        if (bidPlaceSuccess){
+          dispatch(bidPlaceReset())
+
+          let fetchDetails = async () => {
+            await dispatch(detailProducts(id));
+            toast.success(`You bidded $${bid.bid} to this product.`, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "dark",
+            })
+          }
+    
+          fetchDetails();
+        }
+        if (bidPlaceError) {
+          toast.error(bidPlaceError, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "dark",
+          })
+        }
+      }
+
+
+    }, [bidPlaceLoading, bidPlaceSuccess, dispatch, id, bidPlaceError, bid])
     return (
       <>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
         { productDetailsLoading ? <Loader />
           : productDetailsError ? <Message variant='danger'>{productDetailsError}</Message>  
           : 
@@ -51,6 +134,7 @@ function ProductScreen() {
                 </Carousel>
               }
             </Col>
+
             <Col md={3}>
               <ListGroup variant='flush'>
                 <ListGroupItem>
@@ -61,33 +145,39 @@ function ProductScreen() {
                   {product.description}
                 </ListGroupItem>
                 <ListGroupItem>
-                  <strong>${product.price}</strong>
+                  Starting bid: <strong>${product.price}</strong>
                 </ListGroupItem>
               </ListGroup>
             </Col>
+
             <Col md={3}>
               <Card className='shadow border-0'>
                 <ListGroup>
                   <ListGroupItem>
                     <Row className='d-flex'>
-                      <Col md={8}>
+                      <Col md={7}>
                         {
                           countdownFinished ? 'Sold to: '
                           : 'Current highest bid: '                      
                         }
                       </Col>
-                      <Col md={4}>
+                      <Col md={5} className='h4 justify-content-end d-flex'>
                         <strong>${product.currentHighestBid}</strong>
                       </Col>
                     </Row>
                   </ListGroupItem>
                   <ListGroupItem>
-                    <Row>
-                      <Col md={countdownFinished ? 4 : 8}>
+                    <Row className={countdownFinished ? 'justify-content-center' : ''}>
+                      {!countdownFinished ?
+                      <Col md={4}>
                         Closes in:
-                      </Col>
-                      <Col md={countdownFinished ? 8 : 4}>
-                        <strong><Countdown endDate={new Date(product.endDate)} onCountdownUpdate={handleCountdownUpdate} /></strong>
+                      </Col>:
+                      ''
+                      }
+                      <Col md={!countdownFinished ? 8 : ''} className={!countdownFinished ? 'justify-content-end d-flex' : 'h5 text-center mt-2'}>
+                        <Row>
+                          <Countdown endDate={new Date(product.endDate)} onCountdownUpdate={handleCountdownUpdate} />
+                        </Row>
                       </Col>
                     </Row>
                   </ListGroupItem>
@@ -96,38 +186,39 @@ function ProductScreen() {
                       <Col md={8}>
                         Bids:
                       </Col>
-                      <Col md={4}>
+                      <Col md={4} className='justify-content-end d-flex'>
                         <strong>{product.totalBids}</strong>
                       </Col>
                     </Row>
                   </ListGroupItem>
-                  {!countdownFinished ?
                   <ListGroupItem>
                     <Row className='justify-content-center'>
+
+                    {!countdownFinished ?
                       <Col md={12}>
-                        
-                          <InputGroup>
-                            <InputGroup.Text>$</InputGroup.Text>
-                            <Form.Control aria-label="Amount (to the nearest dollar)" />
-                            <InputGroup.Text>.00</InputGroup.Text>
+                        <Form onSubmit={submitHandler}>
+                          <InputGroup className='mb-1'>
+                            <InputGroup.Text style={{cursor:'default'}}>$</InputGroup.Text>
+                            <Form.Control
+                              placeholder='Enter your bid'
+                              value={offer}
+                              onChange={(e) => setOffer(e.target.value)}
+                            />
                           </InputGroup>
-                          <Col md={12} className=' d-flex justify-content-center'>
-                            <Button className="w-100 my-2 btn-dark">Place a bid</Button>
+                          <Col md={12} className='d-flex justify-content-center'>
+                            <Button type='submit' className="w-100 rounded my-2 btn-dark">Place a bid</Button>
                           </Col>
+                        </Form>
                       </Col>
+                    : 
+                      <Col md={12} className='d-flex justify-content-center'>
+                        <Link to="/" className="w-100 btn btn-dark my-2">
+                          Go back
+                        </Link>
+                      </Col>
+                    }
                     </Row>
                   </ListGroupItem>
-                  : 
-                  <ListGroupItem>
-                    <Row className='justify-content-center'>
-                    <Col md={12} className='d-flex justify-content-center'>
-                    <Link to="/" className="w-100 btn btn-dark my-2">
-                      Go back
-                    </Link>
-                    </Col>
-                    </Row>
-                  </ListGroupItem>
-                  }
                 </ListGroup>
               </Card>
             </Col>
