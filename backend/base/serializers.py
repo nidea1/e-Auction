@@ -155,16 +155,27 @@ class UserPaymentSerializer(serializers.ModelSerializer):
         return value
 
 class BidSerializer(serializers.ModelSerializer):
+    productName = serializers.ReadOnlyField(source= 'product.name')
+    productSlug = serializers.ReadOnlyField(source= 'product.slug')
+    productImage = serializers.SerializerMethodField()
 
     class Meta:
         model = Bid
         fields = '__all__'
+
+    def get_productImage(self, obj):
+        product_images = obj.product.images.all()
+        request = self.context['request']
+        if product_images:
+            return request.build_absolute_uri(product_images[0].image.url)
+        return None
     
     def validate_bid(self, value):
-        if Bid.objects.filter(bid=value).exists() or Bid.objects.filter(bid__gte = value).exists():
+        product = self.context['request'].data.get('product')
+        if Bid.objects.filter(bid__gte = value, product=product).exists():
             raise serializers.ValidationError(
                 {
-                    'detail': 'A offer with the greater than this value or same value already exists.'
+                    'detail': 'A bid equal to or higher than this already exists for this product.'
                 }
             )
         return value
