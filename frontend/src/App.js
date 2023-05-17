@@ -8,7 +8,6 @@ import ProductScreen from "./screens/ProductScreen"
 import LoginScreen from "./screens/LoginScreen"
 import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-import MyBids from "./components/MyBids";
 import AddressScreen from "./screens/AddressScreen";
 import CategoryScreen from "./screens/CategoryScreen";
 import CreditCardScreen from "./screens/CreditCardScreen";
@@ -16,6 +15,7 @@ import UploadScreen from "./screens/UploadScreen";
 import Categories from "./components/ProductSelling/Categories";
 import ProductAttr from "./components/ProductSelling/ProductAttr";
 import SellingScreen from "./screens/SellingScreen";
+import BidScreen from "./screens/BidScreen";
 
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
             <Route path="/login" element={<LoginScreen />}/>
             <Route path="/register" element={<RegisterScreen />}/>
             <Route path="/profile" element={<ProfileScreen />}>
-              <Route index element={<MyBids />}/>
+              <Route index element={<BidScreen />}/>
               <Route path="cards" element={<CreditCardScreen />} />
               <Route path="addresses" element={<AddressScreen />} />
               <Route path="selling" element={<SellingScreen />} />
