@@ -66,6 +66,7 @@ class Bid(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     bid = models.IntegerField(null=False, blank=False, default=0)
+    createdAt = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self) -> str:
