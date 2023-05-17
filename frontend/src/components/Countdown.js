@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Col } from "react-bootstrap";
+import { format } from "date-fns";
 
 import { calculateCountdown } from "../calculateCountdown";
 
@@ -7,7 +8,6 @@ function Countdown({ endDate, onCountdownUpdate }) {
   const [countdown, setCountdown] = useState(calculateCountdown(endDate));
 
   useEffect(() => {
-    // Başlangıçta handleCountdownUpdate işleyicisini çalıştır
     const initialCountdown = calculateCountdown(endDate);
     if (onCountdownUpdate) {
       onCountdownUpdate(initialCountdown);
@@ -26,38 +26,18 @@ function Countdown({ endDate, onCountdownUpdate }) {
     };
   }, [endDate, onCountdownUpdate]);
 
-  function renderTimeUnit(value, unit) {
-    return value > 0 ? `${value} ${unit}` : "";
-  }
-
   return (
-    <>
-      {countdown.days > 0 && (
-        <Col>
-        {renderTimeUnit(countdown.days, "d")},
-        </Col>
+    <Col className='fw-semibold'>
+      {countdown.days > 0 ? (
+        `${countdown.days}d ${countdown.hours}h | ${format(endDate, 'EE, HH:mm')}`
+      ) : countdown.hours > 0 ? (
+        `${countdown.hours}h ${countdown.minutes}m | ${format(endDate, 'EE, HH:mm')}`
+      ) : countdown.minutes > 0 ? (
+        `${countdown.minutes}m ${countdown.seconds}s | Today ${format(endDate, 'HH:mm')}`
+      ) : countdown.seconds === 0 && (
+        `The auction is closed.`
       )}
-      {countdown.hours > 0 && (
-        <Col>
-        {renderTimeUnit(countdown.hours, "h")},
-        </Col>
-      )}
-      {countdown.minutes > 0 && (
-        <Col>
-        {renderTimeUnit(countdown.minutes, "m")},
-        </Col>
-      )}
-      {countdown.seconds > 0 && (
-        <Col>
-        {renderTimeUnit(countdown.seconds, "s")}
-        </Col>
-      )}
-      {countdown.days === 0 && countdown.hours === 0 && countdown.minutes === 0 && countdown.seconds === 0 && (
-        <Col>
-        The auction is closed.
-        </Col>
-      )}
-    </>
+    </Col>
   );
 }
 
