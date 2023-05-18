@@ -178,4 +178,10 @@ class BidSerializer(serializers.ModelSerializer):
                     'detail': 'A bid equal to or higher than this already exists for this product.'
                 }
             )
+        if Product.objects.get(_id = product).price >= value:
+            raise serializers.ValidationError(
+                {
+                    'detail': 'Your bid must be higher than the starting bid of the product.'
+                }
+            )
         return value
