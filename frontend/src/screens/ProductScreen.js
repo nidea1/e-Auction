@@ -19,12 +19,23 @@ function ProductScreen() {
     const dispatch = useDispatch()
     const {
       productReducers : { productDetailsError, productDetailsLoading, product },
-      bidReducers: { bidPlaceError, bidPlaceLoading, bidPlaceSuccess, bid }
+      bidReducers: { bidPlaceError, bidPlaceLoading, bidPlaceSuccess, bid },
+      userReducers: { userInfo }
     } = useSelector((state) => state)
+
+    const [highestBid, setHighestBid] = useState('')
+    const [bidCount, setBidCount] = useState('')
+    const [closeTime, setCloseTime] = useState('')
 
     useEffect(() =>{
       dispatch(detailProducts(id))
     }, [dispatch, id])
+
+    useEffect(() => {
+      setHighestBid(product.currentHighestBid)
+      setBidCount(product.totalBids)
+      setCloseTime(product.endDate)
+    },[product])
 
     const [countdownFinished, setCountdownFinished] = useState(false);
 
@@ -75,10 +86,9 @@ function ProductScreen() {
       if (!bidPlaceLoading) {
         toast.dismiss()
         if (bidPlaceSuccess){
-          dispatch(bidPlaceReset())
 
-          let fetchDetails = async () => {
-            await dispatch(detailProducts(id));
+          let success = async () => {
+            await dispatch(bidPlaceReset())
             toast.success(`You bidded $${bid.bid} to this product.`, {
               position: "top-right",
               autoClose: 5000,
@@ -89,9 +99,10 @@ function ProductScreen() {
               theme: "dark",
             })
           }
-    
-          fetchDetails();
+
+          success();
         }
+
         if (bidPlaceError) {
           toast.error(bidPlaceError, {
             position: "top-right",
@@ -107,6 +118,28 @@ function ProductScreen() {
 
 
     }, [bidPlaceLoading, bidPlaceSuccess, dispatch, id, bidPlaceError, bid])
+
+    useEffect(() => {
+      const socket = new WebSocket(`ws://127.0.0.1:8000/ws/auctions/${id}/`)
+
+      socket.onmessage = (e) => {
+        const wsData = JSON.parse(e.data)
+        const wsDataMessage = JSON.parse(wsData.message)
+        if (wsDataMessage) {
+          setHighestBid(wsDataMessage.amount)
+          setBidCount(wsDataMessage.bid_count)
+          console.log(wsDataMessage.closes_in)
+          if(wsDataMessage.closes_in) {
+            setCloseTime(wsDataMessage.closes_in)
+          }
+        }
+      }
+
+      return() => {
+        socket.close()
+      }
+    }, [id])
+
     return (
       <>
         <ToastContainer
@@ -123,7 +156,7 @@ function ProductScreen() {
         />
         { productDetailsLoading ? <Loader />
           : productDetailsError ? <Message variant='danger'>{productDetailsError}</Message>  
-          : 
+          : closeTime &&
           <Row className='my-5'>
             <Col md={6}>
               {product.images && product.images.length === 1 ?
@@ -162,7 +195,7 @@ function ProductScreen() {
                         }
                       </Col>
                       <Col md={5} className='h4 justify-content-end d-flex'>
-                        <strong>${product.currentHighestBid}</strong>
+                        <strong>${highestBid}</strong>
                       </Col>
                     </Row>
                   </ListGroupItem>
@@ -176,7 +209,7 @@ function ProductScreen() {
                       }
                       <Col md={!countdownFinished ? 8 : ''} className={!countdownFinished ? 'justify-content-end d-flex' : 'h5 text-center mt-2'}>
                         <Row>
-                          <Countdown endDate={new Date(product.endDate)} onCountdownUpdate={handleCountdownUpdate} />
+                          <Countdown endDate={new Date(closeTime)} onCountdownUpdate={handleCountdownUpdate} />
                         </Row>
                       </Col>
                     </Row>
@@ -187,36 +220,43 @@ function ProductScreen() {
                         Bids:
                       </Col>
                       <Col md={4} className='justify-content-end d-flex'>
-                        <strong>{product.totalBids}</strong>
+                        <strong>{bidCount}</strong>
                       </Col>
                     </Row>
                   </ListGroupItem>
                   <ListGroupItem>
                     <Row className='justify-content-center'>
-
-                    {!countdownFinished ?
-                      <Col md={12}>
-                        <Form onSubmit={submitHandler}>
-                          <InputGroup className='mb-1'>
-                            <InputGroup.Text style={{cursor:'default'}}>$</InputGroup.Text>
-                            <Form.Control
-                              placeholder='Enter your bid'
-                              value={offer}
-                              onChange={(e) => setOffer(e.target.value)}
-                            />
-                          </InputGroup>
-                          <Col md={12} className='d-flex justify-content-center'>
-                            <Button type='submit' className="w-100 rounded my-2 btn-dark">Place a bid</Button>
+                      {userInfo ?
+                        (!countdownFinished ?
+                          <Col md={12}>
+                            <Form onSubmit={submitHandler}>
+                              <InputGroup className='mb-1'>
+                                <InputGroup.Text style={{cursor:'default'}}>$</InputGroup.Text>
+                                <Form.Control
+                                  placeholder='Enter your bid'
+                                  value={offer}
+                                  onChange={(e) => setOffer(e.target.value)}
+                                />
+                              </InputGroup>
+                              <Col md={12} className='d-flex justify-content-center'>
+                                <Button type='submit' className="w-100 rounded my-2 btn-dark">Place a bid</Button>
+                              </Col>
+                            </Form>
                           </Col>
-                        </Form>
-                      </Col>
-                    : 
+                        : 
+                          <Col md={12} className='d-flex justify-content-center'>
+                            <Link to="/" className="w-100 btn btn-dark my-2">
+                              Go back
+                            </Link>
+                          </Col>
+                        )
+                      :
                       <Col md={12} className='d-flex justify-content-center'>
-                        <Link to="/" className="w-100 btn btn-dark my-2">
-                          Go back
+                        <Link to="/login" className="w-100 btn btn-warning my-2">
+                          You must be logged in.
                         </Link>
                       </Col>
-                    }
+                      }
                     </Row>
                   </ListGroupItem>
                 </ListGroup>

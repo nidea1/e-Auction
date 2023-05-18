@@ -34,7 +34,7 @@ function Countdown({ endDate, onCountdownUpdate }) {
         `${countdown.hours}h ${countdown.minutes}m | ${format(endDate, 'EE, HH:mm')}`
       ) : countdown.minutes > 0 ? (
         `${countdown.minutes}m ${countdown.seconds}s | Today ${format(endDate, 'HH:mm')}`
-      ) : countdown.seconds === 0 && (
+      ) : countdown.seconds <= 0 && (
         `The auction is closed.`
       )}
     </Col>
