@@ -21,7 +21,7 @@ export const listBids = () => async (dispatch, getState) => {
         dispatch(bidListRequest())
 
         const api = createAPIinstance(getState)
-        const { data } = await api.get('/')
+        const { data } = await api.get('/?ordering=createdAt')
 
         dispatch(bidListSuccess(data))
     }catch(error){
