@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -30,11 +31,19 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-INTERNAL_IPS = [
-    '127.0.0.1',
-    'localhost'
-]
+# here to hosts like
+# nidea1.com.tr, nidea1-euaction.netlify.app
+
+ALLOWED_HOSTS = ['*']
+
+# this using for debug tool
+INTERNAL_IPS = ['*']
+
+# for csrf trust
+
+# CSRF_TRUSTED_ORIGINS = [
+#    'https://nidea1.com.tr'
+# ]
 
 # Application definition
 
@@ -105,6 +114,8 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -113,8 +124,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -140,13 +149,22 @@ ASGI_APPLICATION = "backend.asgi.application"
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
     },
 }
 
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+
+# if os.environ.get('DATABASE_URL'):
+#     DATABASES = {
+#         'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+#     }
+# else:
 '''
 DATABASES = {
     'default': {
@@ -215,7 +233,6 @@ MEDIA_ROOT = 'static/images'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [ like 'https://nidea1.com.tr' ]
 
-TIME_ZONE = 'Europe/Istanbul'
-USE_TZ = True
+CORS_ALLOW_ALL_ORIGINS = True
