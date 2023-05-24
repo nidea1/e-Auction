@@ -67,7 +67,7 @@ function Header() {
                             onChange={(e) => setKeyword(e.target.value)}
                             />
                         </Form>
-                        { userInfo ? 
+                        { userInfo && userInfo.token ? 
                         <NavDropdown className='text-end' title={userInfo.name}>
                             <NavDropdown.Item href='/profile'>
                                 Profile
