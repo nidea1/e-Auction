@@ -1,5 +1,5 @@
 import axios from "axios"
-import { bidListFail, bidListRequest, bidListSuccess, bidPlaceFail, bidPlaceRequest, bidPlaceSuccess } from "../reducers/bidReducers"
+import { bidListFail, bidListRequest, bidListSuccess, bidPaidFail, bidPaidRequest, bidPaidSuccess, bidPlaceFail, bidPlaceRequest, bidPlaceSuccess } from "../reducers/bidReducers"
 
 const createAPIinstance = (getState) => {
 
@@ -45,6 +45,23 @@ export const placeBid = (bid) => async (dispatch, getState) => {
         dispatch(bidPlaceFail(
             error.response && error.response.data.bid.detail ?
             error.response.data.bid.detail :
+            error.message
+        ))
+    }
+}
+
+export const calculateBidPaid = (bid) => async (dispatch, getState) => {
+    try{
+        dispatch(bidPaidRequest())
+
+        const api = createAPIinstance(getState)
+        const { data } = await api.post('/calculate-payment/', bid)
+
+        dispatch(bidPaidSuccess(data))
+    }catch(error){
+        dispatch(bidPaidFail(
+            error.response && error.response.data.detail ?
+            error.response.data.detail :
             error.message
         ))
     }

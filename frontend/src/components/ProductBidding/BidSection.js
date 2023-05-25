@@ -3,21 +3,23 @@ import { Row, Col, ListGroup, Button, Card, InputGroup, Form } from 'react-boots
 import { useSelector } from 'react-redux'
 import Countdown from './Countdown'
 import { toast } from 'react-toastify';
-import { placeBid } from '../../actions/bidActions';
-import { bidPlaceReset } from '../../reducers/bidReducers';
+import { calculateBidPaid } from '../../actions/bidActions';
+import { bidPaidReset } from '../../reducers/bidReducers';
 import { Link } from 'react-router-dom'
+import PaymentModal from './PaymentModal'
 
 function BidSection({dispatch, productID}) {
 
     const {
         productReducers : { product },
-        bidReducers: { bidPlaceError, bidPlaceLoading, bidPlaceSuccess, bid },
+        bidReducers: { bidPaidError, bidPaidLoading, bidPaidSuccess, bid },
         userReducers: { userInfo }
     } = useSelector((state) => state)
 
     const [highestBid, setHighestBid] = useState('')
     const [bidCount, setBidCount] = useState('')
     const [closeTime, setCloseTime] = useState('')
+    const [bidInstance, setBidInstance] = useState('')
 
     useEffect(() => {
         setHighestBid(product.currentHighestBid)
@@ -34,69 +36,74 @@ function BidSection({dispatch, productID}) {
 
     const [offer, setOffer] = useState('')
 
-    const submitHandler = (e) => {
+    const [showModal, setShowModal] = useState(false)
+
+    const modalShow = () => setShowModal(true)
+    const modalClose = () => setShowModal(false)
+
+    const submitHandler = async (e) => {
         e.preventDefault()
 
-        
-        let bid = {
+        let newBid = {
             'product': productID,
             'bid': offer,
         }
 
-        dispatch(placeBid(bid))
+        await dispatch(calculateBidPaid(newBid))
+
+        setBidInstance(newBid)
     }
 
-    const loadingToast = () =>{
-        toast.info("Response is pending...", {
-            position: "top-right",
-            autoClose: false,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: false,
-            theme: "dark",
-        })
-    }
+
     
 
     useEffect(() => {
-        if (bidPlaceLoading) {
-            loadingToast()
-        }
-        
-        if (!bidPlaceLoading) {
-            toast.dismiss()
-            if (bidPlaceSuccess){
-
-            let success = async () => {
-                await dispatch(bidPlaceReset())
-                toast.success(`You bidded $${bid.bid} to this product.`, {
+        if (bidPaidLoading) {
+            toast.info("Response is pending...", {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: false,
                 hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                })
-            }
-
-            success();
-            }
-
-            if (bidPlaceError) {
-            toast.error(bidPlaceError, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: false,
                 theme: "dark",
             })
+        }
+        
+        if (!bidPaidLoading) {
+            if (bidPaidSuccess){
+                toast.dismiss()
+                let success = async () => {
+                    await dispatch(bidPaidReset())
+                    modalShow()
+                    
+                    toast.success(`Your bid payment calculated for this product.`, {
+                        position: "top-right",
+                        autoClose: 1000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        theme: "dark",
+                    })
+                }
+                success();
+            }
+
+            if (bidPaidError) {
+                toast.dismiss()
+                toast.error(bidPaidError, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "dark",
+                })
             }
         }
-    }, [bidPlaceLoading, bidPlaceSuccess, dispatch, productID, bidPlaceError, bid])
+    }, [bidPaidLoading, bidPaidSuccess, dispatch, productID, bidPaidError, bid])
 
     useEffect(() => {
         const socket = new WebSocket(`ws://127.0.0.1:8000/ws/auctions/${productID}/`)
@@ -166,22 +173,22 @@ function BidSection({dispatch, productID}) {
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <Row className='justify-content-center'>
-                            {userInfo ?
+                            {userInfo && userInfo.token ?
                                 (!countdownFinished ?
                                 <Col md={12}>
                                     <Form onSubmit={submitHandler}>
-                                    <InputGroup className='mb-1'>
-                                        <InputGroup.Text style={{cursor:'default'}}>$</InputGroup.Text>
-                                        <Form.Control
-                                            required
-                                            placeholder='Enter your bid'
-                                            value={offer}
-                                            onChange={(e) => setOffer(e.target.value)}
-                                        />
-                                    </InputGroup>
-                                    <Col md={12} className='d-flex justify-content-center'>
-                                        <Button type='submit' className="w-100 rounded my-2 btn-dark">Place a bid</Button>
-                                    </Col>
+                                        <InputGroup className='mb-1'>
+                                            <InputGroup.Text style={{cursor:'default'}}>$</InputGroup.Text>
+                                            <Form.Control
+                                                required
+                                                placeholder='Enter your bid'
+                                                value={offer}
+                                                onChange={(e) => setOffer(e.target.value)}
+                                            />
+                                        </InputGroup>
+                                        <Col md={12} className='d-flex justify-content-center'>
+                                            <Button type='submit' className="w-100 rounded my-2 btn-dark">Place a bid</Button>
+                                        </Col>
                                     </Form>
                                 </Col>
                                 : 
@@ -193,7 +200,7 @@ function BidSection({dispatch, productID}) {
                                 )
                             :
                             <Col md={12} className='d-flex justify-content-center'>
-                                <Link to="/login" className="w-100 btn btn-warning my-2">
+                                <Link to="/login" className="w-100 btn btn-danger my-2">
                                 You must be logged in.
                                 </Link>
                             </Col>
@@ -202,6 +209,7 @@ function BidSection({dispatch, productID}) {
                         </ListGroup.Item>
                     </ListGroup>
                 </Card>
+                <PaymentModal bidInstance={bidInstance} show={showModal} onHide={modalClose} />
             </Col>
             }
         </>

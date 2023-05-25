@@ -16,19 +16,26 @@ export const bidSlice = createSlice({
         bidListSuccess: (state,action) => { state.loading = false; state.success = true; state.bids = action.payload },
         bidListFail: (state,action) => { state.loading = false; state.error = action.payload },
 
-        // Place a bid
+        // Place a Bid
         bidPlaceRequest: (state) => { state.bidPlaceLoading = true },
         bidPlaceSuccess: (state,action) => { state.bidPlaceLoading = false; state.bid = action.payload; state.bidPlaceSuccess = true },
         bidPlaceFail: (state,action) => { state.bidPlaceLoading = false; state.bidPlaceError = action.payload },
 
+        // Calculate Paid Amount
+        bidPaidRequest: (state) => { state.bidPaidLoading = true },
+        bidPaidSuccess: (state,action) => { state.bidPaidLoading = false; state.bid = action.payload; state.bidPaidSuccess = true },
+        bidPaidFail: (state,action) => { state.bidPaidLoading = false; state.bidPaidError = action.payload },
+
         // Reset Actions
         bidListReset: (state) => { state.loading = false; state.success = false; state.error = null },
         bidPlaceReset: (state) => { state.bidPlaceLoading = false; state.bidPlaceSuccess = false; state.bidPlaceError = null },
+        bidPaidReset: (state) => { state.bidPaidLoading = false; state.bidPaidSuccess = false; state.bidPaidError = null },
 
         // Reset Slice
         bidSliceReset: (state) => {
             state.loading = false; state.success = false; state.error = null; state.bids = []; state.bid = {};
-            state.bidPlaceLoading = false; state.bidPlaceSuccess = false; state.bidPlaceError = null
+            state.bidPlaceLoading = false; state.bidPlaceSuccess = false; state.bidPlaceError = null;
+            state.bidPaidLoading = false; state.bidPaidSuccess = false; state.bidPaidError = null
         }
     }
 })
@@ -43,6 +50,11 @@ export const {
     bidPlaceSuccess,
     bidPlaceFail,
     bidPlaceReset,
+
+    bidPaidRequest,
+    bidPaidSuccess,
+    bidPaidFail,
+    bidPaidReset,
 
     bidSliceReset,
 } = bidSlice.actions
