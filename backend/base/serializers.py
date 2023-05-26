@@ -156,6 +156,7 @@ class UserPaymentSerializer(serializers.ModelSerializer):
 
 class BidSerializer(serializers.ModelSerializer):
     productName = serializers.ReadOnlyField(source= 'product.name')
+    userName = serializers.ReadOnlyField(source= 'user.first_name')
     productSlug = serializers.ReadOnlyField(source= 'product.slug')
     productImage = serializers.SerializerMethodField()
 
