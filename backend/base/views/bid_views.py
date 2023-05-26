@@ -67,3 +67,11 @@ class BidList(viewsets.ModelViewSet):
             user=user,
             paidAmount=new_paid_amount
         )
+
+class ProductBidList(viewsets.ModelViewSet):
+    serializer_class = BidSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Bid.objects.filter(product=self.kwargs['product_id'])
+    
