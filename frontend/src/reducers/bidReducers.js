@@ -26,16 +26,24 @@ export const bidSlice = createSlice({
         bidPaidSuccess: (state,action) => { state.bidPaidLoading = false; state.bid = action.payload; state.bidPaidSuccess = true },
         bidPaidFail: (state,action) => { state.bidPaidLoading = false; state.bidPaidError = action.payload },
 
+        // Product Bids List
+        bidProductRequest: (state) => { state.bidProductLoading = true },
+        bidProductSuccess: (state,action) => { state.bidProductLoading = false; state.bids = action.payload; state.bidProductSuccess = true },
+        bidProductFail: (state,action) => { state.bidProductLoading = false; state.bidProductError = action.payload },
+
         // Reset Actions
         bidListReset: (state) => { state.loading = false; state.success = false; state.error = null },
         bidPlaceReset: (state) => { state.bidPlaceLoading = false; state.bidPlaceSuccess = false; state.bidPlaceError = null },
         bidPaidReset: (state) => { state.bidPaidLoading = false; state.bidPaidSuccess = false; state.bidPaidError = null },
+        bidProductReset: (state) => { state.bidProductLoading = false; state.bidProductSuccess = false; state.bidProductError = null },
+
 
         // Reset Slice
         bidSliceReset: (state) => {
             state.loading = false; state.success = false; state.error = null; state.bids = []; state.bid = {};
             state.bidPlaceLoading = false; state.bidPlaceSuccess = false; state.bidPlaceError = null;
             state.bidPaidLoading = false; state.bidPaidSuccess = false; state.bidPaidError = null
+            state.bidProductLoading = false; state.bidProductSuccess = false; state.bidProductError = null
         }
     }
 })
@@ -55,6 +63,11 @@ export const {
     bidPaidSuccess,
     bidPaidFail,
     bidPaidReset,
+
+    bidProductRequest,
+    bidProductSuccess,
+    bidProductFail,
+    bidProductReset,
 
     bidSliceReset,
 } = bidSlice.actions

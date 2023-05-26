@@ -7,12 +7,13 @@ import { calculateBidPaid } from '../../actions/bidActions';
 import { bidPaidReset } from '../../reducers/bidReducers';
 import { Link } from 'react-router-dom'
 import PaymentModal from './PaymentModal'
+import BidListModal from './BidListModal';
 
 function BidSection({dispatch, productID}) {
 
     const {
         productReducers : { product },
-        bidReducers: { bidPaidError, bidPaidLoading, bidPaidSuccess, bid },
+        bidReducers: { bidPaidError, bidPaidLoading, bidPaidSuccess, bid, bids },
         userReducers: { userInfo }
     } = useSelector((state) => state)
 
@@ -53,9 +54,6 @@ function BidSection({dispatch, productID}) {
 
         setBidInstance(newBid)
     }
-
-
-    
 
     useEffect(() => {
         if (bidPaidLoading) {
@@ -126,6 +124,15 @@ function BidSection({dispatch, productID}) {
         }
     }, [productID])
 
+    const [showBidList, setShowBidList] = useState(false)
+    const bidListShow = () => setShowBidList(true)
+    const bidListClose = () => setShowBidList(false)
+
+    const listHandler = (e) => {
+        e.preventDefault()
+
+        bidListShow()
+    }
 
     return (
         <>
@@ -167,7 +174,14 @@ function BidSection({dispatch, productID}) {
                                 Bids:
                             </Col>
                             <Col md={4} className='justify-content-end d-flex'>
-                                <strong>{bidCount}</strong>
+                                <strong>{bidCount}</strong>&nbsp;
+                                <span
+                                    onClick={bids && bids.length > 0 ? listHandler : undefined}
+                                    style={{cursor: bids && bids.length > 0 ? 'pointer' : 'default'}}
+                                    className={bids && bids.length > 0 ? '' : 'opacity-50'}
+                                >
+                                    [show]
+                                </span>
                             </Col>
                             </Row>
                         </ListGroup.Item>
@@ -210,6 +224,7 @@ function BidSection({dispatch, productID}) {
                     </ListGroup>
                 </Card>
                 <PaymentModal bidInstance={bidInstance} show={showModal} onHide={modalClose} />
+                <BidListModal show={showBidList} onHide={bidListClose} />
             </Col>
             }
         </>

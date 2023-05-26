@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductDetail from '../components/ProductBidding/ProductDetail';
 import BidSection from '../components/ProductBidding/BidSection';
+import { productBids } from '../actions/bidActions';
 
 
 function ProductScreen() {
@@ -24,6 +25,10 @@ function ProductScreen() {
     const {
       productReducers : { productDetailsError, productDetailsLoading },
     } = useSelector((state) => state)
+
+    useEffect(() => {
+      dispatch(productBids(id))
+    }, [id, dispatch])
 
     return (
       <>
