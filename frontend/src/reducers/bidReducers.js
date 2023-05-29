@@ -40,7 +40,7 @@ export const bidSlice = createSlice({
 
         // Reset Slice
         bidSliceReset: (state) => {
-            state.loading = false; state.success = false; state.error = null; state.bids = []; state.bid = {};
+            state.loading = false; state.success = false; state.error = null; state.bids = null; state.bid = null;
             state.bidPlaceLoading = false; state.bidPlaceSuccess = false; state.bidPlaceError = null;
             state.bidPaidLoading = false; state.bidPaidSuccess = false; state.bidPaidError = null
             state.bidProductLoading = false; state.bidProductSuccess = false; state.bidProductError = null

@@ -40,7 +40,7 @@ export const addressSlice = createSlice({
 
         // Reset Slice
         addressSliceReset: (state) => {
-            state.loading = false; state.success = false; state.error = null; state.address = {}; state.addresses = [];
+            state.loading = false; state.success = false; state.error = null; state.address = null; state.addresses = null;
             state.addressUpdateLoading = false; state.addressUpdateSuccess = false; state.addressUpdateError = null;
             state.addressDeleteLoading = false; state.addressDeleteSuccess = false; state.addressDeleteError = null;
             state.addressCreateLoading = false; state.addressCreateSuccess = false; state.addressCreateError = null

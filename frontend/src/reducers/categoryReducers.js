@@ -28,8 +28,8 @@ export const categorySlice = createSlice({
   
     // Reset Slice
     categorySliceReset: (state) => {
-      state.loading = false; state.success = false; state.error = null; state.categories = [];
-      state.categoryDetailsLoading = false; state.categoryDetailsSuccess = false; state.categoryDetailsError = null; state.category = {}
+      state.loading = false; state.success = false; state.error = null; state.categories = null;
+      state.categoryDetailsLoading = false; state.categoryDetailsSuccess = false; state.categoryDetailsError = null; state.category = null
     },
   }
 })

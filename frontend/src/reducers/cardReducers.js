@@ -39,7 +39,7 @@ export const cardSlice = createSlice({
 
         // Reset Slice
         cardSliceReset: (state) => {
-            state.loading = false; state.success = false; state.error = null; state.card = {}; state.cards = [];
+            state.loading = false; state.success = false; state.error = null; state.card = null; state.cards = null;
             state.cardUpdateLoading = false; state.cardUpdateSuccess = false; state.cardUpdateError = null;
             state.cardDeleteLoading = false; state.cardDeleteSuccess = false; state.cardDeleteError = null;
             state.cardCreateLoading = false; state.cardCreateSuccess = false; state.cardCreateError = null
