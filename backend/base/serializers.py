@@ -23,11 +23,11 @@ class UserSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source = 'first_name', required=False)
     _id = serializers.SerializerMethodField(read_only = True)
     isAdmin = serializers.SerializerMethodField(read_only = True)
-    username = serializers.CharField(required=False)
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ['_id', 'username', 'email', 'name', 'isAdmin']
+        fields = ['_id', 'name', 'email', 'isAdmin', 'password']
 
     def get__id(self, obj):
         return obj.id
@@ -56,9 +56,10 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return User.objects.create_user(
             username = validated_data.get('email'),
-            first_name = validated_data.get('first_name'),
             email = validated_data.get('email'),
-            password = validated_data.get('password')
+            password = validated_data.get('password'),
+            first_name = validated_data.get('first_name'),
+            is_active = False
         )
 
 class UserSerializerWithToken(UserSerializer):
