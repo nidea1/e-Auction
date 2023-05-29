@@ -33,7 +33,7 @@ export const productSlice = createSlice({
 
     // Reset Slice
     productSliceReset: (state) => {
-      state.loading = false; state.success = false; state.error = null; state.product = null; state.products = [];
+      state.loading = false; state.success = false; state.error = null; state.product = null; state.products = null;
       state.productDetailsLoading = false; state.productDetailsSuccess = false; state.productDetailsError = null;
       state.productPublishLoading = false; state.productPublishSuccess = false; state.productPublishError = null
     }
