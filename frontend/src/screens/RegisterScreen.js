@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Form, FormGroup, FormLabel, FormControl, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { register } from '../actions/userActions'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { userRegisterReset } from '../reducers/userReducers'
 
 
 function RegisterScreen() {
@@ -17,19 +21,12 @@ function RegisterScreen() {
   const [message, setMessage] = useState('')
 
   const location = useLocation()
-  const navigate = useNavigate()
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
   const {
-    userReducers: { userRegisterLoading, userRegisterError, userInfo }
+    userReducers: { userRegisterLoading, userRegisterError, userRegisterSuccess }
   } = useSelector((state) => state)
-
-  useEffect(() => {
-    if(userInfo){
-        navigate(redirect)
-    }
-  },[navigate, userInfo, redirect])
 
   const dispatch = useDispatch()
 
@@ -38,18 +35,77 @@ function RegisterScreen() {
     
     if(password !== passwordConfirm){
       setMessage('Password does not match!')
+    }else if (password === ''){
+      setMessage('You must enter a password!')
     }else{
       dispatch(register(name,email,password))
     }
   }
 
+  useEffect(() => {
+      if (userRegisterLoading) {
+          toast.info("Response is pending...", {
+              position: "top-right",
+              autoClose: false,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: false,
+              draggable: false,
+              theme: "dark",
+          })
+      }
+      
+      if (!userRegisterLoading) {
+          if (userRegisterSuccess){
+              toast.dismiss()
+              let success = async () => {
+                  dispatch(userRegisterReset())
+                  toast.success(`Dear ${name}, please go to you email: ${email} inbox and click on received activation link to confirm and complete the registration. Note: Check your spam folder.`, {
+                      position: "top-center",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      theme: "dark",
+                  })
+              }
+              success();
+          }
+
+          if (userRegisterError) {
+              toast.dismiss()
+              toast.error(userRegisterError, {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  theme: "dark",
+              })
+          }
+      }
+  }, [userRegisterLoading, userRegisterSuccess, dispatch, userRegisterError, name, email])
+
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <FormContainer>
         <h1>Sign Up</h1>
 
         {message && <Message variant='danger'>{message}</Message>}
-        {userRegisterError && <Message variant='danger'>{userRegisterError}</Message>}
         {userRegisterLoading && <Loader />}
         <Form onSubmit={submitHandler}>
           <FormGroup controlId='name'>
