@@ -21,6 +21,14 @@ import {
     userDeleteRequest,
     userDeleteSuccess,
     userDeleteFail,
+
+    userVerifyRequest,
+    userVerifySuccess,
+    userVerifyFail,
+
+    userSendVerifyEmailRequest,
+    userSendVerifyEmailSuccess,
+    userSendVerifyEmailFail,
 } from '../reducers/userReducers'
 
 const createAPIinstance = (getState, profile) => {
@@ -78,12 +86,9 @@ export const register = (name, email, password) => async (dispatch, getState) =>
         )
 
         dispatch(userRegisterSuccess(data))
-
-        localStorage.setItem('userInfo', JSON.stringify(data))
-
     }catch(error){
-        dispatch(userRegisterFail(error.response && error.response.data.detail
-                ? error.response.data.detail
+        dispatch(userRegisterFail(error.response && error.response.data.email.email
+                ? error.response.data.email.email
                 : error.message,
                 )
         );
@@ -152,5 +157,39 @@ export const deleteUser = () => async (dispatch, getState) => {
                 : error.message,
                 )
         );
+    }
+}
+
+export const verifyUser = (uidb64,token) => async (dispatch, getState) => {
+    try {
+        dispatch(userVerifyRequest())
+
+        const api = createAPIinstance(getState)
+        const { data } = await api.get(`/activate/${uidb64}/${token}/`)
+
+        dispatch(userVerifySuccess(data))
+    } catch (error) {
+        dispatch(userVerifyFail(
+            error.response && error.response.data.detail ?
+            error.response.data.detail :
+            error.message
+        ))
+    }
+}
+
+export const resendEmail = (email) => async (dispatch,getState) => {
+    try {
+        dispatch(userSendVerifyEmailRequest())
+
+        const api = createAPIinstance(getState)
+        const { data } = await api.post('/activate/resend/', {email})
+
+        dispatch(userSendVerifyEmailSuccess(data))
+    } catch (error) {
+        dispatch(userSendVerifyEmailFail(
+            error.response && error.response.data.detail ?
+            error.response.data.detail :
+            error.message
+        ))
     }
 }
