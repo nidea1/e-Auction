@@ -12,9 +12,14 @@ You can live test from [here!](https://nidea1.com.tr)
 - New payment modal
 - Endpoint that calculates the additional payment amount
 - List of users who have placed bids on the product
+- Email verifaction
 
 ## Screenshots
 
 ![img1](https://cdn.discordapp.com/attachments/1035852765756411995/1111345513384661012/image.png)
 ![img2](https://cdn.discordapp.com/attachments/1035852765756411995/1111651252225450057/image.png)
 ![img3](https://cdn.discordapp.com/attachments/1035852765756411995/1111651743009357844/image.png)
+![img4](https://cdn.discordapp.com/attachments/1035852765756411995/1112744847032459384/image.png)
+![img5](https://cdn.discordapp.com/attachments/1035852765756411995/1112745059465572553/image.png)
+![img6](https://cdn.discordapp.com/attachments/1035852765756411995/1112745366526382130/image.png)
+![img7](https://cdn.discordapp.com/attachments/1035852765756411995/1112638490333687848/image.png)
