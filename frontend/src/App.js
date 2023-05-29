@@ -16,6 +16,7 @@ import Categories from "./components/ProductSelling/Categories";
 import ProductAttr from "./components/ProductSelling/ProductAttr";
 import SellingScreen from "./screens/SellingScreen";
 import BidScreen from "./screens/BidScreen";
+import VerifyScreen from "./screens/VerifyScreen";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path="/" element={<HomeScreen />}/>
             <Route path="/login" element={<LoginScreen />}/>
             <Route path="/register" element={<RegisterScreen />}/>
+            <Route path="/verify/:uidb64/:token" element={<VerifyScreen />}/>
             <Route path="/profile" element={<ProfileScreen />}>
               <Route index element={<BidScreen />}/>
               <Route path="cards" element={<CreditCardScreen />} />
