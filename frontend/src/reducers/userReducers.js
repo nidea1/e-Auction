@@ -10,7 +10,7 @@ export const userSlice = createSlice({
     loading: false,
     success: false,
     error: null,
-    user: {},
+    user: null,
     userInfo: userInfoFromStorage
   },
   reducers: {
@@ -21,12 +21,22 @@ export const userSlice = createSlice({
     userLoginFail: (state, action) => { state.loading = false; state.error = action.payload },
 
     // Logout
-    userLogout: (state) => { state.userInfo = {} },
+    userLogout: (state) => { state.userInfo = null },
 
     // Register
     userRegisterRequest: (state) => { state.userRegisterLoading = true },
-    userRegisterSuccess: (state, action) => { state.userRegisterLoading = false; state.userInfo = action.payload; state.userRegisterSuccess = true },
+    userRegisterSuccess: (state, action) => { state.userRegisterLoading = false; state.userRegisterSuccess = true },
     userRegisterFail: (state, action) => { state.userRegisterLoading = false; state.userRegisterError = action.payload },
+
+    // Verify E-mail
+    userVerifyRequest: (state) => { state.userVerifyLoading = true },
+    userVerifySuccess: (state) => { state.userVerifyLoading = false; state.userVerifySuccess = true; },
+    userVerifyFail: (state,action) => { state.userVerifyLoading = false; state.userVerifyError = action.payload },
+
+    // Send Verify E-mail
+    userSendVerifyEmailRequest: (state) => { state.userSendVerifyEmailLoading = true },
+    userSendVerifyEmailSuccess: (state) => { state.userSendVerifyEmailLoading = false; state.userSendVerifyEmailSuccess = true; },
+    userSendVerifyEmailFail: (state,action) => { state.userSendVerifyEmailLoading = false; state.userSendVerifyEmailError = action.payload },
 
     // Profile
     userDetailsRequest: (state) => { state.userDetailsLoading = true },
@@ -49,14 +59,18 @@ export const userSlice = createSlice({
     userDetailsReset: (state) => { state.userDetailsLoading = false; state.userRegisterSuccess = false; state.userDetailsError = null },
     userUpdateProfileReset: (state) => { state.userUpdateProfileLoading = false; state.userUpdateProfileSuccess = false; state.userUpdateProfileError = null },
     userDeleteReset: (state) => { state.userDeleteLoading = false; state.userDeleteSuccess = false; state.userDeleteError = null },
+    userVerifyReset: (state) => { state.userVerifyLoading = false; state.userVerifySuccess = false; state.userVerifyError = null },
+    userSendVerifyEmailReset: (state) => { state.userSendVerifyEmailLoading = false; state.userSendVerifyEmailSuccess = false; state.userSendVerifyEmailError = null },
 
     // Reset Slice
     userSliceReset: (state) => {
-      state.loading = false; state.success = false; state.error = null; state.user = {}; state.userInfo = {};
+      state.loading = false; state.success = false; state.error = null; state.user = null; state.userInfo = null;
       state.userRegisterLoading = false; state.userRegisterSuccess = false; state.userRegisterError = null;
       state.userDetailsLoading = false; state.userRegisterSuccess = false; state.userDetailsError = null;
       state.userUpdateProfileLoading = false; state.userUpdateProfileSuccess = false; state.userUpdateProfileError = null;
-      state.userDeleteLoading = false; state.userDeleteSuccess = false; state.userDeleteError = null
+      state.userDeleteLoading = false; state.userDeleteSuccess = false; state.userDeleteError = null;
+      state.userVerifyLoading = false; state.userVerifySuccess = false; state.userVerifyError = null;
+      state.userSendVerifyEmailLoading = false; state.userSendVerifyEmailSuccess = false; state.userSendVerifyEmailError = null;
     }
   }
 })
@@ -71,6 +85,16 @@ export const {
   userRegisterSuccess,
   userRegisterFail,
   userRegisterReset,
+
+  userVerifyRequest,
+  userVerifySuccess,
+  userVerifyFail,
+  userVerifyReset,
+
+  userSendVerifyEmailRequest,
+  userSendVerifyEmailSuccess,
+  userSendVerifyEmailFail,
+  userSendVerifyEmailReset,
 
   userDetailsRequest,
   userDetailsSuccess,
