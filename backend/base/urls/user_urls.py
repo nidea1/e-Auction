@@ -8,5 +8,7 @@ urlpatterns = [
     path('addresses/', include('base.urls.address_urls')),
     path('cards/', include('base.urls.card_urls')),
     path('bids/', include('base.urls.bid_urls')),
-    path('', UserList.as_view(), name='users')
+    path('', UserList.as_view(), name='users'),
+    path('activate/<uidb64>/<token>/', UserVerify.as_view(), name='activate_acc'),
+    path('activate/resend/', ResendVerifactionEmail.as_view(), name='resend_mail'),
 ]
