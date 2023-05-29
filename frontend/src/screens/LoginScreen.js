@@ -39,7 +39,7 @@ function LoginScreen() {
     <>
         {loading ? <Loader />:
         <FormContainer>
-            <h1>Sign In</h1>
+            <Col className='h1'>Sign In</Col>
 
             {error && <Message variant='danger'>{error}</Message>}
                 <Form onSubmit={submitHandler}>
