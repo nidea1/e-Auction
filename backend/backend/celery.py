@@ -17,7 +17,7 @@ app.config_from_object(settings, namespace='CELERY')
 app.conf.beat_schedule = {
     'check_every_minutes': {
         'task': 'base.tasks.check_products_and_send_email',
-        'schedule': crontab(minute='*/1')
+        'schedule': crontab(minute='*/10')
     }
 }
 
