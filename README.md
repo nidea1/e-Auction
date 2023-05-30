@@ -13,6 +13,7 @@ You can live test from [here!](https://nidea1.com.tr)
 - Endpoint that calculates the additional payment amount
 - List of users who have placed bids on the product
 - Email verifaction
+- Ending product notification mail
 
 ## Screenshots
 
@@ -23,3 +24,4 @@ You can live test from [here!](https://nidea1.com.tr)
 ![img5](https://cdn.discordapp.com/attachments/1035852765756411995/1112745059465572553/image.png)
 ![img6](https://cdn.discordapp.com/attachments/1035852765756411995/1112745366526382130/image.png)
 ![img7](https://cdn.discordapp.com/attachments/1035852765756411995/1112638490333687848/image.png)
+![img8](https://cdn.discordapp.com/attachments/1035852765756411995/1113089044994330665/image.png)
