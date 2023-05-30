@@ -44,6 +44,7 @@ class Product(models.Model):
     totalBids = models.IntegerField(default=0)
     province = models.CharField(max_length=100, null=True, blank=True)
     district = models.CharField(max_length=100, null=True, blank=True)
+    ending_email_sent = models.BooleanField(default=False)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self) -> str:
@@ -63,7 +64,7 @@ class ProductImage(models.Model):
         return f'{self.product.name} - Image {self.pk}'
     
 class Bid(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='bids')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     bid = models.IntegerField(null=False, blank=False, default=0)
     paidAmount = models.IntegerField(null=False, blank=False, default=0)
@@ -124,6 +125,6 @@ class UserPayment(models.Model):
     ccv = models.CharField(max_length=3, null=True, blank=True)
 
     def __str__(self) -> str:
-        return str(self.cardOwner)
+        return f'{self.cardOwner} by {self.user.username}'
 
 
