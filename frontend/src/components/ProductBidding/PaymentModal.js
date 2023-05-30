@@ -141,47 +141,50 @@ function PaymentModal({show, onHide, bidInstance}) {
             </Row>
             :
             <Row>
-                <Row className='mx-4 my-3'>
-                    <Col className='fw-semibold text-center text-md-start'>
-                        Please choose a payment method.
-                    </Col>
-                </Row>
-                <Form onSubmit={submitHandler}>
-                    <Row className='justify-content-center justify-content-md-between mx-3'>
-                        {cards.map(card => (
-                            <Col md="5" className='col-10 border rounded mb-4 mx-3'>
-                                <CreditCard card={card} loading={loading} success={success} />
-                                <Row className='justify-content-center'>
-                                <Button className='mb-2 btn-dark col-6' onClick={() => setSelectedCard(card._id)}>
-                                    {selectedCard && card._id === selectedCard ?
-                                        'Selected'
-                                    :
-                                        'Select'    
-                                    }
-                                </Button>
-                                </Row>
-                            </Col>
-                        ))}
-                    </Row>
-                    <Row className='mx-4 justify-content-center mb-3'>
-                        <Button type='submit' className='col-4 col-md-6 btn btn-dark text-center'>
-                            Confirm
-                        </Button>
-                    </Row>
-                </Form>
-                <Row className='justify-content-center'>
-                    <Col className='col-10 border-bottom pb-2'/>
-                </Row>
                 {cards.length > 0 ?
-                <Row className='mx-4 my-3'>
-                    <Col className='fw-semibold text-center text-md-start'>
-                        Do you want use a new method?
-                    </Col>
-                </Row>
+                <>
+                    <Row className='mx-4 my-3'>
+                        <Col className='fw-semibold text-center text-md-start'>
+                            Please choose a payment method.
+                        </Col>
+                    </Row>
+                    <Form onSubmit={submitHandler}>
+                        <Row className='justify-content-center justify-content-md-between mx-3'>
+                            {cards.map(card => (
+                                <Col md="5" className='col-10 border rounded mb-4 mx-3'>
+                                    <CreditCard card={card} loading={loading} success={success} />
+                                    <Row className='justify-content-center'>
+                                    <Button className='mb-2 btn-dark col-6' onClick={() => setSelectedCard(card._id)}>
+                                        {selectedCard && card._id === selectedCard ?
+                                            'Selected'
+                                        :
+                                            'Select'    
+                                        }
+                                    </Button>
+                                    </Row>
+                                </Col>
+                            ))}
+                        </Row>
+                        <Row className='mx-4 justify-content-center mb-3'>
+                            <Button type='submit' className='col-4 col-md-6 btn btn-dark text-center'>
+                                Confirm
+                            </Button>
+                        </Row>
+                    </Form>
+                    <Row className='justify-content-center'>
+                        <Col className='col-10 border-bottom pb-2'/>
+                    </Row>
+                    
+                    <Row className='mx-4 my-3'>
+                        <Col className='fw-semibold text-center text-md-start'>
+                            Do you want use a new method?
+                        </Col>
+                    </Row>
+                </>
                 :
                 <Row className='mx-4 my-3'>
-                    <Col className='fw-semibold text-center text-md-start'>
-                        You don't have any payment method, do you want add a new method?.
+                    <Col className='col-10 fw-semibold text-center text-md-start'>
+                        You don't have any payment method, do you want add a new method?
                     </Col>
                 </Row>
                 }
