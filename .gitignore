@@ -59,6 +59,11 @@ cover/
 *.mo
 *.pot
 
+# Celery stuff:
+*.bak
+*.dat
+*.dir
+
 # Django stuff:
 *.log
 local_settings.py
