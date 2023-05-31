@@ -34,6 +34,7 @@ function ProductAttr() {
     const [productCategory, setProductCategory] = useState(null)
     const [productImages, setProductImages] = useState([])
     const [previewImages, setPreviewImages] = useState([])
+    const [productVideo, setProductVideo] = useState(null)
 
     const [categoryName, setCategoryName] = useState(null)
     const [message, setMessage] = useState('')
@@ -76,6 +77,8 @@ function ProductAttr() {
     const submitHandler = (e) =>{
         e.preventDefault()
 
+        let convertedURL = 'https://www.youtube.com/embed/'
+
         const formData = new FormData()
         formData.append('brand', productBrand);
         formData.append('useStatus', productStatus);
@@ -87,6 +90,14 @@ function ProductAttr() {
         formData.append('endDate', productEndDate);
         formData.append('category', productCategory);
         formData.append('userID', userInfo._id);
+
+        if(productVideo.slice(0,17) === 'https://youtu.be/'){
+            convertedURL += productVideo.slice(17)
+            formData.append('videoURL', convertedURL);
+        }else if(productVideo.slice(0,32) === 'https://www.youtube.com/watch?v='){
+            convertedURL += productVideo.slice(32)
+            formData.append('videoURL', convertedURL);
+        }
 
         for (const image of productImages){
             formData.append('images', image)
@@ -195,7 +206,7 @@ function ProductAttr() {
 
                             <Row className='my-2 border-bottom pb-3'>
                                 <FormGroup className='my-2' controlId='price'>
-                                    <FormLabel className='ms-2 fw-semibold'>Product Price</FormLabel>
+                                    <FormLabel className='ms-2 fw-semibold'>Starting Price</FormLabel>
                                     <InputGroup>
                                         <InputGroup.Text>$</InputGroup.Text>
                                         <Form.Control
@@ -212,42 +223,47 @@ function ProductAttr() {
                             </Row>
 
                             
-                            <Row className='my-2 border-bottom pb-3 justify-content-center'>
-                                <Row>
-                                    <FormGroup className='my-2' controlId='file'>
-                                        <FormLabel className='ms-2 fw-semibold'>Product Images</FormLabel>
-                                        <Form.Control
-                                            required
-                                            className={message ? 'mb-3 custom-file-input' : 'custom-file-input'}
-                                            type="file"
-                                            multiple
-                                            onChange={handleFileChange}
-                                            accept="image/jpeg,image/png,image/gif"
-                                            htmlSize={100}
-                                        />
-                                        {message && <Message variant={'danger'}>{message}</Message>}
-                                    </FormGroup>
-                                </Row>
+                            <Row className='my-2 border-bottom pb-3'>
+                                <FormGroup className='my-2' controlId='file'>
+                                    <FormLabel className='ms-2 fw-semibold'>Product Images</FormLabel>
+                                    <Form.Control
+                                        required
+                                        className={message ? 'mb-3 custom-file-input' : 'custom-file-input'}
+                                        type="file"
+                                        multiple
+                                        onChange={handleFileChange}
+                                        accept="image/jpeg,image/png,image/gif"
+                                        htmlSize={100}
+                                    />
+                                    {message && <Message variant={'danger'}>{message}</Message>}
+                                </FormGroup>
 
-                                { previewImages ?
-                                <Row className="mt-2">
-                                    {previewImages.map((preview, index) => (
-                                        <Col key={index} md={3} className="my-2">
-                                            <Figure.Image
-                                            src={preview}
-                                            alt={`Preview ${index + 1}`}
-                                            width={100}
-                                            height={100}
-                                            className="img-thumbnail shadow-sm" />
-                                            {index === 0 ?
-                                            <Figure.Caption>Product Cover</Figure.Caption>
-                                            : ''
-                                            }
-                                        </Col>
-                                    ))}
-                                </Row>
-                                : ''
-                                }
+                                { previewImages &&
+                                previewImages.map((preview, index) => (
+                                    <Col key={index} md={3} className="my-2">
+                                        <Figure.Image
+                                        src={preview}
+                                        alt={`Preview ${index + 1}`}
+                                        width={100}
+                                        height={100}
+                                        className="img-thumbnail shadow-sm" />
+                                        {index === 0 ?
+                                        <Figure.Caption>Product Cover</Figure.Caption>
+                                        : ''
+                                        }
+                                    </Col>
+                                ))}
+                                <FormGroup className='my-2' controlId='video'>
+                                    <FormLabel className='ms-2 fw-semibold'>Product Video</FormLabel>
+                                    <Form.Text className='ms-2'>(Optional)</Form.Text>
+                                    <Form.Control
+                                        placeholder='https://www.youtube.com/watch?v=123 or https://youtu.be/123'
+                                        type="video"
+                                        value={productVideo}
+                                        onChange={(e) => setProductVideo(e.target.value)}
+                                    />
+                                    <Form.Text className='ms-2'>Must be YouTube URL</Form.Text>
+                                </FormGroup>
                             </Row>
 
                             <Row className='my-2'>

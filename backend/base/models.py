@@ -45,6 +45,7 @@ class Product(models.Model):
     province = models.CharField(max_length=100, null=True, blank=True)
     district = models.CharField(max_length=100, null=True, blank=True)
     ending_email_sent = models.BooleanField(default=False)
+    videoURL = models.URLField(max_length=200, null=True, blank=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self) -> str:

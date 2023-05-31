@@ -137,7 +137,7 @@ function BidSection({dispatch, productID}) {
     return (
         <>
             {closeTime &&
-            <Col md={3}>
+            <Col lg={3} className='mt-md-5 mt-lg-0'>
                 <Card className='shadow border-0'>
                     <ListGroup>
                         <ListGroup.Item>

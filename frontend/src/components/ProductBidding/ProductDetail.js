@@ -28,12 +28,18 @@ function ProductDetail() {
               }
             </Col>
 
-            <Col md={3}>
+            <Col md={6} lg={3}>
               <ListGroup variant='flush'>
                 <ListGroup.Item>
                   <h3>{product.name}</h3>
                 </ListGroup.Item>
-
+                { product.videoURL &&
+                <ListGroup.Item>
+                  <Col className='embed-responsive'>
+                    <iframe class="embed-responsive-item w-100 h-100" src={product.videoURL} title={product.name} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+                  </Col>
+                </ListGroup.Item>
+                }
                 <ListGroup.Item>
                   {product.description}
                 </ListGroup.Item>
