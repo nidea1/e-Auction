@@ -28,12 +28,13 @@ function LoginScreen() {
         if(userInfo){
             navigate(redirect)
         }
-    },[navigate, userInfo, redirect])
+    },[navigate, userInfo, redirect, dispatch])
 
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(login(email, password))
     }
+
 
   return (
     <>

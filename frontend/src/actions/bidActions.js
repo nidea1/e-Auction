@@ -11,7 +11,7 @@ const createAPIinstance = (getState) => {
         baseURL: '/api/users/bids',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${userInfo.token}`
+            'Authorization': `Bearer ${userInfo.access_token}`
         }
     })
 }

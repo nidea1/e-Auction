@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Col, Container, Form, FormControl, ListGroupItem, Navbar, NavDropdown } from "react-bootstrap";
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../actions/userActions';
+import { detail, logout } from '../actions/userActions';
 import CategoryMenu from './Category/CategoryMenu';
 import { listCategories } from '../actions/categoryActions';
 
@@ -17,12 +17,18 @@ function Header() {
 
     const {
         categoryReducers: { categories },
-        userReducers: { userInfo }
+        userReducers: { userInfo, user }
     } = useSelector((state) => state)
 
     useEffect(() => {
         dispatch(listCategories())
     }, [dispatch])
+
+    useEffect(() => {
+        if(!user && userInfo){
+            dispatch(detail())
+        }
+    },[dispatch, user, userInfo])
 
     const [keyword, setKeyword] = useState('')
     const navigate = useNavigate()
@@ -67,8 +73,8 @@ function Header() {
                             onChange={(e) => setKeyword(e.target.value)}
                             />
                         </Form>
-                        { userInfo && userInfo.token ? 
-                        <NavDropdown className='text-end' title={userInfo.name}>
+                        { userInfo && user ? 
+                        <NavDropdown className='text-end' title={user.name}>
                             <NavDropdown.Item href='/profile'>
                                 Profile
                             </NavDropdown.Item>

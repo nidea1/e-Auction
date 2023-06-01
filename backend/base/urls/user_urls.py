@@ -1,9 +1,10 @@
 from django.urls import path, include
 from ..views.user_views import *
+from drf_social_oauth2.views import TokenView
 
 urlpatterns = [
-    path('login/', MyTokenObtainPairView.as_view(), name='user_login'),
     path('register/', UserRegister.as_view(), name='user_register'),
+    path('login/', TokenView.as_view(), name='user_login'),
     path('profile/', UserProfile.as_view(), name='user_profile'),
     path('addresses/', include('base.urls.address_urls')),
     path('cards/', include('base.urls.card_urls')),

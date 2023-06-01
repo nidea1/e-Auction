@@ -4,14 +4,18 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null
 
+const userFromStorage = localStorage.getItem('user')
+  ? JSON.parse(localStorage.getItem('user'))
+  : null
+
 export const userSlice = createSlice({
   name: 'userReducers',
   initialState: {
     loading: false,
     success: false,
     error: null,
-    user: null,
-    userInfo: userInfoFromStorage
+    user: userFromStorage,
+    userInfo: userInfoFromStorage,
   },
   reducers: {
 
@@ -21,7 +25,7 @@ export const userSlice = createSlice({
     userLoginFail: (state, action) => { state.loading = false; state.error = action.payload },
 
     // Logout
-    userLogout: (state) => { state.userInfo = null },
+    userLogout: (state) => { state.userInfo = null; state.user = null },
 
     // Register
     userRegisterRequest: (state) => { state.userRegisterLoading = true },
@@ -45,12 +49,12 @@ export const userSlice = createSlice({
 
     // Update Profile
     userUpdateProfileRequest: (state) => { state.userUpdateProfileLoading = true },
-    userUpdateProfileSuccess: (state, action) => { state.userUpdateProfileLoading = false; state.userInfo = action.payload; state.userUpdateProfileSuccess = true },
+    userUpdateProfileSuccess: (state, action) => { state.userUpdateProfileLoading = false; state.user = action.payload; state.userUpdateProfileSuccess = true },
     userUpdateProfileFail: (state, action) => { state.userUpdateProfileLoading = false; state.userUpdateProfileError = action.payload },
 
     // Delete Account
     userDeleteRequest: (state) => { state.userDeleteLoading = true },
-    userDeleteSuccess: (state, action) => { state.userDeleteLoading = false; state.userInfo = action.payload; state.userDeleteSuccess = true },
+    userDeleteSuccess: (state, action) => { state.userDeleteLoading = false; state.user = action.payload; state.userDeleteSuccess = true },
     userDeleteFail: (state, action) => { state.userDeleteLoading = false; state.userDeleteError = action.payload },
 
     // Reset Actions

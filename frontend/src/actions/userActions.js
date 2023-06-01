@@ -41,7 +41,7 @@ const createAPIinstance = (getState, profile) => {
         baseURL: '/api/users',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': profile ? `Bearer ${userInfo.token}`: ''
+            'Authorization': profile ? `Bearer ${userInfo.access_token}`: ''
         }
     })
 
@@ -50,17 +50,24 @@ const createAPIinstance = (getState, profile) => {
 export const login = (email, password) => async (dispatch, getState) => {
     try{
         dispatch(userLoginRequest())
+        const clientID = process.env.REACT_APP_MAIN_AUTH_CID
+        const clientSecret = process.env.REACT_APP_MAIN_AUTH_CSECRET
 
         const api = createAPIinstance(getState);
         const { data } = await api.post(
             '/login/',
-            { 'username': email, 'password': password }
+            {
+                'grant_type': 'password',
+                'username': email,
+                'password': password,
+                'client_id': clientID,
+                'client_secret': clientSecret,
+            }
         )
 
         dispatch(userLoginSuccess(data))
 
         localStorage.setItem('userInfo', JSON.stringify(data))
-
     }catch(error){
         dispatch(userLoginFail(error.response && error.response.data.detail
                 ? error.response.data.detail
@@ -72,6 +79,7 @@ export const login = (email, password) => async (dispatch, getState) => {
 
 export const logout = ()  => async (dispatch) => {
     localStorage.removeItem('userInfo')
+    localStorage.removeItem('user')
     dispatch(userLogout())
 }
 
@@ -95,17 +103,15 @@ export const register = (name, email, password) => async (dispatch, getState) =>
     }
 }
 
-export const detail = (id) => async (dispatch, getState) => {
+export const detail = () => async (dispatch, getState) => {
     try{
         dispatch(userDetailsRequest())
 
         const api = createAPIinstance(getState, true);
-        const { data } = await api.get(
-            `/${id}`,
-        )
+        const { data } = await api.get('/profile/')
 
         dispatch(userDetailsSuccess(data))
-
+        localStorage.setItem('user', JSON.stringify(data))
     }catch(error){
         dispatch(userDetailsFail(error.response && error.response.data.detail
                 ? error.response.data.detail

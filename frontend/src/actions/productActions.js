@@ -28,7 +28,7 @@ const createAPIinstance = (getState, isMultipart) => {
         baseURL: '/api/products',
         headers: {
             "Content-Type": isMultipart ? 'multipart/form-data' : 'application/json',
-            'Authorization': isMultipart ? `Bearer ${userInfo.token}` : ''
+            'Authorization': isMultipart ? `Bearer ${userInfo.access_token}` : ''
         }
     })
 }

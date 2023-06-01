@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import ProfileDetails from './ProfileDetails';
 import UpdateProfileModal from './UpdateProfileModal';
 import DeleteProfileModal from './DeleteProfileModal';
+import Message from '../Message';
 
 function ProfileCard() {
     const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -31,18 +32,15 @@ function ProfileCard() {
     } = useSelector((state) => state)
 
     useEffect(() => {
-        if (!userInfo) {
-            navigate('/login');
-        } else {
-            if (!user || !user.name || userUpdateProfileSuccess) {
-                dispatch(userUpdateProfileReset());
-                dispatch(detail('profile'));
-            }
+        if (!user || !user.name || userUpdateProfileSuccess) {
+            dispatch(userUpdateProfileReset());
+            dispatch(detail());
         }
+        
     }, [dispatch, navigate, userInfo, user, userUpdateProfileSuccess]);
 
     return (
-        <>
+        <>  
             { user && <ProfileDetails user={user} updateModalShow={() => setShowUpdateModal(true)} /> }
             { user && <UpdateProfileModal show={showUpdateModal} onHide={() => setShowUpdateModal(false)} user={user} deleteModalShow={deleteModalShow} /> }               
             

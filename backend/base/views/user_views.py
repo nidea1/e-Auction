@@ -1,20 +1,17 @@
 from django.contrib.auth.models import User
-from ..serializers import UserSerializer, UserSerializerWithToken, MyTokenObtainPairSerializer
+from ..serializers import UserSerializer
 from rest_framework import serializers
 
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework_simplejwt.views import TokenObtainPairView
+# from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 from rest_framework import status
 
 from ..utils import activation_token, send_verification_email
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
-
-class MyTokenObtainPairView(TokenObtainPairView):
-	serializer_class = MyTokenObtainPairSerializer
 
 
 class UserRegister(CreateAPIView):
@@ -61,7 +58,7 @@ class ResendVerifactionEmail(APIView):
 
 class UserProfile(RetrieveUpdateDestroyAPIView):
 
-	serializer_class = UserSerializerWithToken
+	serializer_class = UserSerializer
 	permission_classes = [IsAuthenticated]
 
 	def get_object(self):
@@ -71,8 +68,6 @@ class UserProfile(RetrieveUpdateDestroyAPIView):
 		data = self.request.data
 		user = self.get_object()
 
-		if data.get('name', None):
-			user.first_name = data['name']
 		if data.get('email', None):
 			new_email = data['email']
 			if User.objects.filter(email=new_email).exclude(pk=user.pk).exists():
@@ -81,11 +76,7 @@ class UserProfile(RetrieveUpdateDestroyAPIView):
 						'email': 'A user with this email already exists.'
 					}
 				)
-			else:
-				user.username = new_email
-				user.email = new_email
-
-		user.save()
+			
 		serializer.save()
 	
 

@@ -29,7 +29,7 @@ const createAPIinstance = (getState) => {
         baseURL: '/api/users/cards',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${userInfo.token}`
+            'Authorization': `Bearer ${userInfo.access_token}`
         }
     })
 };

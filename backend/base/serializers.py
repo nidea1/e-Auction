@@ -1,29 +1,15 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import check_password
 
 from .models import *
-
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-
-	def validate(self, attrs):
-		data = super().validate(attrs)
-
-		serializer = UserSerializerWithToken(self.user).data
-
-		for k,v in serializer.items():
-			data[k] = v
-
-		return data
 
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source = 'first_name', required=False)
     _id = serializers.SerializerMethodField(read_only = True)
     isAdmin = serializers.SerializerMethodField(read_only = True)
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = User
@@ -57,21 +43,30 @@ class UserSerializer(serializers.ModelSerializer):
         return User.objects.create_user(
             username = validated_data.get('email'),
             email = validated_data.get('email'),
-            password = validated_data.get('password'),
+            password = validated_data.get('password', None),
             first_name = validated_data.get('first_name'),
             is_active = False
         )
+    
+    def update(self, user, validated_data):
+        password = validated_data.get('password', None)
 
-class UserSerializerWithToken(UserSerializer):
-    token = serializers.SerializerMethodField(read_only = True)
+        if password is None or not check_password(password, user.password):
+            raise serializers.ValidationError(
+                {
+                    'detail': 'Your password is not correct.'
+                }
+            ) 
+            
+        user.first_name = validated_data.get('first_name', user.first_name)
+        user.email = validated_data.get('email', user.email)
 
-    class Meta:
-        model = User
-        fields = ['_id', 'username','email', 'name', 'isAdmin', 'token']
+        user.save()
+        return user
 
-    def get_token(self, obj):
-        token = RefreshToken.for_user(obj)
-        return str(token.access_token)
+        
+
+
 
     
 class BrandSerializer(serializers.ModelSerializer):
