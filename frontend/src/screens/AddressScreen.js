@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { listAddresses } from '../actions/addressActions'
 import Address from '../components/Address/Address'
 import CreateAddressModal from '../components/Address/CreateAddressModal'
+import Loader from '../components/Loader'
 import Message from '../components/Message'
 
 function AddressScreen() {
@@ -16,7 +17,7 @@ function AddressScreen() {
     const dispatch = useDispatch()
 
     const {
-        addressReducers: { error, addresses }
+        addressReducers: { error, addresses, loading }
     } = useSelector((state) => state)
 
     useEffect(() => {
@@ -40,6 +41,7 @@ function AddressScreen() {
                 <hr className='divider'/>
             </Col>
             {error && <Message variant={'danger'}>{error}</Message>}
+            {loading ? <Loader /> :
             <Row className='mx-3'>
                 {addresses.map((address) => (
                     <Col sm="12" md="6" lg="3" className='d-flex justify-content-center text-center mb-5'>
@@ -47,6 +49,7 @@ function AddressScreen() {
                     </Col>
                 ))}
             </Row>
+            }
         </>
     )
 }

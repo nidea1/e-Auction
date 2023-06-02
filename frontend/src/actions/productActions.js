@@ -18,22 +18,19 @@ import {
     brandListFail,
 } from '../reducers/productReducers'
 
-const createAPIinstance = (getState, isMultipart) => {
-    
-    const {
-        userReducers: { userInfo }
-    } = getState()
+const createAPIinstance = () => {
 
     return axios.create({
         baseURL: '/api/products',
         headers: {
-            "Content-Type": isMultipart ? 'multipart/form-data' : 'application/json',
-            'Authorization': isMultipart ? `Bearer ${userInfo.access_token}` : ''
-        }
+            'Content-Type': 'application/json',
+        },
+        withCredentials: true
     })
+
 }
 
- export const listProducts = (keyword= undefined, category= undefined, brands= undefined, userID= undefined, status= undefined, ordering = 'endDate') => async (dispatch, getState) => {
+ export const listProducts = (keyword= undefined, category= undefined, brands= undefined, userID= undefined, status= undefined, ordering = 'endDate') => async (dispatch) => {
     try {
         dispatch(productListRequest());
 
@@ -58,7 +55,7 @@ const createAPIinstance = (getState, isMultipart) => {
             params.ordering = ordering;
         }
         
-        const api = createAPIinstance(getState)
+        const api = createAPIinstance()
         const { data } = await api.get(`/?${qs.stringify(params, { arrayFormat: 'repeat' })}`);
 
         dispatch(productListSuccess(data));
@@ -71,11 +68,11 @@ const createAPIinstance = (getState, isMultipart) => {
     }
 };
 
-export const detailProducts = (id) => async (dispatch, getState) => {
+export const detailProducts = (id) => async (dispatch) => {
     try{
         dispatch(productDetailsRequest())
 
-        const api = createAPIinstance(getState)
+        const api = createAPIinstance()
         const { data } = await api.get(`/${id}`)
 
         dispatch(productDetailsSuccess(data))
@@ -87,11 +84,11 @@ export const detailProducts = (id) => async (dispatch, getState) => {
     }
 }
 
-export const publishProduct = (product) => async (dispatch, getState) => {
+export const publishProduct = (product) => async (dispatch) => {
     try{
         dispatch(productPublishRequest())
 
-        const api = createAPIinstance(getState, true)
+        const api = createAPIinstance()
         const { data } = await api.post('/', product)
 
         dispatch(productPublishSuccess(data))

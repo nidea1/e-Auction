@@ -3,13 +3,14 @@ import { Col, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { listBids } from '../actions/bidActions'
 import Bid from '../components/Bid/Bid'
+import Loader from '../components/Loader'
 
 function BidScreen() {
 
   const dispatch = useDispatch()
 
   const {
-    bidReducers: { bids }
+    bidReducers: { bids, loading }
   } = useSelector((state) => state)
 
   useEffect(() => {
@@ -26,12 +27,14 @@ function BidScreen() {
     <Col className='d-flex justify-content-center mb-2'>
         <hr className='divider'/>
     </Col>   
-    <Row className='mx-3'>     
+    <Row className='mx-3'>
+        {loading ? <Loader /> :
         <ListGroup variant='flush' className='rounded'>
             {[...bids].reverse().map((bid) => (
                 <Bid bid={bid} />
             ))}
         </ListGroup>
+        }
     </Row>
     </>
   )

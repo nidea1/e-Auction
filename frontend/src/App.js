@@ -14,9 +14,10 @@ import CreditCardScreen from "./screens/CreditCardScreen";
 import UploadScreen from "./screens/UploadScreen";
 import Categories from "./components/ProductSelling/Categories";
 import ProductAttr from "./components/ProductSelling/ProductAttr";
-import SellingScreen from "./screens/SellingScreen";
 import BidScreen from "./screens/BidScreen";
 import VerifyScreen from "./screens/VerifyScreen";
+import UsersProductsScreen from "./screens/UsersProductsScreen";
+import SocialScreen from "./screens/SocialScreen";
 
 
 function App() {
@@ -28,13 +29,14 @@ function App() {
           <Routes>
             <Route path="/" element={<HomeScreen />}/>
             <Route path="/login" element={<LoginScreen />}/>
+            <Route path="/social" element={<SocialScreen />}/>
             <Route path="/register" element={<RegisterScreen />}/>
             <Route path="/verify/:uidb64/:token" element={<VerifyScreen />}/>
             <Route path="/profile" element={<ProfileScreen />}>
               <Route index element={<BidScreen />}/>
               <Route path="cards" element={<CreditCardScreen />} />
               <Route path="addresses" element={<AddressScreen />} />
-              <Route path="selling" element={<SellingScreen />} />
+              <Route path="selling" element={<UsersProductsScreen />} />
             </Route>
             <Route path="/product/:productParams" element={<ProductScreen />}/>
             <Route path="/product/upload" element={<UploadScreen />}>

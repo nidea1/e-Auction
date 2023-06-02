@@ -19,26 +19,23 @@ import {
 
 } from "../reducers/cardReducers";
 
-const createAPIinstance = (getState) => {
-
-    const {
-        userReducers: { userInfo }
-    } = getState();
+const createAPIinstance = () => {
 
     return axios.create({
         baseURL: '/api/users/cards',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${userInfo.access_token}`
-        }
+        },
+        withCredentials: true
     })
-};
 
-export const listCards = () => async (dispatch, getState) => {
+}
+
+export const listCards = () => async (dispatch) => {
     try{
         dispatch(cardListRequest());
 
-        const api = createAPIinstance(getState);
+        const api = createAPIinstance();
         const { data } = await api.get('/');
 
         dispatch(cardListSuccess(data))
@@ -51,11 +48,11 @@ export const listCards = () => async (dispatch, getState) => {
     }
 };
 
-export const createCard = (card) => async (dispatch, getState) => {
+export const createCard = (card) => async (dispatch) => {
     try{
         dispatch(cardCreateRequest());
 
-        const api = createAPIinstance(getState);
+        const api = createAPIinstance();
         const { data } = await api.post(
             '/',
             card
@@ -71,11 +68,11 @@ export const createCard = (card) => async (dispatch, getState) => {
     }
 };
 
-export const updateCard = (card) => async (dispatch, getState) => {
+export const updateCard = (card) => async (dispatch) => {
     try{
         dispatch(cardUpdateRequest());
 
-        const api = createAPIinstance(getState);
+        const api = createAPIinstance();
         const { data } = await api.put(
             `/${card._id}/`,
             card
@@ -92,11 +89,11 @@ export const updateCard = (card) => async (dispatch, getState) => {
     }
 };
 
-export const deleteCard = (id) => async (dispatch, getState) => {
+export const deleteCard = (id) => async (dispatch) => {
     try{
         dispatch(cardDeleteRequest());
 
-        const api = createAPIinstance(getState);
+        const api = createAPIinstance();
         const { data } = await api.delete(`/${id}/`);
 
         await dispatch(cardDeleteSuccess(data))

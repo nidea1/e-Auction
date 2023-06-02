@@ -1,26 +1,23 @@
 import axios from "axios"
 import { bidListFail, bidListRequest, bidListSuccess, bidPaidFail, bidPaidRequest, bidPaidSuccess, bidPlaceFail, bidPlaceRequest, bidPlaceSuccess, bidProductFail, bidProductRequest, bidProductSuccess } from "../reducers/bidReducers"
 
-const createAPIinstance = (getState) => {
-
-    const {
-        userReducers: { userInfo }
-    } = getState()
+const createAPIinstance = () => {
 
     return axios.create({
         baseURL: '/api/users/bids',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${userInfo.access_token}`
-        }
+        },
+        withCredentials: true
     })
+
 }
 
-export const listBids = () => async (dispatch, getState) => {
+export const listBids = () => async (dispatch) => {
     try{
         dispatch(bidListRequest())
 
-        const api = createAPIinstance(getState)
+        const api = createAPIinstance()
         const { data } = await api.get('/?ordering=createdAt')
 
         dispatch(bidListSuccess(data))
@@ -33,11 +30,11 @@ export const listBids = () => async (dispatch, getState) => {
     }
 }
 
-export const placeBid = (bid) => async (dispatch, getState) => {
+export const placeBid = (bid) => async (dispatch) => {
     try{
         dispatch(bidPlaceRequest())
 
-        const api = createAPIinstance(getState)
+        const api = createAPIinstance()
         const { data } = await api.post('/', bid)
 
         dispatch(bidPlaceSuccess(data))
@@ -50,11 +47,11 @@ export const placeBid = (bid) => async (dispatch, getState) => {
     }
 }
 
-export const calculateBidPaid = (bid) => async (dispatch, getState) => {
+export const calculateBidPaid = (bid) => async (dispatch) => {
     try{
         dispatch(bidPaidRequest())
 
-        const api = createAPIinstance(getState)
+        const api = createAPIinstance()
         const { data } = await api.post('/calculate-payment/', bid)
 
         dispatch(bidPaidSuccess(data))
@@ -67,11 +64,11 @@ export const calculateBidPaid = (bid) => async (dispatch, getState) => {
     }
 }
 
-export const productBids = (productID) => async (dispatch, getState) => {
+export const productBids = (productID) => async (dispatch) => {
     try{
         dispatch(bidProductRequest())
         
-        const api = createAPIinstance(getState)
+        const api = createAPIinstance()
         const { data } = await api.get(`/product/${productID}`)
         
         dispatch(bidProductSuccess(data))

@@ -3,14 +3,15 @@ import { Col, Form, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { listProducts } from '../actions/productActions'
 import ProductByCategory from '../components/Category/ProductByCategory'
+import Loader from '../components/Loader'
 
-function SellingScreen() {
+function UsersProductsScreen() {
     
     const dispatch = useDispatch()
     
     const {
         userReducers: { user },
-        productReducers: { products }
+        productReducers: { products, loading }
     } = useSelector((state) => state)
 
     const statuses = [
@@ -79,6 +80,7 @@ function SellingScreen() {
             <Col className='d-flex justify-content-center'>
                 <hr className='divider'/>
             </Col>   
+            {loading ? <Loader /> :
             <Row className='mx-3'>
             {products.map((product) => (
                 <Col key={product._id} sm={12} md={6} lg={4}>
@@ -86,8 +88,9 @@ function SellingScreen() {
                 </Col>
             ))}
             </Row>
+            }
         </>
     )
 }
 
-export default SellingScreen
+export default UsersProductsScreen

@@ -4,7 +4,9 @@ import {
     userLoginSuccess,
     userLoginFail,
 
-    userLogout,
+    userLogoutRequest,
+    userLogoutSuccess,
+    userLogoutFail,
 
     userRegisterRequest,
     userRegisterSuccess,
@@ -31,29 +33,25 @@ import {
     userSendVerifyEmailFail,
 } from '../reducers/userReducers'
 
-const createAPIinstance = (getState, profile) => {
-
-    const {
-        userReducers: { userInfo }
-    } = getState()
+const createAPIinstance = () => {
 
     return axios.create({
         baseURL: '/api/users',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': profile ? `Bearer ${userInfo.access_token}`: ''
-        }
+        },
+        withCredentials: true
     })
 
 }
 
-export const login = (email, password) => async (dispatch, getState) => {
+export const login = (email, password) => async (dispatch) => {
     try{
         dispatch(userLoginRequest())
         const clientID = process.env.REACT_APP_MAIN_AUTH_CID
         const clientSecret = process.env.REACT_APP_MAIN_AUTH_CSECRET
 
-        const api = createAPIinstance(getState);
+        const api = createAPIinstance();
         const { data } = await api.post(
             '/login/',
             {
@@ -66,8 +64,7 @@ export const login = (email, password) => async (dispatch, getState) => {
         )
 
         dispatch(userLoginSuccess(data))
-
-        localStorage.setItem('userInfo', JSON.stringify(data))
+        await dispatch(detail())
     }catch(error){
         dispatch(userLoginFail(error.response && error.response.data.detail
                 ? error.response.data.detail
@@ -78,16 +75,46 @@ export const login = (email, password) => async (dispatch, getState) => {
 }
 
 export const logout = ()  => async (dispatch) => {
-    localStorage.removeItem('userInfo')
-    localStorage.removeItem('user')
-    dispatch(userLogout())
+    try{
+        dispatch(userLogoutRequest())
+
+        const api = createAPIinstance();
+        const { data } = await api.post('/logout/')
+
+        dispatch(userLogoutSuccess(data))
+        localStorage.removeItem('user')
+    }catch(error){
+        dispatch(userLogoutFail(error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+                )
+        );
+    }
 }
 
-export const register = (name, email, password) => async (dispatch, getState) => {
+export const detail = () => async (dispatch) => {
+    try{
+        dispatch(userDetailsRequest())
+
+        const api = createAPIinstance();
+        const { data } = await api.get('/profile/')
+
+        dispatch(userDetailsSuccess(data))
+        localStorage.setItem('user', JSON.stringify(data))
+    }catch(error){
+        dispatch(userDetailsFail(error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+                )
+        );
+    }
+}
+
+export const register = (name, email, password) => async (dispatch) => {
     try{
         dispatch(userRegisterRequest())
 
-        const api = createAPIinstance(getState);
+        const api = createAPIinstance();
         const { data } = await api.post(
             '/register/',
             { 'name': name, 'email': email, 'password': password }
@@ -103,29 +130,11 @@ export const register = (name, email, password) => async (dispatch, getState) =>
     }
 }
 
-export const detail = () => async (dispatch, getState) => {
-    try{
-        dispatch(userDetailsRequest())
-
-        const api = createAPIinstance(getState, true);
-        const { data } = await api.get('/profile/')
-
-        dispatch(userDetailsSuccess(data))
-        localStorage.setItem('user', JSON.stringify(data))
-    }catch(error){
-        dispatch(userDetailsFail(error.response && error.response.data.detail
-                ? error.response.data.detail
-                : error.message,
-                )
-        );
-    }
-}
-
-export const update = (user) => async (dispatch, getState) => {
+export const update = (user) => async (dispatch) => {
     try{
         dispatch(userUpdateProfileRequest())
 
-        const api = createAPIinstance(getState, true);
+        const api = createAPIinstance();
         const { data } = await api.put(
             '/profile/',
             user
@@ -144,19 +153,19 @@ export const update = (user) => async (dispatch, getState) => {
     }
 }
 
-export const deleteUser = () => async (dispatch, getState) => {
+export const deleteUser = () => async (dispatch) => {
     try{
         dispatch(userDeleteRequest())
 
-        const api = createAPIinstance(getState, true);
+        const api = createAPIinstance();
         const { data } = await api.delete(
             '/profile/',
         )
 
         dispatch(userDeleteSuccess(data))
 
-        localStorage.removeItem('userInfo')
-        dispatch(userLogout())
+        localStorage.removeItem('user')
+        dispatch(logout())
     }catch(error){
         dispatch(userDeleteFail(error.response && error.response.data.detail
                 ? error.response.data.detail
@@ -166,11 +175,11 @@ export const deleteUser = () => async (dispatch, getState) => {
     }
 }
 
-export const verifyUser = (uidb64,token) => async (dispatch, getState) => {
+export const verifyUser = (uidb64,token) => async (dispatch) => {
     try {
         dispatch(userVerifyRequest())
 
-        const api = createAPIinstance(getState)
+        const api = createAPIinstance()
         const { data } = await api.get(`/activate/${uidb64}/${token}/`)
 
         dispatch(userVerifySuccess(data))
@@ -183,11 +192,11 @@ export const verifyUser = (uidb64,token) => async (dispatch, getState) => {
     }
 }
 
-export const resendEmail = (email) => async (dispatch,getState) => {
+export const resendEmail = (email) => async (dispatch) => {
     try {
         dispatch(userSendVerifyEmailRequest())
 
-        const api = createAPIinstance(getState)
+        const api = createAPIinstance()
         const { data } = await api.post('/activate/resend/', {email})
 
         dispatch(userSendVerifyEmailSuccess(data))

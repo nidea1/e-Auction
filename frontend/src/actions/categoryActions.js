@@ -13,9 +13,11 @@ const createAPIinstance = () => {
     return axios.create({
         baseURL: '/api/categories',
         headers: {
-            'Content-Type': 'application/json'
-        }
+            'Content-Type': 'application/json',
+        },
+        withCredentials: true
     })
+
 }
 
 export const listCategories = () => async (dispatch) => {

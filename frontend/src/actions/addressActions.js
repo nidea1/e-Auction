@@ -17,26 +17,23 @@ import {
     addressDeleteFail,
 } from '../reducers/addressReducers'
 
-const createAPIinstance = (getState) => {
-
-    const {
-        userReducers: { userInfo }
-    } = getState();
+const createAPIinstance = () => {
 
     return axios.create({
         baseURL: '/api/users/addresses',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${userInfo.access_token}`
-        }
+        },
+        withCredentials: true
     })
+
 }
 
-export const listAddresses = () => async (dispatch, getState) => {
+export const listAddresses = () => async (dispatch) => {
     try{
         dispatch(addressListRequest())
 
-        const api = createAPIinstance(getState);
+        const api = createAPIinstance()
         const { data } = await api.get('/');
 
         dispatch(addressListSuccess(data))
@@ -50,11 +47,11 @@ export const listAddresses = () => async (dispatch, getState) => {
 }
 
 
-export const createAddress = (address) => async (dispatch, getState) => {
+export const createAddress = (address) => async (dispatch) => {
     try{
         dispatch(addressCreateRequest())
 
-        const api = createAPIinstance(getState);
+        const api = createAPIinstance()
         const { data } = await api.post(
             '/',
             address
@@ -70,11 +67,11 @@ export const createAddress = (address) => async (dispatch, getState) => {
     }
 }
 
-export const updateAddress = (address) => async (dispatch, getState) => {
+export const updateAddress = (address) => async (dispatch) => {
     try{
         dispatch(addressUpdateRequest())
 
-        const api = createAPIinstance(getState);
+        const api = createAPIinstance()
         const { data } = await api.put(
             `/${address._id}/`,
             address
@@ -91,11 +88,11 @@ export const updateAddress = (address) => async (dispatch, getState) => {
     }
 }
 
-export const deleteAddress = (id) => async (dispatch, getState) => {
+export const deleteAddress = (id) => async (dispatch) => {
     try{
         dispatch(addressDeleteRequest())
 
-        const api = createAPIinstance(getState);
+        const api = createAPIinstance()
         const { data } = await api.delete(`/${id}/`);
 
         await dispatch(addressDeleteSuccess(data))

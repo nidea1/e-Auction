@@ -27,6 +27,8 @@ urlpatterns = [
     path('api/categories/', include('base.urls.category_urls')),
     path('__debug__/', include(debug_toolbar.urls)),
     re_path(r'^auth/', include('drf_social_oauth2.urls', namespace='drf')),
+    re_path(r'^social/', include('social_django.urls', namespace='social')),
 ]
+
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

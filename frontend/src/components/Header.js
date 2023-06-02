@@ -5,33 +5,41 @@ import { useDispatch, useSelector } from 'react-redux';
 import { detail, logout } from '../actions/userActions';
 import CategoryMenu from './Category/CategoryMenu';
 import { listCategories } from '../actions/categoryActions';
+import { userLogoutReset } from '../reducers/userReducers';
 
 
 function Header() {
 
+    const {
+        categoryReducers: { categories },
+        userReducers: { user, userLogoutSuccess }
+    } = useSelector((state) => state)
+
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const logoutHandler = () => {
         dispatch(logout())
     }
 
-    const {
-        categoryReducers: { categories },
-        userReducers: { userInfo, user }
-    } = useSelector((state) => state)
+    useEffect(() => {
+        if(userLogoutSuccess){
+            navigate('/')
+            dispatch(userLogoutReset())
+        }
+    }, [navigate, userLogoutSuccess, dispatch])
 
     useEffect(() => {
         dispatch(listCategories())
     }, [dispatch])
 
     useEffect(() => {
-        if(!user && userInfo){
+        if(!user){
             dispatch(detail())
         }
-    },[dispatch, user, userInfo])
+    },[dispatch, user])
 
     const [keyword, setKeyword] = useState('')
-    const navigate = useNavigate()
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -73,7 +81,7 @@ function Header() {
                             onChange={(e) => setKeyword(e.target.value)}
                             />
                         </Form>
-                        { userInfo && user ? 
+                        { user ?  
                         <NavDropdown className='text-end' title={user.name}>
                             <NavDropdown.Item href='/profile'>
                                 Profile

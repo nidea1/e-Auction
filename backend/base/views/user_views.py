@@ -1,11 +1,11 @@
 from django.contrib.auth.models import User
+from rest_framework.request import Request
 from ..serializers import UserSerializer
 from rest_framework import serializers
 
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-# from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -13,6 +13,8 @@ from ..utils import activation_token, send_verification_email
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 
+from drf_social_oauth2.views import TokenView, RevokeTokenView
+from oauth2_provider.models import AccessToken, RefreshToken
 
 class UserRegister(CreateAPIView):
 
@@ -84,3 +86,34 @@ class UserList(ListAPIView):
 	serializer_class = UserSerializer
 	queryset = User.objects.all()
 	permission_classes = [IsAdminUser]
+
+
+class UserLogin(TokenView):
+
+	def post(self, request: Request, *args, **kwargs):
+		response = super().post(request, *args, **kwargs)
+
+		if response.status_code == 200 and 'access_token' in response.data and 'refresh_token' in response.data:
+			response.set_cookie('access_token', response.data['access_token'], httponly=True, samesite=None, expires=36000)
+			response.set_cookie('refresh_token', response.data['refresh_token'], httponly=True, samesite=None)
+
+		return response
+
+class UserLogout(RevokeTokenView):
+
+	permission_classes = [IsAuthenticated]
+
+	def post(self, request: Request, *args, **kwargs):
+
+		access_token = AccessToken.objects.get(user=request.user, token=request.auth)
+		RefreshToken.objects.filter(user=request.user, access_token=access_token).delete()
+		access_token.delete()
+
+		response = Response({'detail': 'Successfully logged out.'})
+		
+		response.delete_cookie('access_token')
+		response.delete_cookie('refresh_token')
+		response.delete_cookie('csrftoken')
+		
+		return response
+

@@ -64,10 +64,6 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-        
-
-
-
     
 class BrandSerializer(serializers.ModelSerializer):
 

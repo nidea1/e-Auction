@@ -39,11 +39,15 @@ ALLOWED_HOSTS = ['*']
 # this using for debug tool
 INTERNAL_IPS = ['*']
 
-# for csrf trust
+# CSRF Settings
 
-# CSRF_TRUSTED_ORIGINS = [
-#    'https://nidea1.com.tr'
-# ]
+CSRF_COOKIE_SECURE=True
+CSRF_COOKIE_HTTP_ONLY=True
+
+CSRF_TRUSTED_ORIGINS = [
+   'http://localhost:3000'
+   'http://localhost'
+]
 
 # Application definition
 
@@ -82,6 +86,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'base.middleware.CookieAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -115,9 +121,24 @@ REST_FRAMEWORK = {
 }
 
 AUTHENTICATION_BACKENDS = (
-   'drf_social_oauth2.backends.DjangoOAuth2',
-   'django.contrib.auth.backends.ModelBackend',
+    # Social backends
+    'social_core.backends.discord.DiscordOAuth2',
+    'social_core.backends.github.GithubOAuth2',
+
+    'drf_social_oauth2.backends.DjangoOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
+
+# Social Auth Configs
+# Github
+SOCIAL_AUTH_GITHUB_KEY = 'fe6699de0098a90e1ba2'
+SOCIAL_AUTH_GITHUB_SECRET = 'fb6831ea63f73d46ccea64132f365061060702c3'
+SOCIAL_AUTH_GITHUB_REDIRECT_URI = 'http://localhost:3000/github'
+
+# Discord
+SOCIAL_AUTH_DISCORD_KEY = '1113427148938682408'
+SOCIAL_AUTH_DISCORD_SECRET = 'PVt95wTsO7KoYanmUMWwUi4ft4HKeOgZ'
+SOCIAL_AUTH_DISCORD_REDIRECT_URI = 'http://localhost:3000/github'
 
 ACTIVATE_JWT = True
 
@@ -219,6 +240,13 @@ LOGIN_URL = 'login'
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+CORS_COOKIE_SAMESITE = None #'Lax'
+SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SAMESITE = None #'Lax'
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000'
+]
 
 # Mailing settings
 
