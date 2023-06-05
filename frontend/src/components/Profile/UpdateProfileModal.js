@@ -46,7 +46,10 @@ function UpdateProfileModal({show, onHide, user, deleteModalShow}) {
 
     return (
         <Modal show={show} onHide={onHide}>  
-            <Modal.Header closeButton className='border-0'></Modal.Header>   
+            <Modal.Header
+                className='border-0'
+                closeButton
+            />   
             <Col className='text-center fw-bold fs-4'>Edit Profile</Col>
             <Modal.Body>  
                 <UpdateProfileForm>

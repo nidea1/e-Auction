@@ -17,7 +17,8 @@ import ProductAttr from "./components/ProductSelling/ProductAttr";
 import BidScreen from "./screens/BidScreen";
 import VerifyScreen from "./screens/VerifyScreen";
 import UsersProductsScreen from "./screens/UsersProductsScreen";
-import SocialScreen from "./screens/SocialScreen";
+import SocialScreen from "./components/Login/SocialScreen";
+import SocialRegisterScreen from "./screens/SocialRegisterScreen";
 
 
 function App() {
@@ -28,9 +29,12 @@ function App() {
         <Container>
           <Routes>
             <Route path="/" element={<HomeScreen />}/>
-            <Route path="/login" element={<LoginScreen />}/>
-            <Route path="/social" element={<SocialScreen />}/>
+            <Route path="/login" element={<LoginScreen />}>
+              <Route index element={<SocialScreen />}/>
+              <Route path=":socialParams" element={<SocialScreen />}/>
+            </Route>
             <Route path="/register" element={<RegisterScreen />}/>
+            <Route path="/register/social" element={<SocialRegisterScreen />}/>
             <Route path="/verify/:uidb64/:token" element={<VerifyScreen />}/>
             <Route path="/profile" element={<ProfileScreen />}>
               <Route index element={<BidScreen />}/>

@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-from datetime import timedelta
 import os
 from dotenv import load_dotenv
 import dj_database_url
@@ -133,12 +132,12 @@ AUTHENTICATION_BACKENDS = (
 # Github
 SOCIAL_AUTH_GITHUB_KEY = os.environ.get('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('SOCIAL_AUTH_GITHUB_SECRET')
-SOCIAL_AUTH_GITHUB_REDIRECT_URI = 'http://localhost:3000/github'
+SOCIAL_AUTH_GITHUB_REDIRECT_URI = 'http://localhost:3000/login/github'
 
 # Discord
 SOCIAL_AUTH_DISCORD_KEY = os.environ.get('SOCIAL_AUTH_DISCORD_KEY')
 SOCIAL_AUTH_DISCORD_SECRET = os.environ.get('SOCIAL_AUTH_DISCORD_SECRET')
-SOCIAL_AUTH_DISCORD_REDIRECT_URI = 'http://localhost:3000/github'
+SOCIAL_AUTH_DISCORD_REDIRECT_URI = 'http://localhost:3000/login/discord'
 
 ACTIVATE_JWT = True
 

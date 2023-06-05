@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { detail } from '../../actions/userActions';
 import { userUpdateProfileReset } from '../../reducers/userReducers';
-import { useNavigate } from 'react-router-dom';
 import ProfileDetails from './ProfileDetails';
 import UpdateProfileModal from './UpdateProfileModal';
 import DeleteProfileModal from './DeleteProfileModal';
-import Message from '../Message';
 
 function ProfileCard() {
     const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -23,8 +21,7 @@ function ProfileCard() {
         updateModalShow()
         setShowDeleteModal(false)
     };
-
-    const navigate = useNavigate();
+    
     const dispatch = useDispatch();
 
     const {
@@ -32,12 +29,11 @@ function ProfileCard() {
     } = useSelector((state) => state)
 
     useEffect(() => {
-        if (!user || !user.name || userUpdateProfileSuccess) {
+        if (!user || userUpdateProfileSuccess) {
             dispatch(userUpdateProfileReset());
             dispatch(detail());
-        }
-        
-    }, [dispatch, navigate, userInfo, user, userUpdateProfileSuccess]);
+        }        
+    }, [dispatch, userInfo, user, userUpdateProfileSuccess]);
 
     return (
         <>  

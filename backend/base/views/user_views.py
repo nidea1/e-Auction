@@ -13,8 +13,15 @@ from ..utils import activation_token, send_verification_email
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 
-from drf_social_oauth2.views import TokenView, RevokeTokenView
+from drf_social_oauth2.views import TokenView, RevokeTokenView, ConvertTokenView
 from oauth2_provider.models import AccessToken, RefreshToken
+
+import os
+from dotenv import load_dotenv
+import requests
+
+load_dotenv()
+
 
 class UserRegister(CreateAPIView):
 
@@ -24,6 +31,7 @@ class UserRegister(CreateAPIView):
 	def perform_create(self, serializer):
 		user = serializer.save()
 		send_verification_email(self.request, user)
+
 
 class UserVerify(APIView):
 
@@ -80,7 +88,7 @@ class UserProfile(RetrieveUpdateDestroyAPIView):
 				)
 			
 		serializer.save()
-	
+
 
 class UserList(ListAPIView):
 	serializer_class = UserSerializer
@@ -99,6 +107,7 @@ class UserLogin(TokenView):
 
 		return response
 
+
 class UserLogout(RevokeTokenView):
 
 	permission_classes = [IsAuthenticated]
@@ -116,4 +125,35 @@ class UserLogout(RevokeTokenView):
 		response.delete_cookie('csrftoken')
 		
 		return response
+
+
+class SocialLogin(ConvertTokenView):
+
+	def post(self, request: Request, *args, **kwargs):
+		response = super().post(request, *args, **kwargs)
+
+		if response.status_code == 200 and 'access_token' in response.data and 'refresh_token' in response.data:
+			response.set_cookie('access_token', response.data['access_token'], httponly=True, samesite=None, expires=36000)
+			response.set_cookie('refresh_token', response.data['refresh_token'], httponly=True, samesite=None)
+
+		return response
+
+
+class GitHubLogin(APIView):
+
+	def post(self, request):
+		try:
+			code = request.data.get('code')
+			client_id = os.environ.get('SOCIAL_AUTH_GITHUB_KEY')
+			client_secret = os.environ.get('SOCIAL_AUTH_GITHUB_SECRET')
+			headers = {'Accept': 'application/json'}
+			payload = {'client_id': client_id, 'client_secret': client_secret, 'code': code}
+
+			response = requests.post('https://github.com/login/oauth/access_token', headers=headers, data=payload)
+			response.raise_for_status()
+
+			return Response(response.json(), status=status.HTTP_200_OK)
+		except requests.exceptions.HTTPError as err:
+			return Response({"detail": str(err)}, status=status.HTTP_400_BAD_REQUEST)
+
 

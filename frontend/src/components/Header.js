@@ -12,7 +12,7 @@ function Header() {
 
     const {
         categoryReducers: { categories },
-        userReducers: { user, userLogoutSuccess }
+        userReducers: { user, userLogoutSuccess, userInfo }
     } = useSelector((state) => state)
 
     const dispatch = useDispatch()
@@ -34,10 +34,16 @@ function Header() {
     }, [dispatch])
 
     useEffect(() => {
-        if(!user){
+        if(!user && userInfo){
             dispatch(detail())
         }
-    },[dispatch, user])
+    },[dispatch, user, userInfo, navigate])
+
+    useEffect(() => {
+        if(user && !user.isSocialRegisterCompleted){
+            navigate('register/social')
+        }
+    }, [navigate, user])
 
     const [keyword, setKeyword] = useState('')
 
@@ -81,8 +87,8 @@ function Header() {
                             onChange={(e) => setKeyword(e.target.value)}
                             />
                         </Form>
-                        { user ?  
-                        <NavDropdown className='text-end' title={user.name}>
+                        {user ?
+                        <NavDropdown className='text-end' title={user && user.isSocialRegisterCompleted ? user.name : 'Please set your account.'}>
                             <NavDropdown.Item href='/profile'>
                                 Profile
                             </NavDropdown.Item>

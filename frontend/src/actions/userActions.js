@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { socialSliceReset } from '../reducers/socialReducers'
 import { 
     userLoginRequest,
     userLoginSuccess,
@@ -33,6 +34,7 @@ import {
     userSendVerifyEmailFail,
 } from '../reducers/userReducers'
 
+
 const createAPIinstance = () => {
 
     return axios.create({
@@ -44,6 +46,7 @@ const createAPIinstance = () => {
     })
 
 }
+
 
 export const login = (email, password) => async (dispatch) => {
     try{
@@ -74,6 +77,7 @@ export const login = (email, password) => async (dispatch) => {
     }
 }
 
+
 export const logout = ()  => async (dispatch) => {
     try{
         dispatch(userLogoutRequest())
@@ -82,6 +86,7 @@ export const logout = ()  => async (dispatch) => {
         const { data } = await api.post('/logout/')
 
         dispatch(userLogoutSuccess(data))
+        dispatch(socialSliceReset())
         localStorage.removeItem('user')
     }catch(error){
         dispatch(userLogoutFail(error.response && error.response.data.detail
@@ -91,6 +96,7 @@ export const logout = ()  => async (dispatch) => {
         );
     }
 }
+
 
 export const detail = () => async (dispatch) => {
     try{
@@ -109,6 +115,7 @@ export const detail = () => async (dispatch) => {
         );
     }
 }
+
 
 export const register = (name, email, password) => async (dispatch) => {
     try{
@@ -130,6 +137,7 @@ export const register = (name, email, password) => async (dispatch) => {
     }
 }
 
+
 export const update = (user) => async (dispatch) => {
     try{
         dispatch(userUpdateProfileRequest())
@@ -141,9 +149,8 @@ export const update = (user) => async (dispatch) => {
         )
 
         dispatch(userUpdateProfileSuccess(data))
-
-        localStorage.setItem('userInfo', JSON.stringify(data))
-
+        
+        localStorage.setItem('user', JSON.stringify(data))
     }catch(error){
         dispatch(userUpdateProfileFail(error.response && error.response.data.detail
                 ? error.response.data.detail
@@ -152,6 +159,7 @@ export const update = (user) => async (dispatch) => {
         );
     }
 }
+
 
 export const deleteUser = () => async (dispatch) => {
     try{
@@ -175,6 +183,7 @@ export const deleteUser = () => async (dispatch) => {
     }
 }
 
+
 export const verifyUser = (uidb64,token) => async (dispatch) => {
     try {
         dispatch(userVerifyRequest())
@@ -192,6 +201,7 @@ export const verifyUser = (uidb64,token) => async (dispatch) => {
     }
 }
 
+
 export const resendEmail = (email) => async (dispatch) => {
     try {
         dispatch(userSendVerifyEmailRequest())
@@ -202,6 +212,36 @@ export const resendEmail = (email) => async (dispatch) => {
         dispatch(userSendVerifyEmailSuccess(data))
     } catch (error) {
         dispatch(userSendVerifyEmailFail(
+            error.response && error.response.data.detail ?
+            error.response.data.detail :
+            error.message
+        ))
+    }
+}
+
+
+export const socialLogin = (socialPlatform, code) => async (dispatch) => {
+    try {
+        dispatch(userLoginRequest())
+        const clientID = process.env.REACT_APP_MAIN_AUTH_CID
+        const clientSecret = process.env.REACT_APP_MAIN_AUTH_CSECRET
+
+        const api = createAPIinstance()
+        const { data } = await api.post(
+            '/social/',
+            {
+                'client_id': clientID,
+                'client_secret': clientSecret,
+                'grant_type': 'convert_token',
+                'backend': socialPlatform,
+                'token': code
+
+            }
+        )
+
+        dispatch(userLoginSuccess(data))
+    } catch (error) {
+        dispatch(userLoginFail(
             error.response && error.response.data.detail ?
             error.response.data.detail :
             error.message
