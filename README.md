@@ -8,14 +8,7 @@ You can live test from [here!](https://nidea1.com.tr)
 
 ## Features not available on the test server
 
-- After logging out, the login button should not appear unless the page is refreshed
-- New payment modal
-- Endpoint that calculates the additional payment amount
-- List of users who have placed bids on the product
-- Email verifaction
-- Ending product notification mail
-- HTTP-only cookie auth
-- Social auth
+- None, server is updated.
 
 ## Screenshots
 
