@@ -9,6 +9,7 @@ urlpatterns = [
     path('github/', GitHubLogin.as_view(), name='github_login'),
     path('logout/', UserLogout.as_view(), name='user_logout'),
     path('profile/', UserProfile.as_view(), name='user_profile'),
+    path('delete/', UserDeleteProfile.as_view(), name='user_delete'),
     path('addresses/', include('base.urls.address_urls')),
     path('cards/', include('base.urls.card_urls')),
     path('bids/', include('base.urls.bid_urls')),

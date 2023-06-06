@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { update } from '../../actions/userActions';
 import { Modal, Button, Form, FormControl, FormGroup, FormLabel, Col, Row } from 'react-bootstrap';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import UpdateProfileForm from '../UpdateProfileForm'
+import { userUpdateProfileReset } from '../../reducers/userReducers';
 
 function UpdateProfileModal({show, onHide, user, deleteModalShow}) {
         
@@ -17,7 +18,7 @@ function UpdateProfileModal({show, onHide, user, deleteModalShow}) {
     const dispatch = useDispatch();
 
     const {
-        userReducers: { userDetailsLoading, userDetailsError }
+        userReducers: { userUpdateProfileLoading, userUpdateProfileError, userUpdateProfileSuccess }
     } = useSelector((state) => state)
 
     const submitHandler = (e) => {
@@ -40,9 +41,15 @@ function UpdateProfileModal({show, onHide, user, deleteModalShow}) {
             }
 
             dispatch(update(newProfile));
-            onHide();
         }
     }
+
+    useEffect(() => {
+        if(userUpdateProfileSuccess){
+            dispatch(userUpdateProfileReset())
+            onHide()
+        }
+    }, [dispatch, onHide, userUpdateProfileSuccess])
 
     return (
         <Modal show={show} onHide={onHide}>  
@@ -54,8 +61,8 @@ function UpdateProfileModal({show, onHide, user, deleteModalShow}) {
             <Modal.Body>  
                 <UpdateProfileForm>
                     {message && <Message variant='danger'>{message}</Message>}
-                    {userDetailsError && <Message variant='danger'>{userDetailsError}</Message>}
-                    {userDetailsLoading && <Loader />}
+                    {userUpdateProfileError && <Message variant='danger'>{userUpdateProfileError}</Message>}
+                    {userUpdateProfileLoading && <Loader />}
                     <Form onSubmit={submitHandler}>
                     <FormGroup controlId='name'>
                         <FormLabel className='my-2 fw-semibold'>Name</FormLabel>

@@ -4,7 +4,7 @@ from ..serializers import UserSerializer
 from rest_framework import serializers
 
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,6 +12,7 @@ from rest_framework import status
 from ..utils import activation_token, send_verification_email
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.hashers import check_password
 
 from drf_social_oauth2.views import TokenView, RevokeTokenView, ConvertTokenView
 from oauth2_provider.models import AccessToken, RefreshToken
@@ -66,7 +67,7 @@ class ResendVerifactionEmail(APIView):
 		return Response({'detail': 'Activation mail has been sent.'}, status=status.HTTP_200_OK)
 
 
-class UserProfile(RetrieveUpdateDestroyAPIView):
+class UserProfile(RetrieveUpdateAPIView):
 
 	serializer_class = UserSerializer
 	permission_classes = [IsAuthenticated]
@@ -88,6 +89,32 @@ class UserProfile(RetrieveUpdateDestroyAPIView):
 				)
 			
 		serializer.save()
+
+
+class UserDeleteProfile(APIView):
+
+	permission_classes = [IsAuthenticated]
+
+	def post(self, request):
+		
+		password = request.data.get('password', None)
+		user = request.user
+		if check_password(password, user.password):
+			return self.delete(user=user)
+		else:
+			raise serializers.ValidationError(
+                {
+                    'detail': 'Your password is not correct.'
+                }
+            )
+			
+	def delete(self, user):
+		user.delete()
+		response = Response({"detail": "User deleted successfully"})
+		response.delete_cookie('access_token')
+		response.delete_cookie('refresh_token')
+		return response
+
 
 
 class UserList(ListAPIView):
@@ -122,7 +149,6 @@ class UserLogout(RevokeTokenView):
 		
 		response.delete_cookie('access_token')
 		response.delete_cookie('refresh_token')
-		response.delete_cookie('csrftoken')
 		
 		return response
 
@@ -155,5 +181,3 @@ class GitHubLogin(APIView):
 			return Response(response.json(), status=status.HTTP_200_OK)
 		except requests.exceptions.HTTPError as err:
 			return Response({"detail": str(err)}, status=status.HTTP_400_BAD_REQUEST)
-
-

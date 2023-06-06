@@ -123,6 +123,7 @@ AUTHENTICATION_BACKENDS = (
     # Social backends
     'social_core.backends.discord.DiscordOAuth2',
     'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
 
     'drf_social_oauth2.backends.DjangoOAuth2',
     'django.contrib.auth.backends.ModelBackend',
@@ -132,12 +133,18 @@ AUTHENTICATION_BACKENDS = (
 # Github
 SOCIAL_AUTH_GITHUB_KEY = os.environ.get('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('SOCIAL_AUTH_GITHUB_SECRET')
-SOCIAL_AUTH_GITHUB_REDIRECT_URI = 'http://localhost:3000/login/github'
 
 # Discord
 SOCIAL_AUTH_DISCORD_KEY = os.environ.get('SOCIAL_AUTH_DISCORD_KEY')
 SOCIAL_AUTH_DISCORD_SECRET = os.environ.get('SOCIAL_AUTH_DISCORD_SECRET')
-SOCIAL_AUTH_DISCORD_REDIRECT_URI = 'http://localhost:3000/login/discord'
+
+# Google configuration
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
 
 ACTIVATE_JWT = True
 

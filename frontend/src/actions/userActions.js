@@ -149,7 +149,6 @@ export const update = (user) => async (dispatch) => {
         )
 
         dispatch(userUpdateProfileSuccess(data))
-        
         localStorage.setItem('user', JSON.stringify(data))
     }catch(error){
         dispatch(userUpdateProfileFail(error.response && error.response.data.detail
@@ -161,19 +160,21 @@ export const update = (user) => async (dispatch) => {
 }
 
 
-export const deleteUser = () => async (dispatch) => {
+export const deleteUser = (password) => async (dispatch) => {
     try{
         dispatch(userDeleteRequest())
 
         const api = createAPIinstance();
-        const { data } = await api.delete(
-            '/profile/',
+        const { data } = await api.post(
+            '/delete/',
+            {
+                'password': password
+            }
         )
-
+        
         dispatch(userDeleteSuccess(data))
 
         localStorage.removeItem('user')
-        dispatch(logout())
     }catch(error){
         dispatch(userDeleteFail(error.response && error.response.data.detail
                 ? error.response.data.detail

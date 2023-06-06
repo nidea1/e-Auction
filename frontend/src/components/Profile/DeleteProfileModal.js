@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser } from '../../actions/userActions';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { Modal, Button, Form, FormControl, FormGroup, FormLabel, Col } from 'rea
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import UpdateProfileForm from '../UpdateProfileForm'
+import { userDeleteReset } from '../../reducers/userReducers';
 
 function DeleteProfileModal({ show, onHide }) {
 
@@ -17,7 +18,7 @@ function DeleteProfileModal({ show, onHide }) {
     const navigate = useNavigate();
 
     const {
-        userReducers: { userDetailsLoading, userDetailsError }
+        userReducers: { userDetailsLoading, userDetailsError, userDeleteError, userDeleteSuccess }
     } = useSelector((state) => state)
 
     const deleteSubmit = (e) => {
@@ -26,10 +27,17 @@ function DeleteProfileModal({ show, onHide }) {
         if (password !== passwordConfirm) {
             setMessage('Password does not match!');
         } else {
-            dispatch(deleteUser());
-            navigate('/');
+            dispatch(deleteUser(password));
         }
     }
+
+    useEffect(() => {
+        if(userDeleteSuccess){
+            dispatch(userDeleteReset())
+            navigate('/')
+        }
+    }, [dispatch, navigate, userDeleteSuccess])
+
     return (
         <Modal show={show} onHide={onHide} size='sm'>  
             <Modal.Header closeButton className='border-0' />   
@@ -38,6 +46,7 @@ function DeleteProfileModal({ show, onHide }) {
                 <UpdateProfileForm>
                     {message && <Message variant='danger'>{message}</Message>}
                     {userDetailsError && <Message variant='danger'>{userDetailsError}</Message>}
+                    {userDeleteError && <Message variant='danger'>{userDeleteError}</Message>}
                     {userDetailsLoading && <Loader />}
                     <Form onSubmit={deleteSubmit}>
                     

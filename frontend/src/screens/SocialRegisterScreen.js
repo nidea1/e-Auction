@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { update } from '../actions/userActions';
-import { Button, Form, FormControl, FormGroup, FormLabel, Col, Row, ToastContainer } from 'react-bootstrap';
+import { Button, Form, FormControl, FormGroup, FormLabel, Col, Row } from 'react-bootstrap';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 import { useNavigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 function SocialRegisterScreen() {
 
     const {
-        userReducers: { userDetailsLoading, userDetailsError, user }
+        userReducers: { userUpdateProfileLoading, userUpdateProfileError, user, userUpdateProfileSuccess, userDetailsLoading, userDetailsError }
     } = useSelector((state) => state)
 
     const navigate = useNavigate()
@@ -28,6 +30,36 @@ function SocialRegisterScreen() {
     const [message, setMessage] = useState('');
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(userUpdateProfileLoading){
+            toast.info("Response is pending...", {
+                position: "top-right",
+                autoClose: false,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: false,
+                theme: "dark",
+            })
+        }
+        if(!userUpdateProfileLoading){
+            toast.dismiss()
+            if(userUpdateProfileSuccess){
+                navigate('/')
+            }
+            }else if(userUpdateProfileError){
+                toast.error(userUpdateProfileError, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "dark",
+                })
+            }
+    }, [name, navigate, userUpdateProfileLoading, userUpdateProfileError, userUpdateProfileSuccess])
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -75,6 +107,7 @@ function SocialRegisterScreen() {
                 <FormGroup controlId='name'>
                     <FormLabel className='my-2 fw-semibold'>Name</FormLabel>
                     <FormControl
+                        required
                         type='name'
                         placeholder='Enter Full Name'
                         value={name}
@@ -86,6 +119,7 @@ function SocialRegisterScreen() {
                 <FormGroup controlId='email'>
                     <FormLabel className='my-2 fw-semibold'>Email Address</FormLabel>
                     <FormControl
+                        disabled
                         type='email'
                         placeholder='Enter Email'
                         value={email}

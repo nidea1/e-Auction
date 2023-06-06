@@ -63,9 +63,9 @@ export const userSlice = createSlice({
     userLoginReset: (state) => { state.loading = false; state.success = false; state.error = null },
     userLogoutReset: (state) => { state.userLogoutLoading = false; state.userLogoutSuccess = false; state.userLogoutError = null },
     userRegisterReset: (state) => { state.userRegisterLoading = false; state.userRegisterSuccess = false; state.userRegisterError = null },
-    userDetailsReset: (state) => { state.userDetailsLoading = false; state.userRegisterSuccess = false; state.userDetailsError = null },
+    userDetailsReset: (state) => { state.userDetailsLoading = false; state.userDetailsSuccess = false; state.userDetailsError = null },
     userUpdateProfileReset: (state) => { state.userUpdateProfileLoading = false; state.userUpdateProfileSuccess = false; state.userUpdateProfileError = null },
-    userDeleteReset: (state) => { state.userDeleteLoading = false; state.userDeleteSuccess = false; state.userDeleteError = null },
+    userDeleteReset: (state) => { state.userDeleteLoading = false; state.userDeleteSuccess = false; state.userDeleteError = null; state.user = null },
     userVerifyReset: (state) => { state.userVerifyLoading = false; state.userVerifySuccess = false; state.userVerifyError = null },
     userSendVerifyEmailReset: (state) => { state.userSendVerifyEmailLoading = false; state.userSendVerifyEmailSuccess = false; state.userSendVerifyEmailError = null },
 

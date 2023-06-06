@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { detail, logout } from '../actions/userActions';
 import CategoryMenu from './Category/CategoryMenu';
 import { listCategories } from '../actions/categoryActions';
-import { userLogoutReset } from '../reducers/userReducers';
+import { userDetailsReset, userLogoutReset } from '../reducers/userReducers';
 
 
 function Header() {
 
     const {
         categoryReducers: { categories },
-        userReducers: { user, userLogoutSuccess, userInfo }
+        userReducers: { user, userLogoutSuccess, userInfo, userDetailsSuccess }
     } = useSelector((state) => state)
 
     const dispatch = useDispatch()
@@ -23,13 +23,6 @@ function Header() {
     }
 
     useEffect(() => {
-        if(userLogoutSuccess){
-            navigate('/')
-            dispatch(userLogoutReset())
-        }
-    }, [navigate, userLogoutSuccess, dispatch])
-
-    useEffect(() => {
         dispatch(listCategories())
     }, [dispatch])
 
@@ -38,6 +31,19 @@ function Header() {
             dispatch(detail())
         }
     },[dispatch, user, userInfo, navigate])
+
+    useEffect(() => {
+        if(userDetailsSuccess){
+            dispatch(userDetailsReset())
+        }
+    }, [dispatch, userDetailsSuccess])
+
+    useEffect(() => {
+        if(userLogoutSuccess){
+            navigate('/')
+            dispatch(userLogoutReset())
+        }
+    }, [navigate, userLogoutSuccess, dispatch])
 
     useEffect(() => {
         if(user && !user.isSocialRegisterCompleted){
