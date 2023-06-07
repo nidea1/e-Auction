@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 
-from ..utils import activation_token, send_verification_email
+from ..utils import activation_token, send_verification_email, delete_cookies, set_cookies
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.hashers import check_password
@@ -111,9 +111,7 @@ class UserDeleteProfile(APIView):
 	def delete(self, user):
 		user.delete()
 		response = Response({"detail": "User deleted successfully"})
-		response.delete_cookie('access_token')
-		response.delete_cookie('refresh_token')
-		return response
+		return delete_cookies(response)
 
 
 
@@ -129,8 +127,7 @@ class UserLogin(TokenView):
 		response = super().post(request, *args, **kwargs)
 
 		if response.status_code == 200 and 'access_token' in response.data and 'refresh_token' in response.data:
-			response.set_cookie('access_token', response.data['access_token'], httponly=True, samesite=None, expires=36000)
-			response.set_cookie('refresh_token', response.data['refresh_token'], httponly=True, samesite=None)
+			return set_cookies(response)
 
 		return response
 
@@ -142,15 +139,14 @@ class UserLogout(RevokeTokenView):
 	def post(self, request: Request, *args, **kwargs):
 
 		access_token = AccessToken.objects.get(user=request.user, token=request.auth)
-		RefreshToken.objects.filter(user=request.user, access_token=access_token).delete()
-		access_token.delete()
+		refresh_token = RefreshToken.objects.filter(user=request.user, access_token=access_token)
 
 		response = Response({'detail': 'Successfully logged out.'})
+
+		refresh_token.delete()
+		access_token.delete()
 		
-		response.delete_cookie('access_token')
-		response.delete_cookie('refresh_token')
-		
-		return response
+		return delete_cookies(response)
 
 
 class SocialLogin(ConvertTokenView):
@@ -159,8 +155,7 @@ class SocialLogin(ConvertTokenView):
 		response = super().post(request, *args, **kwargs)
 
 		if response.status_code == 200 and 'access_token' in response.data and 'refresh_token' in response.data:
-			response.set_cookie('access_token', response.data['access_token'], httponly=True, samesite=None, expires=36000)
-			response.set_cookie('refresh_token', response.data['refresh_token'], httponly=True, samesite=None)
+			return set_cookies(response)
 
 		return response
 
@@ -181,3 +176,4 @@ class GitHubLogin(APIView):
 			return Response(response.json(), status=status.HTTP_200_OK)
 		except requests.exceptions.HTTPError as err:
 			return Response({"detail": str(err)}, status=status.HTTP_400_BAD_REQUEST)
+

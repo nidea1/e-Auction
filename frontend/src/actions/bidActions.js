@@ -4,7 +4,7 @@ import { bidListFail, bidListRequest, bidListSuccess, bidPaidFail, bidPaidReques
 const createAPIinstance = () => {
 
     return axios.create({
-        baseURL: '/api/users/bids',
+        baseURL: `${process.env.REACT_APP_BASE_API_URL}/api/users/bids`,
         headers: {
             'Content-Type': 'application/json',
         },

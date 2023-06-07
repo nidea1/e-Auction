@@ -12,7 +12,7 @@ function SocialScreen() {
     const discordLogin = () => {
         const discordBaseURL = 'https://discord.com/api/oauth2'
         const clientID = process.env.REACT_APP_SOCIAL_AUTH_DISCORD_KEY
-        const redirectURI = 'http://localhost:3000/login/discord'
+        const redirectURI = `${process.env.REACT_APP_BASE_URL}/login/discord`
         const getCodeURL = `${discordBaseURL}/authorize?client_id=${clientID}&redirect_uri=${redirectURI}&response_type=code&scope=email%20identify`
 
         window.location.assign(getCodeURL)
@@ -21,7 +21,7 @@ function SocialScreen() {
     const githubLogin = () => {
         const githubBaseURL = 'https://github.com/login/oauth'
         const clientID = process.env.REACT_APP_SOCIAL_AUTH_GITHUB_KEY
-        const redirectURI = 'http://localhost:3000/login/github'
+        const redirectURI = `${process.env.REACT_APP_BASE_URL}/login/github`
         const getCodeURL = `${githubBaseURL}/authorize?client_id=${clientID}&redirect_uri=${redirectURI}&scope=user`
 
         window.location.assign(getCodeURL)
@@ -30,7 +30,7 @@ function SocialScreen() {
     const googleLogin = () => {
         const googleBaseURL = 'https://accounts.google.com/o/oauth2/v2/auth'
         const clientID = process.env.REACT_APP_SOCIAL_AUTH_GOOGLE_OAUTH2_KEY
-        const redirectURI = 'http://localhost:3000/login/google-oauth2'
+        const redirectURI = `${process.env.REACT_APP_BASE_URL}/login/google-oauth2`
         const getCodeURL = `${googleBaseURL}?redirect_uri=${redirectURI}&prompt=consent&response_type=code&client_id=${clientID}&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile&access_type=offline`
 
         window.location.assign(getCodeURL)
@@ -40,7 +40,6 @@ function SocialScreen() {
     
     const [searchParams] = useSearchParams()
     const code = searchParams.get('code')
-    console.log(code)
 
     useEffect(() => {
         if(socialParams === 'discord'){

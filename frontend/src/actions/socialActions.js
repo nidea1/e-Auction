@@ -14,7 +14,7 @@ export const discord = (code) => async (dispatch) => {
                 'client_secret': clientSecret,
                 'grant_type': 'authorization_code',
                 'code': code,
-                'redirect_uri': 'http://localhost:3000/login/discord',
+                'redirect_uri': `${process.env.REACT_APP_BASE_URL}/login/discord`,
             },
             {
                 headers: {
@@ -38,7 +38,7 @@ export const github = (code) => async (dispatch) => {
         dispatch(socialLoginRequest())
 
         const { data } = await axios.post(
-            '/api/users/github/',
+            `${process.env.REACT_APP_BASE_API_URL}/api/users/github/`,
             {
                 'code': code,
             }
@@ -64,7 +64,7 @@ export const google = (code) => async (dispatch) => {
             'https://oauth2.googleapis.com/token',
             {
                 'code': code,
-                'redirect_uri': 'http://localhost:3000/login/google-oauth2',
+                'redirect_uri': `${process.env.REACT_APP_BASE_URL}/login/google-oauth2`,
                 'client_id': clientID,
                 'client_secret': clientSecret,
                 'grant_type': 'authorization_code',

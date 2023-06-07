@@ -11,7 +11,7 @@ import {
 const createAPIinstance = () => {
 
     return axios.create({
-        baseURL: '/api/categories',
+        baseURL: `${process.env.REACT_APP_BASE_API_URL}/api/categories`,
         headers: {
             'Content-Type': 'application/json',
         },

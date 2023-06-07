@@ -38,9 +38,9 @@ import {
 const createAPIinstance = () => {
 
     return axios.create({
-        baseURL: '/api/users',
+        baseURL: `${process.env.REACT_APP_BASE_API_URL}/api/users`,
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
         withCredentials: true
     })
@@ -51,8 +51,8 @@ const createAPIinstance = () => {
 export const login = (email, password) => async (dispatch) => {
     try{
         dispatch(userLoginRequest())
-        const clientID = process.env.REACT_APP_MAIN_AUTH_CID
-        const clientSecret = process.env.REACT_APP_MAIN_AUTH_CSECRET
+        const clientID = '263l5MyRQbKafnXWnu8xJQYMyZZVt08uVGPehq2V'
+        const clientSecret = 'KNflTkyMQiXJ0ImAg52t1jS9npekYi6iez7BSOtgX6dy5YaD28FwpYlUM801JcyCPHm32lc9dslEmaYVqd0NgnHZqSNwUy2gF87V3AovmX3bWUpSAG5jEOzXHjw28YTx'
 
         const api = createAPIinstance();
         const { data } = await api.post(
@@ -224,8 +224,8 @@ export const resendEmail = (email) => async (dispatch) => {
 export const socialLogin = (socialPlatform, code) => async (dispatch) => {
     try {
         dispatch(userLoginRequest())
-        const clientID = process.env.REACT_APP_MAIN_AUTH_CID
-        const clientSecret = process.env.REACT_APP_MAIN_AUTH_CSECRET
+        const clientID = '263l5MyRQbKafnXWnu8xJQYMyZZVt08uVGPehq2V'
+        const clientSecret = 'KNflTkyMQiXJ0ImAg52t1jS9npekYi6iez7BSOtgX6dy5YaD28FwpYlUM801JcyCPHm32lc9dslEmaYVqd0NgnHZqSNwUy2gF87V3AovmX3bWUpSAG5jEOzXHjw28YTx'
 
         const api = createAPIinstance()
         const { data } = await api.post(

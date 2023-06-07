@@ -20,7 +20,7 @@ import {
 const createAPIinstance = () => {
 
     return axios.create({
-        baseURL: '/api/users/addresses',
+        baseURL: `${process.env.REACT_APP_BASE_API_URL}/api/users/addresses`,
         headers: {
             'Content-Type': 'application/json',
         },

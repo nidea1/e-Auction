@@ -21,7 +21,7 @@ import {
 const createAPIinstance = () => {
 
     return axios.create({
-        baseURL: '/api/products',
+        baseURL: `${process.env.REACT_APP_BASE_API_URL}/api/products`,
         headers: {
             'Content-Type': 'application/json',
         },
@@ -105,7 +105,7 @@ export const listBrands = () => async (dispatch) => {
     try{
         dispatch(brandListRequest())
 
-        const { data } = await axios.get(`/api/products/brands/`)
+        const { data } = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/api/products/brands/`)
 
         dispatch(brandListSuccess(data))
     }catch(error){

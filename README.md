@@ -6,6 +6,10 @@ My e-auction project that I am currently developing.
 
 You can live test from [here!](https://nidea1.com.tr)
 
+- Frontend deployed via [Netlify.](https://www.netlify.com)
+- Backend deployed via [AWS EC2.](https://aws.amazon.com/ec2/)
+- There may be minor errors, I continue to develop.
+
 ## Features not available on the test server
 
 - None, server is updated.

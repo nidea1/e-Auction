@@ -33,20 +33,18 @@ DEBUG = True
 # here to hosts like
 # nidea1.com.tr, nidea1-euaction.netlify.app
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS')
 
 # this using for debug tool
-INTERNAL_IPS = ['*']
+# INTERNAL_IPS = ['*']
 
 # CSRF Settings
 
 CSRF_COOKIE_SECURE=True
+CSRF_COOKIE_SAMESITE='None'
 CSRF_COOKIE_HTTP_ONLY=True
 
-CSRF_TRUSTED_ORIGINS = [
-   'http://localhost:3000'
-   'http://localhost'
-]
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS')
 
 # Application definition
 
@@ -85,8 +83,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    'base.middleware.CookieAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -111,6 +107,7 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'base.middleware.CookieOAuth2Authentication'
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
         'drf_social_oauth2.authentication.SocialAuthentication',
     ),
@@ -230,6 +227,7 @@ STATIC_FILES = [
 ]
 
 MEDIA_ROOT = 'static/images'
+STATIC_ROOT = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -238,21 +236,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Login redirect
 
-LOGIN_URL = 'login'
+LOGIN_URL = '/'
 
 # CORS settings
 
-# CORS_ALLOWED_ORIGINS = [ like 'https://nidea1.com.tr' ]
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS')
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
-CORS_COOKIE_SAMESITE = None #'Lax'
-SESSION_COOKIE_SECURE = False
-SESSION_COOKIE_SAMESITE = None #'Lax'
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
-]
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken', 'Set-Cookie']
+CORS_COOKIE_SECURE=True
+CORS_COOKIE_SAMESITE='None'
+
+SESSION_COOKIE_HTTPONLY=True
+SESSION_COOKIE_SECURE=True
+SESSION_COOKIE_SAMESITE='None'
 
 # Mailing settings
 
