@@ -69,8 +69,8 @@ export const login = (email, password) => async (dispatch) => {
         dispatch(userLoginSuccess(data))
         await dispatch(detail())
     }catch(error){
-        dispatch(userLoginFail(error.response && error.response.data.detail
-                ? error.response.data.detail
+        dispatch(userLoginFail(error.response && error.response.data.error_description
+                ? error.response.data.error_description
                 : error.message,
                 )
         );

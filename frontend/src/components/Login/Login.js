@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Button, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from "../../actions/userActions";
+import { userLoginReset } from '../../reducers/userReducers';
 
 function Login() {
     const [email, setEmail] = useState('')
@@ -22,6 +23,7 @@ function Login() {
     useEffect(() => {
         if(userInfo){
             navigate(redirect)
+            dispatch(userLoginReset())
         }
     },[navigate, userInfo, redirect, dispatch])
 

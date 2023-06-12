@@ -14,7 +14,7 @@ function BidSection({dispatch, productID}) {
     const {
         productReducers : { product },
         bidReducers: { bidPaidError, bidPaidLoading, bidPaidSuccess, bid, bids },
-        userReducers: { userInfo }
+        userReducers: { user }
     } = useSelector((state) => state)
 
     const [highestBid, setHighestBid] = useState('')
@@ -104,7 +104,7 @@ function BidSection({dispatch, productID}) {
     }, [bidPaidLoading, bidPaidSuccess, dispatch, productID, bidPaidError, bid])
 
     useEffect(() => {
-        const socket = new WebSocket(`ws://127.0.0.1:8000/ws/auctions/${productID}/`)
+        const socket = new WebSocket(`${process.env.REACT_APP_BASE_WEBSOCKET}/ws/auctions/${productID}/`)
 
         socket.onmessage = (e) => {
             const wsData = JSON.parse(e.data)
@@ -187,7 +187,7 @@ function BidSection({dispatch, productID}) {
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <Row className='justify-content-center'>
-                            {userInfo && userInfo.token ?
+                            {user ?
                                 (!countdownFinished ?
                                 <Col md={12}>
                                     <Form onSubmit={submitHandler}>
