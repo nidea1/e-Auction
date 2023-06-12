@@ -160,6 +160,8 @@ class BidSerializer(serializers.ModelSerializer):
     userName = serializers.ReadOnlyField(source= 'user.first_name')
     productSlug = serializers.ReadOnlyField(source= 'product.slug')
     productImage = serializers.SerializerMethodField()
+    isMaxBid = serializers.SerializerMethodField()
+    isFinish = serializers.SerializerMethodField()
 
     class Meta:
         model = Bid
@@ -171,6 +173,18 @@ class BidSerializer(serializers.ModelSerializer):
         if product_images:
             return request.build_absolute_uri(product_images[0].image.url)
         return None
+    
+    def get_isMaxBid(self, obj):
+        max_bid = obj.product.bids.order_by('-bid').first()
+        if obj == max_bid:
+            return True
+        return False
+    
+    def get_isFinish(self, obj):
+        status = obj.product.productStatus
+        if status == Status.Passive:
+            return True
+        return False
     
     def validate_bid(self, value):
         product = self.context['request'].data.get('product')

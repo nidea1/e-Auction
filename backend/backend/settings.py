@@ -33,7 +33,7 @@ DEBUG = True
 # here to hosts like
 # nidea1.com.tr, nidea1-euaction.netlify.app
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(' ')
 
 # this using for debug tool
 # INTERNAL_IPS = ['*']
@@ -44,7 +44,7 @@ CSRF_COOKIE_SECURE=True
 CSRF_COOKIE_SAMESITE='None'
 CSRF_COOKIE_HTTP_ONLY=True
 
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS')
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS').split(' ')
 
 # Application definition
 
@@ -107,8 +107,8 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'base.authentication.CookieOAuth2Authentication'
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'base.authentication.CookieOAuth2Authentication',
+        #'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
         'drf_social_oauth2.authentication.SocialAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': (
@@ -125,6 +125,13 @@ AUTHENTICATION_BACKENDS = (
     'drf_social_oauth2.backends.DjangoOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'celery',
+    }
+}
 
 # Social Auth Configs
 # Github
@@ -240,7 +247,7 @@ LOGIN_URL = '/'
 
 # CORS settings
 
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS')
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS').split(' ')
 
 CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOW_ALL_ORIGINS = True
@@ -268,9 +275,10 @@ PASSWORD_RESET_TIMEOUT = 14400
 CELERY_BROKER_URL='redis://localhost:6379'
 CELERY_ACCEPT_CONTENT=['application/json']
 CELERY_RESULT_SERIALIZER='json'
-CELERY_TASK_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER='json'
 CELERY_TIMEZONE='Europe/Istanbul'
 CELERY_RESULT_BACKEND='django-db'
+CELERY_CACHE_BACKEND='django-cache'
 
 
 # Celery Beat

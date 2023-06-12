@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from .models import Bid
+from .models import Bid, Product
 
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -8,6 +8,7 @@ import json
 
 from datetime import timedelta
 from django.utils import timezone
+
 
 def wsMessage(product_id, amount, bid_count, endDate):
     channel_layer = get_channel_layer()
@@ -37,6 +38,7 @@ def wsMessage(product_id, amount, bid_count, endDate):
         }
     )
 
+
 def update_product(instance):
     product = instance.product
     bids = Bid.objects.filter(product=product)
@@ -44,9 +46,10 @@ def update_product(instance):
     product.currentHighestBid = bids.order_by('-bid').first().bid if bids.exists() else 0
     return product
 
+
 @receiver(post_save, sender=Bid)
 @receiver(post_delete, sender=Bid)
-def save_product(sender, instance, created= False, **kwargs):
+def save_product(instance, created= False, *args, **kwargs):
     product = update_product(instance)
     isChangeDate = False
 

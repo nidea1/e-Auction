@@ -4,7 +4,9 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
     def _make_hash_value(self, user, timestamp):
@@ -13,19 +15,10 @@ class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
         )
 
 
-activation_token = AccountActivationTokenGenerator()
 
 
-def send_verification_email(request, user):
-    mail_subject = 'Activate your user account.'
-    message = render_to_string('activate_email.html', {
-        'user': user.first_name,
-        'domain': 'localhost:3000',
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        'token': activation_token.make_token(user),
-        'protocol': 'https' if request.is_secure() else 'http'
-    })
 
+def send_email(mail_subject, message, user):
     email = EmailMessage(
         mail_subject,
         message, 
@@ -35,9 +28,21 @@ def send_verification_email(request, user):
     email.content_subtype = 'html'
     email.send()
 
-def send_ending_email(user, product):
-    mail_subject = 'Product is ending soon!'
-    message = render_to_string('ending_email.html', {
+def send_verification_email(request, user):
+    activation_token = AccountActivationTokenGenerator()
+    mail_subject = 'Activate your user account.'
+    message = render_to_string('activate_email.html', {
+        'user': user.first_name,
+        'domain': os.environ.get('BASE_DOMAIN'),
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': activation_token.make_token(user),
+        'protocol': 'https' if request.is_secure() else 'http'
+    })
+
+    send_email(mail_subject, message, user)
+
+def product_email_context(user, product):
+    return {
         'user': user.first_name,
         'product': product.name,
         'slug': product.slug,
@@ -45,18 +50,32 @@ def send_ending_email(user, product):
         'price': product.currentHighestBid,
         'description': product.description,
         'image': product.images.first(),
-        'domain': 'localhost:3000',
+        'domain': os.environ.get('BASE_DOMAIN'),
         'protocol': 'http'
-    })
+    }
 
-    email = EmailMessage(
-        mail_subject,
-        message,
-        'info@nidea1.com.tr',
-        [user.email]
-    )
-    email.content_subtype = 'html'
-    email.send()
+def send_ending_email(user, product):
+    mail_subject = 'Product is ending soon!'
+    message_context = product_email_context(user, product)
+    message = render_to_string('ending_email.html', message_context)
+
+    send_email(mail_subject, message, user)
+
+
+def send_winner_email(user, product):
+    mail_subject = f'Congratulations! You win this product: {product.name}'
+    message_context = product_email_context(user, product)
+    message = render_to_string('winner_email.html', message_context)
+
+    send_email(mail_subject, message, user)
+
+
+def send_loser_email(user, product):
+    mail_subject = f'We are sad! You lose this product: {product.name}'
+    message_context = product_email_context(user, product)
+    message = render_to_string('loser_email.html', message_context)
+
+    send_email(mail_subject, message, user)
 
 
 def delete_cookies(response):

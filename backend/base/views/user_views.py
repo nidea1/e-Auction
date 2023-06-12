@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 
-from ..utils import activation_token, send_verification_email, delete_cookies, set_cookies
+from ..utils import send_verification_email, delete_cookies, set_cookies, AccountActivationTokenGenerator
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.hashers import check_password
@@ -38,6 +38,7 @@ class UserVerify(APIView):
 
 	def get(self, request, uidb64, token, *args, **kwargs):
 		try:
+			activation_token = AccountActivationTokenGenerator()
 			uid = force_str(urlsafe_base64_decode(uidb64))
 			user = User.objects.get(pk=uid)
 			if activation_token.check_token(user, token):

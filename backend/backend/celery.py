@@ -15,8 +15,12 @@ app.config_from_object(settings, namespace='CELERY')
 # Celery Beat Settings
 
 app.conf.beat_schedule = {
-    'check_every_minutes': {
-        'task': 'base.tasks.check_products_and_send_email',
+    'check_every_ten_minutes': {
+        'task': 'base.tasks.check_products_and_send_ending_email',
+        'schedule': crontab(minute='*/10')
+    },
+    'another_check_every_ten_minutes': {
+        'task': 'base.tasks.check_products_and_send_last_email',
         'schedule': crontab(minute='*/10')
     }
 }

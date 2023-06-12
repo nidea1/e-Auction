@@ -4,6 +4,12 @@ from django.utils.text import slugify
 
 # Create your models here.
 
+class Status(models.IntegerChoices):
+	Active = 1
+	Modified = 2
+	Passive = 3
+
+
 class Brand(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     name = models.CharField(max_length=50, null=True, blank=True)
@@ -11,6 +17,7 @@ class Brand(models.Model):
     
     def __str__(self) -> str:
         return str(self.name)
+
 
 class Category(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
@@ -28,6 +35,7 @@ class Category(models.Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
@@ -38,13 +46,15 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='categories')
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True, related_name='brands')
     endDate = models.DateTimeField()
+    productStatus = models.IntegerField(choices=Status.choices, default=Status.Active)
     createdAt = models.DateTimeField(auto_now_add=True)
     startDate = models.DateTimeField(null=True, blank=True)
     currentHighestBid = models.IntegerField(null=True, blank=True, default=0)
     totalBids = models.IntegerField(default=0)
     province = models.CharField(max_length=100, null=True, blank=True)
     district = models.CharField(max_length=100, null=True, blank=True)
-    ending_email_sent = models.BooleanField(default=False)
+    endingEmailSent = models.BooleanField(default=False)
+    lastEmailSent = models.BooleanField(default=False)
     videoURL = models.URLField(max_length=200, null=True, blank=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
@@ -93,6 +103,7 @@ class Order(models.Model):
     def __str__(self) -> str:
         return str(self.createdAt)
 
+
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
@@ -104,6 +115,7 @@ class OrderItem(models.Model):
     def __str__(self) -> str:
         return str(self.name)
     
+
 class UserAddress(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='addresses', null=True, blank=True)
@@ -116,7 +128,8 @@ class UserAddress(models.Model):
 
     def __str__(self) -> str:
         return f'{self.user.username}: {self.name}'
-    
+
+
 class UserPayment(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payments')
