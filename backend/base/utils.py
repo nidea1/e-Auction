@@ -15,9 +15,6 @@ class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
         )
 
 
-
-
-
 def send_email(mail_subject, message, user):
     email = EmailMessage(
         mail_subject,
@@ -27,6 +24,7 @@ def send_email(mail_subject, message, user):
     )
     email.content_subtype = 'html'
     email.send()
+
 
 def send_verification_email(request, user):
     activation_token = AccountActivationTokenGenerator()
@@ -41,6 +39,7 @@ def send_verification_email(request, user):
 
     send_email(mail_subject, message, user)
 
+
 def product_email_context(user, product):
     return {
         'user': user.first_name,
@@ -53,6 +52,7 @@ def product_email_context(user, product):
         'domain': os.environ.get('BASE_DOMAIN'),
         'protocol': 'http'
     }
+
 
 def send_ending_email(user, product):
     mail_subject = 'Product is ending soon!'
