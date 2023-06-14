@@ -87,7 +87,6 @@ export const logout = ()  => async (dispatch) => {
 
         dispatch(userLogoutSuccess(data))
         dispatch(socialSliceReset())
-        localStorage.removeItem('user')
     }catch(error){
         dispatch(userLogoutFail(error.response && error.response.data.detail
                 ? error.response.data.detail

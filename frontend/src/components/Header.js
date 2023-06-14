@@ -12,13 +12,14 @@ function Header() {
 
     const {
         categoryReducers: { categories },
-        userReducers: { user, userLogoutSuccess, userInfo, userDetailsSuccess }
+        userReducers: { user, userLogoutSuccess, userInfo, userDetailsSuccess, userLogoutError }
     } = useSelector((state) => state)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const logoutHandler = () => {
+        localStorage.removeItem('user')
         dispatch(logout())
     }
 
@@ -42,8 +43,10 @@ function Header() {
         if(userLogoutSuccess){
             navigate('/')
             dispatch(userLogoutReset())
+        }else if(userLogoutError){
+            window.location.reload(true)
         }
-    }, [navigate, userLogoutSuccess, dispatch])
+    }, [navigate, userLogoutSuccess, userLogoutError, dispatch])
 
     useEffect(() => {
         if(user && !user.isSocialRegisterCompleted){
@@ -75,13 +78,13 @@ function Header() {
                         </NavLink>
                         &nbsp;&nbsp;
                         <ul className='nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0'>
-                            <ListGroupItem className='border-0'>
+                            <ListGroupItem>
                                 <NavLink to={'/'} className={({isActive, isPending}) => isPending ? "" : isActive ? "nav-link px-2 link-secondary" : "nav-link px-2 link-dark" }>Home</NavLink>
                             </ListGroupItem>
-                            <ListGroupItem className='border-0'>
+                            <ListGroupItem>
                                 <NavLink to={'/cs'} className={({isActive, isPending}) => isPending ? "" : isActive ? "nav-link px-2 link-secondary" : "nav-link px-2 link-dark" }>Help & Contact</NavLink>
                             </ListGroupItem>
-                            <ListGroupItem className='border-0'>
+                            <ListGroupItem>
                                 <NavLink to={'/sss'} className={({isActive, isPending}) => isPending ? "" : isActive ? "nav-link px-2 link-secondary" : "nav-link px-2 link-dark" }>FAQs</NavLink>
                             </ListGroupItem>
                         </ul>
@@ -94,16 +97,25 @@ function Header() {
                             />
                         </Form>
                         {user ?
-                        <NavDropdown className='text-end' title={user && user.isSocialRegisterCompleted ? user.name : 'Please set your account.'}>
-                            <NavDropdown.Item href='/profile'>
-                                Profile
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href='/product/upload'>
-                                Sell a product
-                            </NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
-                        </NavDropdown>
+                        <>
+                            <ListGroupItem className='me-3'>
+                                <NavLink to={'/shopping-cart'} className={({isActive, isPending}) => isPending ? "" : isActive ? "nav-link px-2 link-secondary" : "nav-link px-2 link-dark" }><i class="fa-solid fa-cart-shopping"></i></NavLink>
+                            </ListGroupItem>
+                            <NavDropdown className='text-end' title={user && user.isSocialRegisterCompleted ? (
+                                <>
+                                    <i class="fa-solid fa-user"></i> {user.name}
+                                </>
+                            ) : 'Please set your account.'}>
+                                <NavDropdown.Item href='/profile'>
+                                    Profile
+                                </NavDropdown.Item>
+                                <NavDropdown.Item href='/product/upload'>
+                                    Sell a product
+                                </NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                            </NavDropdown>
+                        </>
                         :   <NavLink to="/login" className={'link-dark text-decoration-none fw-semibold'}>
                                 <i className='fa-regular fa-user' /> Login
                             </NavLink>

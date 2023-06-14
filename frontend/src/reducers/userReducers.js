@@ -1,9 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const userInfoFromStorage = localStorage.getItem('userInfo')
-  ? JSON.parse(localStorage.getItem('userInfo'))
-  : null
-
 const userFromStorage = localStorage.getItem('user')
   ? JSON.parse(localStorage.getItem('user'))
   : null
@@ -15,7 +11,7 @@ export const userSlice = createSlice({
     success: false,
     error: null,
     user: userFromStorage,
-    userInfo: userInfoFromStorage,
+    userInfo: null,
   },
   reducers: {
 

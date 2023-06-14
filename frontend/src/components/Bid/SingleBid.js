@@ -22,10 +22,10 @@ function SingleBid({bid, isSingle}) {
                 height={32} 
                 className="rounded-circle flex-shrink-0" 
             />
-            <Col className="d-flex gap-2 w-100 justify-content-between">
+            <Col className="d-sm-flex gap-2 w-100 justify-content-between">
             <Col>
                 <Col className='mb-0 h6'>{bid.productName}</Col>
-                <Col className='mb-0 opacity-75'>You bidded <span className='fw-semibold'>${bid.bid}</span></Col>
+                <Col className='mb-3 mb-md-0 opacity-75'>You bidded <span className='fw-semibold'>${bid.bid}</span></Col>
             </Col>
             <small className='opacity-50 text-nowrap'>
                 {formattedDate} <br />

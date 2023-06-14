@@ -39,7 +39,7 @@ function BidScreen() {
 
   return (
     <>
-    <Row className='mx-3'>
+    <Row className='mx-3 mt-5 mt-md-0'>
         <Col className='h4 text-center'>
             My Bid List
         </Col>
