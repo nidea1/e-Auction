@@ -6,7 +6,7 @@ import os
 import requests
 
 
-class RefreshTokenMiddleware(MiddlewareMixin):
+class CustomCoookieMiddleware(MiddlewareMixin):
     def process_request(self, request):
         token = request.COOKIES.get('access_token')
         base_url = os.environ.get('BASE_API_URL')

@@ -80,11 +80,13 @@ class BrandSerializer(serializers.ModelSerializer):
         model = Brand
         fields = '__all__'
 
+
 class ProductImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductImage
         fields = '__all__'
+
 
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
@@ -92,6 +94,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+
 
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -105,12 +108,14 @@ class SubCategorySerializer(serializers.ModelSerializer):
             return SubCategorySerializer(obj.children.all(), many=True, context=self.context).data
         else:
             return None
-          
+
+
 class CategorySerializer(serializers.ModelSerializer):
     subCategory = SubCategorySerializer(many=True, read_only=True, source='children')
     class Meta:
         model = Category
         fields = ['_id','name', 'slug', 'description', 'createdAt', 'subCategory']
+
 
 class CategoryDetailSerializer(serializers.ModelSerializer):
     subCategory = SubCategorySerializer(many=True, read_only=True, source='children')
@@ -155,6 +160,7 @@ class UserPaymentSerializer(serializers.ModelSerializer):
             )
         return value
 
+
 class BidSerializer(serializers.ModelSerializer):
     productName = serializers.ReadOnlyField(source= 'product.name')
     userName = serializers.ReadOnlyField(source= 'user.first_name')
@@ -168,10 +174,10 @@ class BidSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_productImage(self, obj):
-        product_images = obj.product.images.all()
+        product_image = obj.product.images.first()
         request = self.context['request']
-        if product_images:
-            return request.build_absolute_uri(product_images[0].image.url)
+        if product_image:
+            return request.build_absolute_uri(product_image.image.url)
         return None
     
     def get_isMaxBid(self, obj):
@@ -201,3 +207,30 @@ class BidSerializer(serializers.ModelSerializer):
                 }
             )
         return value
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    productName = serializers.SerializerMethodField(read_only=True)
+    productImage = serializers.SerializerMethodField(read_only=True)
+    paidPrice = serializers.SerializerMethodField(read_only=True)
+    seller = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ['productName', 'productImage', 'paidPrice', 'seller', 'isConfirmed', 'isDelivered', 'deliveredAt']
+
+    def get_productName(self, obj):
+        return obj.product.name
+
+    def get_productImage(self, obj):
+        product_image = obj.product.images.first()
+        request = self.context['request']
+        if product_image:
+            return request.build_absolute_uri(product_image.image.url)
+        return None
+
+    def get_paidPrice(self, obj):
+        return obj.product.currentHighestBid
+
+    def get_seller(self, obj):
+        return obj.seller.first_name

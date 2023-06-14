@@ -84,7 +84,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'base.middleware.RefreshTokenMiddleware',
+    'base.middleware.CustomCoookieMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'

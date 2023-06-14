@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
+from .models import Status, Order
+
+
 class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
     def _make_hash_value(self, user, timestamp):
         return (
@@ -88,3 +91,15 @@ def set_cookies(response):
     response.set_cookie('access_token', response.data['access_token'], httponly=True, samesite='None', expires=36000, secure=True)
     response.set_cookie('refresh_token', response.data['refresh_token'], httponly=True, samesite='None', secure=True)
     return response
+
+
+def create_order(product, winner):
+    new_order = Order.objects.create(
+        buyer = winner,
+        seller = product.user,
+        product = product,
+    )
+
+    new_order.save()
+
+    return "New order created."

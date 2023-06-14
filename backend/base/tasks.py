@@ -2,7 +2,7 @@ from django.utils import timezone
 from datetime import timedelta
 from celery import shared_task
 
-from .utils import send_ending_email, send_winner_email, send_loser_email
+from .utils import send_ending_email, send_winner_email, send_loser_email, create_order
 from .models import Product, Status
 
 @shared_task
@@ -36,6 +36,7 @@ def check_products_and_send_last_email():
             for bid in product.bids.all():
                 if bid == max_bid:
                     send_winner_email(max_bid.user, product)
+                    create_order(product, max_bid.user)
                 else:
                     send_loser_email(bid.user, product)
 
