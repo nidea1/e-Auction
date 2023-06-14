@@ -19,12 +19,17 @@ testaccount@eauction.com
 
 - New My Bid List
 - Winner and Loser mails
+- New authentication system (so bug fixed)
+- Responsive design bugs fixed
 
 ## Screenshots
 
 ![img1](https://cdn.discordapp.com/attachments/1035852765756411995/1117845844398444594/image.png)
 ![img2](https://cdn.discordapp.com/attachments/1035852765756411995/1117845778719842455/image.png)
-![img5](https://cdn.discordapp.com/attachments/1035852765756411995/1117846268438384640/image.png)
-![img3](https://cdn.discordapp.com/attachments/1035852765756411995/1117846078671290408/image.png)
-![img4](https://cdn.discordapp.com/attachments/1035852765756411995/1117846190780842075/image.png)
+![img3](https://cdn.discordapp.com/attachments/1035852765756411995/1117846268438384640/image.png)
+![img4](https://cdn.discordapp.com/attachments/1035852765756411995/1117846078671290408/image.png)
+![img5](https://cdn.discordapp.com/attachments/1035852765756411995/1117846190780842075/image.png)
+![img6](https://cdn.discordapp.com/attachments/1035852765756411995/1118556949101940787/image.png)
+![img7](https://cdn.discordapp.com/attachments/1035852765756411995/1118557007667003452/image.png)
+![img8](https://cdn.discordapp.com/attachments/1035852765756411995/1118557141469507584/image.png)
 
