@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from django.utils import timezone
 
 # Create your models here.
 
@@ -98,6 +99,14 @@ class Order(models.Model):
 
     def __str__(self) -> str:
         return f'{self.product} bought by {self.buyer} from {self.seller}'
+    
+    def save(self, *args, **kwargs) -> None:
+        if self.isConfirmed is True:
+            self.confirmedAt = timezone.now()
+        if self.isDelivered is True:
+            self.deliveredAt = timezone.now()
+
+        super().save(*args, **kwargs)
 
 
 class UserAddress(models.Model):

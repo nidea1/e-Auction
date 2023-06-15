@@ -209,7 +209,7 @@ class BidSerializer(serializers.ModelSerializer):
         return value
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class BuyingOrderSerializer(serializers.ModelSerializer):
     productName = serializers.SerializerMethodField(read_only=True)
     productImage = serializers.SerializerMethodField(read_only=True)
     paidPrice = serializers.SerializerMethodField(read_only=True)
@@ -217,7 +217,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['productName', 'productImage', 'paidPrice', 'seller', 'isConfirmed', 'isDelivered', 'deliveredAt']
+        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'createdAt']
 
     def get_productName(self, obj):
         return obj.product.name
