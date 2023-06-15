@@ -3,6 +3,22 @@ main {
   font-family: Arial, sans-serif;
 }
 
+/* Shopping Cart */
+
+.cart-item-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #343a40;
+  color: #fff;
+  font-size: 11px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
 /* Profile screen */
 
 .edit-profile {

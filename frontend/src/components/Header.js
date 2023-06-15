@@ -6,13 +6,15 @@ import { detail, logout } from '../actions/userActions';
 import CategoryMenu from './Category/CategoryMenu';
 import { listCategories } from '../actions/categoryActions';
 import { userDetailsReset, userLogoutReset } from '../reducers/userReducers';
+import { buyList } from '../actions/orderActions';
 
 
 function Header() {
 
     const {
         categoryReducers: { categories },
-        userReducers: { user, userLogoutSuccess, userInfo, userDetailsSuccess, userLogoutError }
+        userReducers: { user, userLogoutSuccess, userInfo, userDetailsSuccess, userLogoutError },
+        orderReducers : { buyOrders },
     } = useSelector((state) => state)
 
     const dispatch = useDispatch()
@@ -25,6 +27,7 @@ function Header() {
 
     useEffect(() => {
         dispatch(listCategories())
+        dispatch(buyList())
     }, [dispatch])
 
     useEffect(() => {
@@ -66,6 +69,8 @@ function Header() {
         }
     }
 
+    const navLinkClass = "nav-link px-2"
+
     return (
         <>
             <header class='p-3 mb-3 border-bottom shadow-sm'>
@@ -79,13 +84,13 @@ function Header() {
                         &nbsp;&nbsp;
                         <ul className='nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0'>
                             <ListGroupItem>
-                                <NavLink to={'/'} className={({isActive, isPending}) => isPending ? "" : isActive ? "nav-link px-2 link-secondary" : "nav-link px-2 link-dark" }>Home</NavLink>
+                                <NavLink to={'/'} className={({isActive, isPending}) => isPending ? "" : isActive? `${navLinkClass} link-secondary` : `${navLinkClass} link-dark` }>Home</NavLink>
                             </ListGroupItem>
                             <ListGroupItem>
-                                <NavLink to={'/cs'} className={({isActive, isPending}) => isPending ? "" : isActive ? "nav-link px-2 link-secondary" : "nav-link px-2 link-dark" }>Help & Contact</NavLink>
+                                <NavLink to={'/cs'} className={({isActive, isPending}) => isPending ? "" : isActive ? `${navLinkClass} link-secondary` : `${navLinkClass} link-dark` }>Help & Contact</NavLink>
                             </ListGroupItem>
                             <ListGroupItem>
-                                <NavLink to={'/sss'} className={({isActive, isPending}) => isPending ? "" : isActive ? "nav-link px-2 link-secondary" : "nav-link px-2 link-dark" }>FAQs</NavLink>
+                                <NavLink to={'/sss'} className={({isActive, isPending}) => isPending ? "" : isActive ? `${navLinkClass} link-secondary` : `${navLinkClass} link-dark` }>FAQs</NavLink>
                             </ListGroupItem>
                         </ul>
                         <Form className='col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3' role={'search'} onSubmit={submitHandler}>
@@ -98,8 +103,23 @@ function Header() {
                         </Form>
                         {user ?
                         <>
-                            <ListGroupItem className='me-3'>
-                                <NavLink to={'/shopping-cart'} className={({isActive, isPending}) => isPending ? "" : isActive ? "nav-link px-2 link-secondary" : "nav-link px-2 link-dark" }><i class="fa-solid fa-cart-shopping"></i></NavLink>
+                            <ListGroupItem className='me-2'>
+                                <NavLink to={'/shopping-cart'}
+                                    className={({isActive, isPending}) =>
+                                        isPending ? "" : isActive ? `${navLinkClass} d-flex link-secondary` : `${navLinkClass} d-flex link-dark`
+                                    }
+                                >
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                    {buyOrders && buyOrders.length > 0 ?
+                                        <Col
+                                            className='cart-item-count ms-1'
+                                        >
+                                            {buyOrders.length}
+                                        </Col>
+                                        :
+                                        ''
+                                    }
+                                </NavLink>
                             </ListGroupItem>
                             <NavDropdown className='text-end' title={user && user.isSocialRegisterCompleted ? (
                                 <>

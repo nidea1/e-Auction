@@ -19,6 +19,7 @@ import VerifyScreen from "./screens/VerifyScreen";
 import UsersProductsScreen from "./screens/UsersProductsScreen";
 import SocialScreen from "./components/Login/SocialScreen";
 import SocialRegisterScreen from "./screens/SocialRegisterScreen";
+import ShoppingCartScreen from "./screens/ShoppingCartScreen";
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
               <Route path="addresses" element={<AddressScreen />} />
               <Route path="selling" element={<UsersProductsScreen />} />
             </Route>
+            <Route path="/shopping-cart" element={<ShoppingCartScreen />} />
             <Route path="/product/:productParams" element={<ProductScreen />}/>
             <Route path="/product/upload" element={<UploadScreen />}>
               <Route index element={<Categories />} />
