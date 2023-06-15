@@ -21,6 +21,7 @@ testaccount@eauction.com
 - Winner and Loser mails
 - New authentication system (so bug fixed)
 - Responsive design bugs fixed
+- Shopping cart
 
 ## Screenshots
 
@@ -32,4 +33,5 @@ testaccount@eauction.com
 ![img6](https://cdn.discordapp.com/attachments/1035852765756411995/1118556949101940787/image.png)
 ![img7](https://cdn.discordapp.com/attachments/1035852765756411995/1118557007667003452/image.png)
 ![img8](https://cdn.discordapp.com/attachments/1035852765756411995/1118557141469507584/image.png)
+![img9](https://cdn.discordapp.com/attachments/1035852765756411995/1118932173672677498/image.png)
 
