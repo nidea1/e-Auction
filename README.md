@@ -10,6 +10,7 @@ You can live test from [here!](https://nidea1.com.tr)
 testaccount@eauction.com
 123
 ```
+##### Clear localstorage, if you logged in but you can not logged out.
 
 - Frontend deployed via [Netlify.](https://www.netlify.com)
 - Backend deployed via [AWS EC2.](https://aws.amazon.com/ec2/)
