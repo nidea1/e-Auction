@@ -20,6 +20,8 @@ import UsersProductsScreen from "./screens/UsersProductsScreen";
 import SocialScreen from "./components/Login/SocialScreen";
 import SocialRegisterScreen from "./screens/SocialRegisterScreen";
 import ShoppingCartScreen from "./screens/ShoppingCartScreen";
+import OrderScreenContainer from "./components/Orders/OrderScreenContainer";
+import CompleteOrders from "./components/Orders/CompleteOrders";
 
 
 function App() {
@@ -43,7 +45,10 @@ function App() {
               <Route path="addresses" element={<AddressScreen />} />
               <Route path="selling" element={<UsersProductsScreen />} />
             </Route>
-            <Route path="/shopping-cart" element={<ShoppingCartScreen />} />
+            <Route path="/shopping-cart" element={<ShoppingCartScreen />}>
+              <Route index element={<OrderScreenContainer />} />
+              <Route path="complete" element={<CompleteOrders />} />
+            </Route>
             <Route path="/product/:productParams" element={<ProductScreen />}/>
             <Route path="/product/upload" element={<UploadScreen />}>
               <Route index element={<Categories />} />

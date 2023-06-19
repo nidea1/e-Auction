@@ -25,7 +25,12 @@ function SingleBuyOrder({order}) {
     return (
         <>
             <ListGroup.Item key={order._id} action className='d-flex gap-3 py-3' onClick={handleCheckboxChange}>
-                <Form.Check type="checkbox" checked={isChecked} readOnly onChange={handleCheckboxChange} />
+                <Form.Check
+                    type="checkbox"
+                    checked={isChecked}
+                    readOnly
+                    onChange={handleCheckboxChange}
+                />
                 <Image 
                     src={order.productImage} 
                     alt={order.productName} 

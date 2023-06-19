@@ -1,5 +1,5 @@
 import axios from "axios"
-import { buyOrderListFail, buyOrderListRequest, buyOrderListSuccess } from "../reducers/orderReducers"
+import { buyOrderListFail, buyOrderListRequest, buyOrderListSuccess, updateOrderFail, updateOrderRequest, updateOrderSuccess } from "../reducers/orderReducers"
 
 
 
@@ -13,6 +13,7 @@ const createAPIinstance = () => {
         withCredentials: true
     })
 }
+
 
 export const buyList = () => async (dispatch) => {
 
@@ -32,4 +33,23 @@ export const buyList = () => async (dispatch) => {
         ))
     }
 
+}
+
+
+export const confirmOrder = (orderID, updatedData) => async (dispatch) => {
+    try {
+        dispatch(updateOrderRequest())
+
+        const api = createAPIinstance()
+
+        const { data } = await api.put(`/buying/${orderID}`, updatedData)
+
+        dispatch(updateOrderSuccess(data))
+    } catch (error) {
+        dispatch(updateOrderFail(
+            error.message && error.response.data.detail ?
+            error.response.data.detail :
+            error.message
+        ))
+    }
 }

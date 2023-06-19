@@ -39,16 +39,23 @@ export const orderSlice = createSlice({
         // sellOrderDetailSuccess: (state,action) => { state.orderDetailLoading = false; state.orderDetailSuccess = true; state.order = action.payload },
         // sellOrderDetailFail: (state,action) => { state.orderDetailLoading = false; state.orderDetailError = action.payload },
 
+        // Update Order
+        updateOrderRequest: (state) => { state.updateOrderLoading = true },
+        updateOrderSuccess: (state,action) => { state.updateOrderLoading = false; state.updateOrderSuccess = true; state.order = action.payload },
+        updateOrderFail: (state,action) => { state.updateOrderLoading = false; state.updateOrderError = action.payload },
+
         // Actions Reset
         buyOrderListReset: (state) => { state.buyOrderLoading = false; state.buyOrderSuccess = false; state.buyOrderError = null },
         buyOrderDetailReset: (state) => { state.buyOrderDetailLoading = false; state.buyOrderDetailSuccess = false; state.buyOrderDetailError = null },
         // sellOrderListReset: (state) => { state.loading = false; state.success = false; state.error = null },
         // sellOrderDetailReset: (state) => { state.orderDetailLoading = false; state.orderDetailSuccess = false; state.orderDetailError = null },
+        updateOrderReset: (state) => { state.updateOrderLoading = false; state.updateOrderSuccess = false; state.updateOrderError = null },
 
         // Slice Reset
         orderSliceReset: (state) => {
             state.buyOrderLoading = false; state.buyOrderSuccess = false; state.buyOrderError = null; state.buyOrder = null; state.buyOrders = null;
-            state.buyOrderDetailLoading = false; state.buyOrderDetailSuccess = false; state.buyOrderDetailError = null
+            state.buyOrderDetailLoading = false; state.buyOrderDetailSuccess = false; state.buyOrderDetailError = null;
+            state.updateOrderLoading = false; state.updateOrderSuccess = false; state.updateOrderError = null
         }
 
     }
@@ -65,6 +72,11 @@ export const {
     buyOrderDetailSuccess,
     buyOrderDetailFail,
     buyOrderDetailReset,
+
+    updateOrderRequest,
+    updateOrderSuccess,
+    updateOrderFail,
+    updateOrderReset,
 
     orderSliceReset,
 
