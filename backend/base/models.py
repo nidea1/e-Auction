@@ -85,28 +85,6 @@ class Bid(models.Model):
 
     def __str__(self) -> str:
         return f'{self.user.username} bidded {self.bid} to {self.product.name}'
-    
-class Order(models.Model):
-    buyer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders_as_buyer')
-    seller = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders_as_seller')
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    isConfirmed = models.BooleanField(default=False)
-    confirmedAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
-    isDelivered = models.BooleanField(default=False)
-    deliveredAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
-    createdAt = models.DateTimeField(auto_now_add=True)
-    _id = models.AutoField(primary_key=True, editable=False)
-
-    def __str__(self) -> str:
-        return f'{self.product} bought by {self.buyer} from {self.seller}'
-    
-    def save(self, *args, **kwargs) -> None:
-        if self.isConfirmed is True:
-            self.confirmedAt = timezone.now()
-        if self.isDelivered is True:
-            self.deliveredAt = timezone.now()
-
-        super().save(*args, **kwargs)
 
 
 class UserAddress(models.Model):
@@ -135,3 +113,26 @@ class UserPayment(models.Model):
         return f'{self.cardOwner} by {self.user.username}'
 
 
+
+class Order(models.Model):
+    buyer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders_as_buyer')
+    seller = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders_as_seller')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='order_product')
+    address = models.ForeignKey(UserAddress, on_delete=models.SET_NULL, null=True, related_name='order_address')
+    isConfirmed = models.BooleanField(default=False)
+    confirmedAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    isDelivered = models.BooleanField(default=False)
+    deliveredAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self) -> str:
+        return f'{self.product} bought by {self.buyer} from {self.seller}'
+    
+    def save(self, *args, **kwargs) -> None:
+        if self.isConfirmed is True:
+            self.confirmedAt = timezone.now()
+        if self.isDelivered is True:
+            self.deliveredAt = timezone.now()
+
+        super().save(*args, **kwargs)
