@@ -234,3 +234,9 @@ class BuyingOrderSerializer(serializers.ModelSerializer):
 
     def get_seller(self, obj):
         return obj.seller.first_name
+    
+class BuyingOrderDetailSerializer(BuyingOrderSerializer):
+
+    class Meta:
+        model = Order
+        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'createdAt', 'isConfirmed', 'confirmedAt', 'address', 'isDelivered', 'deliveredAt']
