@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 
 function SubCategoryMenu({ subCategories }) {
@@ -8,7 +9,7 @@ function SubCategoryMenu({ subCategories }) {
       <ul>
         {subCategories.map((subCategory) => (
           <li key={subCategory._id}>
-            <a href={`/categories/${subCategory.slug}-c-${subCategory._id}`}>{subCategory.name}</a>
+            <Link to={`/categories/${subCategory.slug}-c-${subCategory._id}`}>{subCategory.name}</Link>
             <SubCategoryMenu subCategories={subCategory.subCategory} />
           </li>
         ))}
