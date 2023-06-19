@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Col, Container, Form, FormControl, ListGroupItem, Navbar, NavDropdown } from "react-bootstrap";
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import CategoryMenu from './Category/CategoryMenu';
 import { listCategories } from '../actions/categoryActions';
 import { userDetailsReset, userLogoutReset } from '../reducers/userReducers';
 import { buyList } from '../actions/orderActions';
+import { buyOrderListReset } from '../reducers/orderReducers';
 
 
 function Header() {
@@ -14,11 +15,16 @@ function Header() {
     const {
         categoryReducers: { categories },
         userReducers: { user, userLogoutSuccess, userInfo, userDetailsSuccess, userLogoutError },
-        orderReducers : { buyOrders },
+        orderReducers : { buyOrders, buyOrderError },
     } = useSelector((state) => state)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const logoutAndClean = useCallback(() => {
+        localStorage.removeItem('user')
+        dispatch(logout())
+    }, [dispatch])
 
     const logoutHandler = () => {
         localStorage.removeItem('user')
@@ -27,14 +33,24 @@ function Header() {
 
     useEffect(() => {
         dispatch(listCategories())
-        dispatch(buyList())
     }, [dispatch])
 
     useEffect(() => {
         if(!user && userInfo){
             dispatch(detail())
         }
+
+        if(user){
+            dispatch(buyList())
+        }
     },[dispatch, user, userInfo, navigate])
+
+    useEffect(() => {
+        if(buyOrderError){
+            logoutAndClean()
+            dispatch(buyOrderListReset())
+        }
+    }, [dispatch, buyOrderError, logoutAndClean])
 
     useEffect(() => {
         if(userDetailsSuccess){
