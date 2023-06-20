@@ -24,6 +24,7 @@ testaccount@eauction.com
 - Responsive design bugs fixed
 - Shopping cart
 - Order screen
+- User Orders
 
 ## Screenshots
 
@@ -38,4 +39,6 @@ testaccount@eauction.com
 ![img9](https://cdn.discordapp.com/attachments/1035852765756411995/1120343199555264584/image.png)
 ![img10](https://cdn.discordapp.com/attachments/1035852765756411995/1118932173672677498/image.png)
 ![img11](https://cdn.discordapp.com/attachments/1035852765756411995/1120343338890047618/image.png)
+![img12](https://cdn.discordapp.com/attachments/1035852765756411995/1120734141437198447/image.png)
+![img13](https://cdn.discordapp.com/attachments/1035852765756411995/1120734374296567941/image.png)
 
