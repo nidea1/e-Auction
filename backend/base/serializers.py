@@ -134,7 +134,8 @@ class UserAddressSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate_addressName(self,value):
-        if UserAddress.objects.filter(name=value).exists():
+        user = self.context['request'].user
+        if UserAddress.objects.filter(user=user, name=value).exists():
             raise serializers.ValidationError(
                 {
                     'detail': 'User address with this address name already exists.'
@@ -234,9 +235,17 @@ class BuyingOrderSerializer(serializers.ModelSerializer):
 
     def get_seller(self, obj):
         return obj.seller.first_name
-    
-class BuyingOrderDetailSerializer(BuyingOrderSerializer):
+
+
+class OrderDetailSerializer(BuyingOrderSerializer):
 
     class Meta:
         model = Order
         fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'createdAt', 'isConfirmed', 'confirmedAt', 'address', 'isDelivered', 'deliveredAt']
+
+
+class ConfirmedOrderSerializer(BuyingOrderSerializer):
+
+    class Meta:
+        model = Order
+        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'confirmedAt', 'address', 'isDelivered', 'deliveredAt']

@@ -96,6 +96,8 @@ class UserAddress(models.Model):
     postalCode = models.CharField(max_length=50, null=True, blank=True)
     mobile = models.CharField(max_length=12, null=True, blank=True)
     name = models.CharField(max_length=200, null=True, blank=True)
+    firstName = models.CharField(max_length=200, null=True, blank=True)
+    lastName = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self) -> str:
         return f'{self.user.username}: {self.name}'
@@ -130,9 +132,9 @@ class Order(models.Model):
         return f'{self.product} bought by {self.buyer} from {self.seller}'
     
     def save(self, *args, **kwargs) -> None:
-        if self.isConfirmed is True:
+        if self.isConfirmed is True and self.confirmedAt is None:
             self.confirmedAt = timezone.now()
-        if self.isDelivered is True:
+        if self.isDelivered is True and self.deliveredAt is None:
             self.deliveredAt = timezone.now()
 
         super().save(*args, **kwargs)

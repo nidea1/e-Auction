@@ -4,6 +4,7 @@ from ..views.order_views import *
 
 
 urlpatterns = [
+    path('<int:pk>', OrderDetail.as_view()),
     path('buying/', BuyingOrderList.as_view()),
-    path('buying/<int:pk>', BuyingOrderDetail.as_view()),
+    path('confirmed/', ConfirmedOrderList.as_view()),
 ]

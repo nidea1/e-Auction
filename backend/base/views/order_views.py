@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from ..serializers import BuyingOrderSerializer, BuyingOrderDetailSerializer
+from ..serializers import BuyingOrderSerializer, OrderDetailSerializer, ConfirmedOrderSerializer
 from ..models import Order
 
 class BuyingOrderList(ListAPIView):
@@ -13,8 +13,17 @@ class BuyingOrderList(ListAPIView):
         return Order.objects.filter(buyer=self.request.user, isConfirmed = False)
 
 
-class BuyingOrderDetail(RetrieveUpdateAPIView):
+class OrderDetail(RetrieveUpdateAPIView):
 
     permission_classes = [IsAuthenticated]
-    serializer_class = BuyingOrderDetailSerializer
+    serializer_class = OrderDetailSerializer
     queryset = Order.objects.all()
+
+
+class ConfirmedOrderList(ListAPIView):
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = ConfirmedOrderSerializer
+    
+    def get_queryset(self):
+        return Order.objects.filter(buyer=self.request.user, isConfirmed = True)
