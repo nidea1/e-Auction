@@ -119,7 +119,7 @@ function ProductAttr() {
         <>
             {loading ? loading && <Loader />
             : 
-            <Row>
+            <Row className='mx-3'>
                 {error && <Message variant={'danger'}>{error}</Message>}
                 <FormContainer>
                     <Row className='rounded shadow p-4'>
@@ -302,7 +302,7 @@ function ProductAttr() {
                             </Row>
                             
                             <Row className='justify-content-center mt-2'>
-                                <Button type='submit' variant='dark' className='my-2 shadow-sm w-25'>
+                                <Button type='submit' variant='dark' className='my-2 shadow-sm' style={{width: '200px'}}>
                                     Publish now
                                 </Button>
                             </Row>

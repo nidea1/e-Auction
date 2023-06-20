@@ -8,20 +8,22 @@ import ProductScreen from "./screens/ProductScreen"
 import LoginScreen from "./screens/LoginScreen"
 import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-import AddressScreen from "./screens/AddressScreen";
+import AddressScreen from "./components/Profile/Screens/AddressScreen";
 import CategoryScreen from "./screens/CategoryScreen";
-import CreditCardScreen from "./screens/CreditCardScreen";
+import CreditCardScreen from "./components/Profile/Screens/CreditCardScreen";
 import UploadScreen from "./screens/UploadScreen";
 import Categories from "./components/ProductSelling/Categories";
 import ProductAttr from "./components/ProductSelling/ProductAttr";
-import BidScreen from "./screens/BidScreen";
+import BidScreen from "./components/Profile/Screens/BidScreen";
 import VerifyScreen from "./screens/VerifyScreen";
-import UsersProductsScreen from "./screens/UsersProductsScreen";
+import UsersProductsScreen from "./components/Profile/Screens/UsersProductsScreen";
 import SocialScreen from "./components/Login/SocialScreen";
 import SocialRegisterScreen from "./screens/SocialRegisterScreen";
 import ShoppingCartScreen from "./screens/ShoppingCartScreen";
 import OrderScreenContainer from "./components/Orders/OrderScreenContainer";
 import CompleteOrders from "./components/Orders/CompleteOrders";
+import BuyingOrderScreen from "./components/Profile/Screens/BuyingOrderScreen";
+import BuyOrderDetail from "./components/Profile/Order/BuyOrderDetail";
 
 
 function App() {
@@ -44,6 +46,8 @@ function App() {
               <Route path="cards" element={<CreditCardScreen />} />
               <Route path="addresses" element={<AddressScreen />} />
               <Route path="selling" element={<UsersProductsScreen />} />
+              <Route path="orders" element={<BuyingOrderScreen />} />
+              <Route path="orders/:orderID" element={<BuyOrderDetail />} />
             </Route>
             <Route path="/shopping-cart" element={<ShoppingCartScreen />}>
               <Route index element={<OrderScreenContainer />} />

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import { Row, Col, Modal, Form, FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap';
-import { createAddress } from "../../actions/addressActions";
-import Loader from '../Loader';
-import Message from '../Message';
-import UpdateProfileForm from '../UpdateProfileForm';
+import { createAddress } from "../../../actions/addressActions";
+import Loader from '../../Loader';
+import Message from '../../Message';
+import UpdateProfileForm from '../UpdateProfileModal';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/bootstrap.css'
-import { addressCreateReset } from '../../reducers/addressReducers';
+import { addressCreateReset } from '../../../reducers/addressReducers';
 
 function CreateAddressModal({show, onHide, dispatch}) {
 

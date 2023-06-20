@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { listProducts } from '../actions/productActions'
-import ProductByCategory from '../components/Category/ProductByCategory'
-import Loader from '../components/Loader'
+import { listProducts } from '../../../actions/productActions'
+import ProductByCategory from '../../Category/ProductByCategory'
+import Loader from '../../Loader'
 
 function UsersProductsScreen() {
     
@@ -44,7 +44,7 @@ function UsersProductsScreen() {
 
     return (
         <>
-            <Row className='mx-3'>
+            <Row className='mx-3 mt-5 mt-md-0'>
                 <Col md={4} className='fw-semibold'>
                     You listing {products.length} {products.length === 1 ? 'product:': 'products:'}
                 </Col>

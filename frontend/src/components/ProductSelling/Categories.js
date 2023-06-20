@@ -45,12 +45,12 @@ function Categories() {
 
     return (
         <>
-        <Row className="justify-content-center border rounded shadow text-center">
+        <Row className="justify-content-center border rounded shadow-sm text-center mx-3">
                 <Row className="justify-content-center mb-2 mt-3">
                     <Col className="border-bottom pb-3 h5">Choose Your Category</Col>            
                 </Row>
-                <Col className="selling-categories">
-                    <Col lg={2} className="mb-2 pe-2 border-end level-one text-center">
+                <Col className="selling-categories flex-column flex-lg-row">
+                    <Col lg={2} className="mb-2 pe-2 border-bottom border-end level-one text-center">
                     {categories.map((category) => (
                         <Col
                         className={`my-2 p-2 rounded ${
@@ -63,7 +63,7 @@ function Categories() {
                         </Col>
                     ))}
                     </Col>
-                    <Col lg={4} className={`level-two px-2 mb-2 ${activeCategory !== null && categories ? 'border-end' : ''}`}>
+                    <Col lg={4} className={`level-two px-2 mb-2 ${activeCategory !== null && categories ? 'border-bottom border-end' : ''}`}>
                     {activeCategory !== null &&
                         categories
                         .find((category) => category._id === activeCategory)

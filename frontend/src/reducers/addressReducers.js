@@ -7,8 +7,8 @@ export const addressSlice = createSlice({
         loading: false,
         success: false,
         error: null,
-        address: {},
-        addresses: []
+        address: null,
+        addresses: null
     },
     reducers: {
 
@@ -16,6 +16,11 @@ export const addressSlice = createSlice({
         addressListRequest: (state) => { state.loading = true },
         addressListSuccess: (state, action) => { state.loading = false; state.success = true; state.addresses = action.payload },
         addressListFail: (state, action) => { state.loading = false; state.error = action.payload },
+
+        // Address
+        addressDetailRequest: (state) => { state.addressDetailLoading = true },
+        addressDetailSuccess: (state, action) => { state.addressDetailLoading = false; state.addressDetailSuccess = true; state.address = action.payload },
+        addressDetailFail: (state, action) => { state.addressDetailLoading = false; state.addressDetailError = action.payload },
 
         // Update Address
         addressUpdateRequest: (state) => { state.addressUpdateLoading = true },
@@ -34,6 +39,7 @@ export const addressSlice = createSlice({
 
         // Reset Actions
         addressListReset: (state) => { state.loading = false; state.success = false; state.error = null },
+        addressDetailReset: (state) => { state.addressDetailLoading = false; state.addressDetailSuccess = false; state.addressDetailError = null },
         addressUpdateReset: (state) => { state.addressUpdateLoading = false; state.addressUpdateSuccess = false; state.addressUpdateError = null },
         addressDeleteReset: (state) => { state.addressDeleteLoading = false; state.addressDeleteSuccess = false; state.addressDeleteError = null },
         addressCreateReset: (state) => { state.addressCreateLoading = false; state.addressCreateSuccess = false; state.addressCreateError = null },
@@ -41,6 +47,7 @@ export const addressSlice = createSlice({
         // Reset Slice
         addressSliceReset: (state) => {
             state.loading = false; state.success = false; state.error = null; state.address = null; state.addresses = null;
+            state.addressDetailLoading = false; state.addressDetailSuccess = false; state.addressDetailError = null;
             state.addressUpdateLoading = false; state.addressUpdateSuccess = false; state.addressUpdateError = null;
             state.addressDeleteLoading = false; state.addressDeleteSuccess = false; state.addressDeleteError = null;
             state.addressCreateLoading = false; state.addressCreateSuccess = false; state.addressCreateError = null
@@ -53,6 +60,11 @@ export const {
     addressListSuccess,
     addressListFail,
     addressListReset,
+
+    addressDetailRequest,
+    addressDetailSuccess,
+    addressDetailFail,
+    addressDetailReset,
 
     addressUpdateRequest,
     addressUpdateSuccess,

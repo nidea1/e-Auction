@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Col, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { listBids } from '../actions/bidActions'
-import Loader from '../components/Loader'
-import BidGroup from '../components/Bid/BidGroup'
-import SingleBid from '../components/Bid/SingleBid'
+import { listBids } from '../../../actions/bidActions'
+import Loader from '../../Loader'
+import BidGroup from '../Bid/BidGroup'
+import SingleBid from '../Bid/SingleBid'
 
 function BidScreen() {
 

@@ -5,11 +5,8 @@ import { createSlice } from "@reduxjs/toolkit";
 export const orderSlice = createSlice({
     name: 'orderReducers',
     initialState: {
-        buyOrderLoading: false,
-        buyOrderSuccess: false,
-        buyOrderError: null,
-        buyOrder: null,
-        buyOrders: null,
+        order: null,
+        orders: null,
 
         // sellOrderLoading: false,
         // sellOrderSuccess: false,
@@ -21,13 +18,18 @@ export const orderSlice = createSlice({
 
         // Buying Orders
         buyOrderListRequest: (state) => { state.buyOrderLoading = true },
-        buyOrderListSuccess: (state,action) => { state.buyOrderLoading = false; state.buyOrderSuccess = true; state.buyOrders = action.payload },
+        buyOrderListSuccess: (state,action) => { state.buyOrderLoading = false; state.buyOrderSuccess = true; state.orders = action.payload },
         buyOrderListFail: (state,action) => { state.buyOrderLoading = false; state.buyOrderError = action.payload },
 
-        // Buying Order
-        buyOrderDetailRequest: (state) => { state.buyOrderDetailLoading = true },
-        buyOrderDetailSuccess: (state,action) => { state.buyOrderDetailLoading = false; state.buyOrderDetailSuccess = true; state.buyOrder = action.payload },
-        buyOrderDetailFail: (state,action) => { state.buyOrderDetailLoading = false; state.buyOrderDetailError = action.payload },
+        // Order Detail
+        orderDetailRequest: (state) => { state.orderDetailLoading = true },
+        orderDetailSuccess: (state,action) => { state.orderDetailLoading = false; state.orderDetailSuccess = true; state.order = action.payload },
+        orderDetailFail: (state,action) => { state.orderDetailLoading = false; state.orderDetailError = action.payload },
+
+        // Confirmed Orders
+        confirmedOrderListRequest: (state) => { state.confirmedOrderLoading = true },
+        confirmedOrderListSuccess: (state,action) => { state.confirmedOrderLoading = false; state.confirmedOrderSuccess = true; state.orders = action.payload },
+        confirmedOrderListFail: (state,action) => { state.confirmedOrderLoading = false; state.confirmedOrderError = action.payload },
 
         // // Selling Orders
         // sellOrderListRequest: (state) => { state.loading = true },
@@ -46,15 +48,17 @@ export const orderSlice = createSlice({
 
         // Actions Reset
         buyOrderListReset: (state) => { state.buyOrderLoading = false; state.buyOrderSuccess = false; state.buyOrderError = null },
-        buyOrderDetailReset: (state) => { state.buyOrderDetailLoading = false; state.buyOrderDetailSuccess = false; state.buyOrderDetailError = null },
+        orderDetailReset: (state) => { state.orderDetailLoading = false; state.orderDetailSuccess = false; state.orderDetailError = null },
+        confirmedOrderListReset: (state) => { state.confirmedOrderLoading = false; state.confirmedOrderSuccess = false; state.confirmedOrderError = null },
         // sellOrderListReset: (state) => { state.loading = false; state.success = false; state.error = null },
         // sellOrderDetailReset: (state) => { state.orderDetailLoading = false; state.orderDetailSuccess = false; state.orderDetailError = null },
         updateOrderReset: (state) => { state.updateOrderLoading = false; state.updateOrderSuccess = false; state.updateOrderError = null },
 
         // Slice Reset
         orderSliceReset: (state) => {
-            state.buyOrderLoading = false; state.buyOrderSuccess = false; state.buyOrderError = null; state.buyOrder = null; state.buyOrders = null;
-            state.buyOrderDetailLoading = false; state.buyOrderDetailSuccess = false; state.buyOrderDetailError = null;
+            state.buyOrderLoading = false; state.buyOrderSuccess = false; state.buyOrderError = null; state.order = null; state.orders = null;
+            state.orderDetailLoading = false; state.orderDetailSuccess = false; state.orderDetailError = null;
+            state.confirmedOrderLoading = false; state.confirmedOrderSuccess = false; state.confirmedOrderError = null;
             state.updateOrderLoading = false; state.updateOrderSuccess = false; state.updateOrderError = null
         }
 
@@ -68,10 +72,15 @@ export const {
     buyOrderListFail,
     buyOrderListReset,
 
-    buyOrderDetailRequest,
-    buyOrderDetailSuccess,
-    buyOrderDetailFail,
-    buyOrderDetailReset,
+    orderDetailRequest,
+    orderDetailSuccess,
+    orderDetailFail,
+    orderDetailReset,
+
+    confirmedOrderListRequest,
+    confirmedOrderListSuccess,
+    confirmedOrderListFail,
+    confirmedOrderListReset,
 
     updateOrderRequest,
     updateOrderSuccess,

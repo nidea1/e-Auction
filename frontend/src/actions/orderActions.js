@@ -1,5 +1,5 @@
 import axios from "axios"
-import { buyOrderListFail, buyOrderListRequest, buyOrderListSuccess, updateOrderFail, updateOrderRequest, updateOrderSuccess } from "../reducers/orderReducers"
+import { buyOrderListFail, buyOrderListRequest, buyOrderListSuccess, confirmedOrderListFail, confirmedOrderListRequest, confirmedOrderListSuccess, orderDetailFail, orderDetailRequest, orderDetailSuccess, updateOrderFail, updateOrderRequest, updateOrderSuccess } from "../reducers/orderReducers"
 
 
 
@@ -24,7 +24,6 @@ export const buyList = () => async (dispatch) => {
         const { data } = await api.get('/buying/')
 
         dispatch(buyOrderListSuccess(data))
-
     } catch (error) {
         dispatch(buyOrderListFail(
             error.response && error.response.data.detail ?
@@ -36,13 +35,13 @@ export const buyList = () => async (dispatch) => {
 }
 
 
-export const confirmOrder = (orderID, updatedData) => async (dispatch) => {
+export const updateOrder = (orderID, updatedData) => async (dispatch) => {
     try {
         dispatch(updateOrderRequest())
 
         const api = createAPIinstance()
 
-        const { data } = await api.put(`/buying/${orderID}`, updatedData)
+        const { data } = await api.put(`/order/${orderID}`, updatedData)
 
         dispatch(updateOrderSuccess(data))
     } catch (error) {
@@ -52,4 +51,44 @@ export const confirmOrder = (orderID, updatedData) => async (dispatch) => {
             error.message
         ))
     }
+}
+
+
+export const confirmedList = () => async (dispatch) => {
+
+    try {
+        dispatch(confirmedOrderListRequest())
+
+        const api = createAPIinstance()
+        const { data } = await api.get('/confirmed/')
+
+        dispatch(confirmedOrderListSuccess(data))
+    } catch (error) {
+        dispatch(confirmedOrderListFail(
+            error.response && error.response.data.detail ?
+            error.response.data.detail :
+            error.message
+        ))
+    }
+
+}
+
+
+export const orderDetail = (id) => async (dispatch) => {
+
+    try {
+        dispatch(orderDetailRequest())
+
+        const api = createAPIinstance()
+        const { data } = await api.get(`/${id}`)
+
+        dispatch(orderDetailSuccess(data))
+    } catch (error) {
+        dispatch(orderDetailFail(
+            error.response && error.response.data.detail ?
+            error.response.data.detail :
+            error.message
+        ))
+    }
+
 }

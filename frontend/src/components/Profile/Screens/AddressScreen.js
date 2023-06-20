@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { listAddresses } from '../actions/addressActions'
-import Address from '../components/Address/Address'
-import CreateAddressModal from '../components/Address/CreateAddressModal'
-import Loader from '../components/Loader'
-import Message from '../components/Message'
+import { listAddresses } from '../../../actions/addressActions'
+import Address from '../Address/Address'
+import CreateAddressModal from '../Address/CreateAddressModal'
+import Loader from '../../Loader'
+import Message from '../../Message'
 
 function AddressScreen() {
 
@@ -25,8 +25,9 @@ function AddressScreen() {
     },[dispatch])
 
     return (
+        addresses &&
         <>
-            <Row className='mx-3'>
+            <Row className='mx-3 mt-5 mt-md-0'>
                 <Col md={4} className='h5' style={{cursor: 'pointer'}} onClick={createModalShow}>
                     <i class="fa-solid fa-location-plus" /> &nbsp; <span className='h5'>Add an address</span>
                 </Col>

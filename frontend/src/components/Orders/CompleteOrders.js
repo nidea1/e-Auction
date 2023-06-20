@@ -3,8 +3,8 @@ import { Button, Card, Col, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import ShoppingSummary from './ShoppingSummary'
 import { listAddresses } from '../../actions/addressActions'
-import Address from '../Address/Address'
-import CreateAddressModal from '../Address/CreateAddressModal'
+import Address from '../Profile/Address/Address'
+import CreateAddressModal from '../Profile/Address/CreateAddressModal'
 import Message from '../Message'
 import Loader from '../Loader'
 import FilterContext from '../../contexts/FilterContext'
@@ -31,7 +31,7 @@ function CompleteOrders() {
     }, [dispatch])
 
     const {
-        orderReducers : {buyOrders, updateOrderLoading, updateOrderError, updateOrderSuccess},
+        orderReducers : {orders, updateOrderLoading, updateOrderError, updateOrderSuccess},
         addressReducers : {error, addresses, loading}
     } = useSelector((state) => state)
 
@@ -100,7 +100,7 @@ function CompleteOrders() {
                 <div className='vr mx-3 p-0 d-none d-md-block' style={{width: '0.25px'}} />
                 {updateOrderLoading ? <Loader /> :
                 <Col className='col-md-4 align-self-start sticky-top' style={{top :'1rem'}}>
-                    <ShoppingSummary orders={buyOrders} addressID={selectedAddress} />
+                    <ShoppingSummary orders={orders} addressID={selectedAddress} />
                 </Col>
                 }
             </Row>

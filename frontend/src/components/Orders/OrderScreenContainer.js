@@ -8,24 +8,24 @@ import SingleBuyOrder from './SingleBuyOrder'
 function OrderScreenContainer() {
 
     const {
-        orderReducers : {buyOrders}
+        orderReducers : {orders}
     } = useSelector((state) => state)
 
     return (
         <>
         {
-            buyOrders && buyOrders.length >= 1 ?
+            orders && orders.length >= 1 ?
             <>
                 <Col>
                     <ListGroup variant={'flush'} className='rounded'>
-                        {buyOrders.map((order) => (
+                        {orders.map((order) => (
                             <SingleBuyOrder order={order} />
                         ))}
                     </ListGroup>
                 </Col>
                 <div className='vr mx-3 p-0 d-none d-md-block' style={{width: '0.25px'}} />
                 <Col className='col-md-4 align-self-start sticky-top' style={{top :'1rem'}}>
-                    <ShoppingSummary orders={buyOrders} />
+                    <ShoppingSummary orders={orders} />
                 </Col>
             </>
             :

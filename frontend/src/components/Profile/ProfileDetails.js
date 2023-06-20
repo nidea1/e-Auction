@@ -71,12 +71,25 @@ function ProfileDetails({ user, updateModalShow }) {
                 <hr className='divider'/>
             </Col>
 
-            <Row className='mb-3 mx-3'>
+            <Row className='mx-3'>
                 <Col md={4} className='d-flex justify-content-center align-items-center'>
                     <i className="fa-solid fa-hand-sparkles" />
                 </Col>
                 <Col md={8}>
                     <Link to={'./'} className='text-muted text-decoration-none'>My Bids</Link>
+                </Col>
+            </Row>
+
+            <Col className='d-flex justify-content-center'>
+                <hr className='divider'/>
+            </Col>
+
+            <Row className='mb-3 mx-3'>
+                <Col md={4} className='d-flex justify-content-center align-items-center'>
+                <i class="fa-solid fa-box"></i>
+                </Col>
+                <Col md={8}>
+                    <Link to={'./orders'} className='text-muted text-decoration-none'>My Orders</Link>
                 </Col>
             </Row>
 

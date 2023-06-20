@@ -10,10 +10,15 @@ function SingleBid({bid, isSingle}) {
     const formattedDate = format(zonedDate, 'dd MMMM yyyy, HH:mm:ss')
 
     const navigate = useNavigate()
+
+    const productRouter = (slug, ID) => {
+        navigate(`/product/${slug}-p-${ID}`)
+    }
+
     return (
         <ListGroup.Item 
                 action  
-                onClick={() => navigate(`/product/${bid.productSlug}-p-${bid.product}`)} 
+                onClick={() => productRouter(bid.productSlug, bid.product)} 
                 className='d-flex gap-3 py-3'>
                 <Image 
                 src={bid.productImage} 

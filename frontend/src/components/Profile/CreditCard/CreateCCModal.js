@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { createCard } from '../../actions/cardActions'
-import { cardCreateReset } from '../../reducers/cardReducers'
-import Loader from '../Loader'
-import Message from '../Message'
-import UpdateProfileForm from '../UpdateProfileForm'
+import { createCard } from '../../../actions/cardActions'
+import { cardCreateReset } from '../../../reducers/cardReducers'
+import Loader from '../../Loader'
+import Message from '../../Message'
+import UpdateProfileForm from '../../UpdateProfileForm'
 
 function CreateCCModal({show, onHide, dispatch}) {
     

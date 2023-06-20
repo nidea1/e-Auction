@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { confirmOrder } from '../../actions/orderActions'
+import { updateOrder } from '../../actions/orderActions'
 import FilterContext from '../../contexts/FilterContext'
 import Message from '../Message'
 
@@ -30,7 +30,7 @@ function ShoppingSummary({orders, addressID}) {
     const submitHandler = (orderArray, address) => {
         
         if(address){
-            orderArray.map((order) => dispatch(confirmOrder(order.id, {
+            orderArray.map((order) => dispatch(updateOrder(order.id, {
                 '_id': order.id,
                 'address': address,
                 'isConfirmed': true,

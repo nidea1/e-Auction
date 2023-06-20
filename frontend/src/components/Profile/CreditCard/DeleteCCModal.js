@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { deleteCard } from '../../actions/cardActions'
-import { cardDeleteReset } from '../../reducers/cardReducers'
-import Loader from '../Loader'
-import Message from '../Message'
+import { deleteCard } from '../../../actions/cardActions'
+import { cardDeleteReset } from '../../../reducers/cardReducers'
+import Loader from '../../Loader'
+import Message from '../../Message'
 
 function DeleteCCModal({show, onHide, dispatch, id}) {
 

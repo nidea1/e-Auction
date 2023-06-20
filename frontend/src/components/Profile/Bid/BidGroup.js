@@ -18,7 +18,7 @@ function BidGroup({bids, productId, activeProductId, onToggleProduct}) {
             <ListGroup.Item 
                 action 
                 onClick={() => onToggleProduct(productId)} 
-                className='d-flex gap-3 py-3'
+                className='d-flex gap-3 py-3 mt-1'
             >
             <Image 
                 src={maxBid.productImage} 

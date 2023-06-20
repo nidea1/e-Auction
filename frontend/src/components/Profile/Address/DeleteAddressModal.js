@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { Button, Col, Modal, Form } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import Loader from '../Loader'
-import Message from '../Message'
-import UpdateProfileForm from '../UpdateProfileForm'
+import Loader from '../../Loader'
+import Message from '../../Message'
+import UpdateProfileForm from '../../UpdateProfileForm'
 import 'react-phone-input-2/lib/bootstrap.css'
-import { deleteAddress } from '../../actions/addressActions'
-import { addressDeleteReset } from '../../reducers/addressReducers'
+import { deleteAddress } from '../../../actions/addressActions'
+import { addressDeleteReset } from '../../../reducers/addressReducers'
 
 function DeleteAddressModal({id, show, onHide, dispatch}) {
 

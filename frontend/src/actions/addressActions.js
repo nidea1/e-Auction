@@ -15,6 +15,9 @@ import {
     addressDeleteRequest,
     addressDeleteSuccess,
     addressDeleteFail,
+    addressDetailRequest,
+    addressDetailSuccess,
+    addressDetailFail,
 } from '../reducers/addressReducers'
 
 const createAPIinstance = () => {
@@ -103,5 +106,22 @@ export const deleteAddress = (id) => async (dispatch) => {
                 : error.message,
                 )
         );
+    }
+}
+
+
+export const addressDetail = (id) => async (dispatch) => {
+    try {
+        dispatch(addressDetailRequest())
+
+        const api = createAPIinstance()
+        const { data } = await api.get(`/${id}`)
+        
+        dispatch(addressDetailSuccess(data))
+    } catch (error) {
+        dispatch(addressDetailFail(error.response && error.response.data.detail ?
+            error.response.data.detail :
+            error.message
+        ))
     }
 }

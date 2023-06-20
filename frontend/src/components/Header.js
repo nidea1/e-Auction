@@ -122,18 +122,22 @@ function Header() {
                             <ListGroupItem className='me-2'>
                                 <NavLink to={'/shopping-cart'}
                                     className={({isActive, isPending}) =>
-                                        isPending ? "" : isActive ? `${navLinkClass} d-flex link-secondary` : `${navLinkClass} d-flex link-dark`
+                                        isPending ? "" : isActive ? `${navLinkClass} d-flex link-secondary mt-1` : `${navLinkClass} d-flex link-dark mt-1`
                                     }
                                 >
-                                    <i class="fa-solid fa-cart-shopping"></i>
                                     {buyOrders && buyOrders.length > 0 ?
-                                        <Col
-                                            className='cart-item-count ms-1'
-                                        >
-                                            {buyOrders.length}
-                                        </Col>
+                                        <>
+                                            <i class="fa-solid fa-cart-shopping"></i>
+                                            <Col
+                                                className='cart-item-count ms-1'
+                                            >
+                                                {buyOrders.length}
+                                            </Col>
+                                        </>
                                         :
-                                        ''
+                                        <>
+                                        <i class="fa-regular fa-cart-shopping"></i>
+                                        </>
                                     }
                                 </NavLink>
                             </ListGroupItem>
@@ -142,10 +146,10 @@ function Header() {
                                     <i class="fa-solid fa-user"></i> {user.name}
                                 </>
                             ) : 'Please set your account.'}>
-                                <NavDropdown.Item href='/profile'>
+                                <NavDropdown.Item onClick={() => navigate('/profile')}>
                                     Profile
                                 </NavDropdown.Item>
-                                <NavDropdown.Item href='/product/upload'>
+                                <NavDropdown.Item onClick={() => navigate('/product/upload')}>
                                     Sell a product
                                 </NavDropdown.Item>
                                 <NavDropdown.Divider />
