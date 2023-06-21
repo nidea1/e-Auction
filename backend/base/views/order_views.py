@@ -27,7 +27,7 @@ class ConfirmedOrderList(ListAPIView):
 
     permission_classes = [IsAuthenticated]
     serializer_class = ConfirmedOrderSerializer
-    filter_backends = (DjangoFilterBackend)
+    filter_backends = (DjangoFilterBackend,)
     filterset_class = OrderFilter
     
     def get_queryset(self):
