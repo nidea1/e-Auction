@@ -1,8 +1,9 @@
 from django_filters import rest_framework as filters
 from django_filters.filters import ModelMultipleChoiceFilter, ModelChoiceFilter
-from .models import Product, Category, Brand
+from .models import Product, Category, Brand, Order
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.db.models import Q
 
 def get_all_children(category):
     _children = []
@@ -47,3 +48,18 @@ class ProductFilter(filters.FilterSet):
             return queryset.filter(endDate__gte = current_time)
         else:
             return queryset.filter(endDate__lte = current_time)
+
+
+class OrderFilter(filters.FilterSet):
+    isDelivered = filters.BooleanFilter(field_name='isDelivered', label='Status')
+    search = filters.CharFilter(method='search_filter', label='Search')
+
+    class Meta:
+        model = Order
+        fields = []
+
+    def search_filter(self, queryset, name, value):
+        return queryset.filter(
+            Q(product__name__icontains=value) |
+            Q(seller__first_name__icontains=value)
+        )
