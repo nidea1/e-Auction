@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Form, FormGroup, FormLabel, FormControl, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { register } from '../actions/userActions'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
@@ -24,7 +24,7 @@ function RegisterScreen() {
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
   const {
-    userReducers: { userRegisterLoading, userRegisterError, userRegisterSuccess }
+    userReducers: { userRegisterLoading, userRegisterError, userRegisterSuccess, user }
   } = useSelector((state) => state)
 
   const dispatch = useDispatch()
@@ -86,6 +86,14 @@ function RegisterScreen() {
           }
       }
   }, [userRegisterLoading, userRegisterSuccess, dispatch, userRegisterError, name, email])
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if(user){
+      navigate('/')
+    }
+  }, [navigate, user])
 
   return (
     <>

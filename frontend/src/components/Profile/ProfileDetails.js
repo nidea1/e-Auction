@@ -1,9 +1,16 @@
 import React from 'react';
 import { Button, Card, Row, Col } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function ProfileDetails({ user, updateModalShow }) {
+
+    const {
+        productReducers: {products}
+    } = useSelector((state)=>state)
+
     return (
+        products &&
         <Card className='border-0 shadow fs-6 text-center text-md-start mx-3 mx-md-0'>
             <Card.Header className='text-center fw-bold p-3 h4'>User Profile</Card.Header>
             <Row className='mt-3 mx-3'>
@@ -60,19 +67,6 @@ function ProfileDetails({ user, updateModalShow }) {
 
             <Row className='mx-3'>
                 <Col md={4} className='d-flex justify-content-center align-items-center'>
-                    <i class="fa-solid fa-badge-dollar"></i>
-                </Col>
-                <Col md={8}>
-                    <Link to={'./selling'} className='text-muted text-decoration-none'>My Products</Link>
-                </Col>
-            </Row>
-
-            <Col className='d-flex justify-content-center'>
-                <hr className='divider'/>
-            </Col>
-
-            <Row className='mx-3'>
-                <Col md={4} className='d-flex justify-content-center align-items-center'>
                     <i className="fa-solid fa-hand-sparkles" />
                 </Col>
                 <Col md={8}>
@@ -84,7 +78,7 @@ function ProfileDetails({ user, updateModalShow }) {
                 <hr className='divider'/>
             </Col>
 
-            <Row className='mb-3 mx-3'>
+            <Row className={`mx-3 ${products.length > 0 ? '' : 'mb-3'}`}>
                 <Col md={4} className='d-flex justify-content-center align-items-center'>
                 <i class="fa-solid fa-box"></i>
                 </Col>
@@ -92,6 +86,24 @@ function ProfileDetails({ user, updateModalShow }) {
                     <Link to={'./orders'} className='text-muted text-decoration-none'>My Orders</Link>
                 </Col>
             </Row>
+
+            {products.length > 0 ?
+            <>
+                <Col className='d-flex justify-content-center'>
+                    <hr className='divider'/>
+                </Col>
+
+                <Row className='mb-3 mx-3'>
+                    <Col md={4} className='d-flex justify-content-center align-items-center'>
+                        <i class="fa-solid fa-badge-dollar"></i>
+                    </Col>
+                    <Col md={8}>
+                        <Link to={'./selling'} className='text-muted text-decoration-none'>My Products</Link>
+                    </Col>
+                </Row>
+            </> :
+            null
+            }
 
             <Row>
                 <Col>

@@ -32,18 +32,18 @@ function FilterByBrand() {
     <Col className="text-center border-top border-bottom py-2 fw-bold">
         Filter by Brand
     </Col>
-    <Col className='ms-xl-4'>
+    <Col className='ms-xl-3 mt-2'>
         <Form>
         {brands.map((brand) => (
-            <Col key={brand._id} className='my-2'>
-            <Form.Check
-                type='checkbox'
-                id={brand._id.toString()}
-                label={brand.name}
-                name={brand.name}
-                checked={selectedBrands.includes(brand._id.toString())}
-                onChange={handleBrandSelect}
-            />
+            <Col key={brand._id} style={{fontSize:'smaller'}}>
+                <Form.Check
+                    type='checkbox'
+                    id={brand._id.toString()}
+                    label={brand.name}
+                    name={brand.name}
+                    checked={selectedBrands.includes(brand._id.toString())}
+                    onChange={handleBrandSelect}
+                />
             </Col>
         ))}
         </Form>

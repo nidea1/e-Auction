@@ -18,7 +18,7 @@ function Product({ product }) {
 
   return (
     <>
-        <Card className='p-4 my-3 shadow border-0 h-100' style={{ minHeight: '650px', maxHeight: '650px' }}>
+        <Card className='p-4 my-3 shadow border-0 h-100'>
             <Link to={`/product/${product.slug}-p-${product._id}`}>
               {product.images.length === 1 ?
                 <Image className="d-block w-100" src={product.images[0].image} alt="Product Image" height={200} fluid />
@@ -32,48 +32,48 @@ function Product({ product }) {
                 <Link className='link-dark text-decoration-none border-bottom pb-2' to={`/product/${product.slug}-p-${product._id}`}>
                   <Card.Title>{product.name.substring(0,55)}{product.name.length > 55 ? '...' : ''}</Card.Title>
                 </Link>
-                <Col className='my-3 fw-semibold'>
+                <Col className='mt-3 fw-semibold'>
                 { product.currentHighestBid !== 0 ? 
                   <Row>
-                    <Col md={8}>
+                    <Col className='text-nowrap'>
                       Current max bid:
                     </Col>
-                    <Col md={4} className='d-flex justify-content-end'>
+                    <Col className='d-flex justify-content-end'>
                       ${product.currentHighestBid}
                     </Col>
                   </Row>
                 :
                   <Row>
-                    <Col md={8}>
+                    <Col className='text-nowrap'>
                       Starting bid:
                     </Col>
-                    <Col md={4} className='d-flex justify-content-end'>
+                    <Col className='d-flex justify-content-end'>
                       ${product.price}
                     </Col>
                   </Row>
                 }
                 { endDate < today ? 
                   <Row className='my-3'>
-                    <Col md={8} className='card-text'>
+                    <Col className='card-text text-nowrap'>
                       Ended at:
                     </Col>
-                    <Col md={4} className='card-text d-flex justify-content-end'>
+                    <Col className='card-text d-flex justify-content-end'>
                       {formattedEndDate}
                     </Col>
                   </Row>
                 :
                   <Row className='my-3'>
-                    <Col md={8} className='card-text'>
+                    <Col className='card-text text-nowrap'>
                       End date:
                     </Col>
-                    <Col md={4} className='card-text d-flex justify-content-end'>
+                    <Col className='card-text d-flex justify-content-end'>
                       {formattedEndDate}
                     </Col>
                   </Row>
                 }
                 </Col>
                 <Link to={`/product/${product.slug}-p-${product._id}`}>
-                  <Button variant="dark" className="mt-auto">Detail</Button>
+                  <Button variant="dark">Detail</Button>
                 </Link>
                 
             </Card.Body>

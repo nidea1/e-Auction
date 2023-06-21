@@ -16,7 +16,7 @@ function ProductByCategory({product}) {
   }
   return (
     <>
-      <Card className='product-card p-4 my-3 shadow border-0'>
+      <Card className='product-card p-3 my-3 shadow border-0'>
           <Col className="card-image">
             <Link to={`/product/${product.slug}-p-${product._id}`}>
               {product.images.length === 1 ?
@@ -35,41 +35,41 @@ function ProductByCategory({product}) {
                 </Col>
               </Link>
               <hr />
-              <Col className='my-3'>
+              <Col className='mb-3'>
               { product.currentHighestBid !== 0 ? 
                 <Row>
-                  <Col md={6} className='card-text'>
+                  <Col className='card-text feature text-start text-md-center fw-semibold col-4 col-md-12'>
                     Current max bid:
                   </Col>
-                  <Col md={6} className='card-text d-flex'>
+                  <Col className='card-text text-end text-md-center'>
                     ${product.currentHighestBid}
                   </Col>
                 </Row>
               :
                 <Row>
-                  <Col md={6} className='card-text'>
+                  <Col className='card-text feature text-start text-md-center fw-semibold col-4 col-md-12'>
                     Starting bid:
                   </Col>
-                  <Col md={6} className='card-text d-flex'>
+                  <Col className='card-text text-end text-md-center'>
                     ${product.price}
                   </Col>
                 </Row>
               }
               { endDate < today ? 
-                <Row className='my-3'>
-                  <Col md={6} className='card-text'>
+                <Row>
+                  <Col className='card-text feature text-start text-md-center fw-semibold col-4 col-md-12'>
                     Ended at:
                   </Col>
-                  <Col md={6} className='card-text d-flex'>
+                  <Col className='card-text text-end text-md-center'>
                     {formattedEndDate}
                   </Col>
                 </Row>
                 :
-                <Row className='my-3'>
-                  <Col md={6} className='card-text'>
+                <Row>
+                  <Col md={6} className='card-text feature text-start text-md-center text-xl-start fw-semibold col-4 col-md-12 col-xl-4'>
                     End date:
                   </Col>
-                  <Col md={6} className='card-text d-flex'>
+                  <Col md={6} className='card-text text-end text-md-center text-xl-end'>
                     {formattedEndDate}
                   </Col>
                 </Row>

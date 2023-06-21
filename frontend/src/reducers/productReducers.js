@@ -6,8 +6,8 @@ export const productSlice = createSlice({
     loading: false,
     success: false,
     error: null,
-    product: {},
-    products: []
+    product: null,
+    products: null
   },
   reducers: {
 

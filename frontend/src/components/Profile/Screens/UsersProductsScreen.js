@@ -35,20 +35,21 @@ function UsersProductsScreen() {
     const [selectedStatus, setSelectedStatus] = useState('')
 
     useEffect(() => {
-        if (selectedStatus){
+        if (selectedStatus && user){
             dispatch(listProducts(undefined, undefined, undefined, user._id, selectedStatus))
-        } else {
+        } else if (user) {
             dispatch(listProducts(undefined, undefined, undefined, user._id))
         }
     }, [dispatch, user, selectedStatus])
 
     return (
+        products &&
         <>
             <Row className='mx-3 mt-5 mt-md-0'>
                 <Col md={4} className='fw-semibold'>
                     You listing {products.length} {products.length === 1 ? 'product:': 'products:'}
                 </Col>
-                <Col md={8} className='d-flex flex-column justify-content-end'>
+                <Col md={8} className='d-flex flex-column justify-content-end mt-2 mt-md-0'>
                     <Row>
                         {statuses.map((status) => (
                             <Col>
@@ -70,6 +71,7 @@ function UsersProductsScreen() {
                                         label={status.name}
                                         name='statusGroup'
                                         onChange={(e) => setSelectedStatus(e.target.value)}
+                                        className='text-nowrap'
                                     />
                                 }
                             </Col>

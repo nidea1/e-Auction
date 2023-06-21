@@ -95,6 +95,7 @@ function PaymentModal({show, onHide, bidInstance}) {
     }
 
     return (
+        bid &&
         <Modal show={show}>
             <Modal.Header className='border-0' closeButton onHide={onHide} />
             <Col className='fs-4 fw-bold text-center'>Payment Method</Col>

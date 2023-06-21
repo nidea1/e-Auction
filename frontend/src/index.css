@@ -131,22 +131,6 @@ main {
   }
 }
 
-/* Search info */
-.search-info {
-  position: relative;
-  left: 240px;
-  margin-bottom: 16px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 991px) {
-  .search-info {
-    left: 0;
-    padding: 0 8px;
-  }
-}
-
-
 /* Product Card */
 
 .product-card {
@@ -175,9 +159,9 @@ main {
 }
 
 .product-card .card-text {
-  font-weight: 500;
+  white-space: nowrap;
   font-size: smaller;
-  height: 40px;
+  height: 25px;
   
 }
 
@@ -185,6 +169,34 @@ main {
   font-size: smaller;
   height: 25px;
   text-overflow: ellipsis;
+}
+
+@media (min-width: 992px){
+  .product-card .feature {
+    white-space:normal;
+  }
+
+  .product-card .card-title {
+    height: 45px;
+  }
+
+  .product-card .card-text {
+    font-size: small;
+  }
+}
+
+@media (min-width: 1200px){
+  .product-card .feature {
+    white-space: nowrap;
+  }
+
+  .product-card .card-title {
+    height: 25px;
+  }
+
+  .product-card .card-text {
+    font-size: smaller;
+  }
 }
 
 /* Credit Card */

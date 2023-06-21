@@ -43,10 +43,11 @@ function HomeScreen() {
   },[dispatch,selectedStatus])
 
   return (
+    products &&
     <>
         <Row className='justify-content-end'>
-          <Col md={4}>
-            <Row>
+          <Col md={6} lg={4}>
+            <Row className='justify-content-center mx-1'>
             {statuses.map((status) => (
               <Col>
                 {status.id !== 3 ?                                        
@@ -67,6 +68,7 @@ function HomeScreen() {
                       label={status.name}
                       name='statusGroup'
                       onChange={(e) => setSelectedStatus(e.target.value)}
+                      className='text-nowrap'
                   />
                 }
               </Col>
@@ -78,7 +80,7 @@ function HomeScreen() {
         : error ? <Message variant='danger'>{error}</Message>  
         : <Row>
             {products.map(product => (
-                <Col sm="12" md="6" lg="4">
+                <Col sm="12" md="6" lg="4" className='mb-4'>
                     <Product product={product} />
                 </Col>
             ))}

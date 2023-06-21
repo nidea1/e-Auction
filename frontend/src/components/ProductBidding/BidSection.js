@@ -23,9 +23,11 @@ function BidSection({dispatch, productID}) {
     const [bidInstance, setBidInstance] = useState('')
 
     useEffect(() => {
-        setHighestBid(product.currentHighestBid)
-        setBidCount(product.totalBids)
-        setCloseTime(product.endDate)
+        if(product){
+            setHighestBid(product.currentHighestBid)
+            setBidCount(product.totalBids)
+            setCloseTime(product.endDate)
+        }
     },[product])
 
     const [countdownFinished, setCountdownFinished] = useState(false);
@@ -135,6 +137,7 @@ function BidSection({dispatch, productID}) {
     }
 
     return (
+        product &&
         <>
             {closeTime &&
             <Col lg={3} className='mt-md-5 mt-lg-0'>

@@ -45,7 +45,7 @@ function AddressScreen() {
             {loading ? <Loader /> :
             <Row className='mx-3'>
                 {addresses.map((address) => (
-                    <Col sm="12" md="6" lg="3" className='d-flex justify-content-center text-center mb-5'>
+                    <Col sm="12" md="6" lg="4" xl="3" className='d-flex justify-content-center text-center mb-5'>
                         <Address address={address} />
                     </Col>
                 ))}

@@ -54,13 +54,18 @@ export const updateOrder = (orderID, updatedData) => async (dispatch) => {
 }
 
 
-export const confirmedList = () => async (dispatch) => {
+export const confirmedList = (status=undefined, keyword=undefined) => async (dispatch) => {
 
     try {
         dispatch(confirmedOrderListRequest())
 
         const api = createAPIinstance()
-        const { data } = await api.get('/confirmed/')
+        const { data } = await api.get('/confirmed/', {
+            params: {
+                'isDelivered': status,
+                'search': keyword
+            }
+        })
 
         dispatch(confirmedOrderListSuccess(data))
     } catch (error) {

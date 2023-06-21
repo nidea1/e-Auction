@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 import { useSelector } from 'react-redux';
 import Loader from '../components/Loader';
@@ -15,9 +15,17 @@ function LoginScreen() {
 
     const redirect = location.search ? location.search.split('=')[1] : '/'
 
+    const navigate = useNavigate()
+
     const {
-        userReducers: { loading, error }
+        userReducers: { loading, error, user }
     } = useSelector((state) => state)
+
+    useEffect(() => {
+        if(user){
+            navigate('/')
+        }
+    })
 
 
   return (

@@ -17,7 +17,7 @@ function BidListModal({show, onHide}) {
                 <Col className='border-bottom pb-2 col-10'/>
             </Row>
             <Modal.Body style={{ maxHeight: '495px', overflowY: 'auto' }}>
-                <ListGroup className='ms-0 ms-lg-3 p-3'>
+                <ListGroup className='ms-0 p-3'>
                     {[...bids].reverse().map((bid) => (
                         <BidList bid={bid} />
                     ))}

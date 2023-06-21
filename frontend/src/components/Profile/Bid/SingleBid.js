@@ -25,9 +25,9 @@ function SingleBid({bid, isSingle}) {
                 alt={bid.productName} 
                 width={32} 
                 height={32} 
-                className="rounded-circle flex-shrink-0" 
+                className='rounded-circle flex-shrink-0'
             />
-            <Col className="d-sm-flex gap-2 w-100 justify-content-between">
+            <Col className='d-sm-flex gap-2 w-100 justify-content-between'>
             <Col>
                 <Col className='mb-0 h6'>{bid.productName}</Col>
                 <Col className='mb-3 mb-md-0 opacity-75'>You bidded <span className='fw-semibold'>${bid.bid}</span></Col>

@@ -17,6 +17,7 @@ function ProductDetail() {
     }
     
     return (
+      product &&
         <>
             <Col md={6}>
               {product.images && product.images.length === 1 ?

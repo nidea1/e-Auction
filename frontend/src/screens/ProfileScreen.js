@@ -1,17 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Col, Row } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
+import { listProducts } from '../actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import ProfileCard from '../components/Profile/ProfileCard';
+import { productSliceReset } from '../reducers/productReducers';
 
 
 function ProfileScreen() {
   
   const {
-    userReducers: { userDetailsLoading, userDetailsError }
+    userReducers: { user, userDetailsLoading, userDetailsError }
   } = useSelector((state) => state)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+      if(user){
+        dispatch(productSliceReset())
+        dispatch(listProducts(undefined,undefined,undefined,user._id))
+      }
+  },[dispatch,user])
 
   return (
     <>

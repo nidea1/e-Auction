@@ -29,7 +29,7 @@ function FilterByStatus() {
         <Col className="text-center border-top border-bottom py-2 fw-bold">
             Filter by Brand
         </Col>
-        <Col className='ms-xl-4'>
+        <Col className='ms-xl-3'  style={{fontSize:'smaller'}}>
             {statuses.map((status) => (
                 <Col className='my-2'>
                     {status.id !== 3 ?                                        
