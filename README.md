@@ -21,10 +21,10 @@ testaccount@eauction.com
 - New My Bid List
 - Winner and Loser mails
 - New authentication system (so bug fixed)
-- Responsive design bugs fixed
 - Shopping cart
 - Order screen
 - User Orders
+- Full responsive design
 
 ## Screenshots
 
@@ -41,4 +41,6 @@ testaccount@eauction.com
 ![img11](https://cdn.discordapp.com/attachments/1035852765756411995/1120343338890047618/image.png)
 ![img12](https://cdn.discordapp.com/attachments/1035852765756411995/1120734141437198447/image.png)
 ![img13](https://cdn.discordapp.com/attachments/1035852765756411995/1120734374296567941/image.png)
+![img14](https://cdn.discordapp.com/attachments/1035852765756411995/1121076033685291078/image.png)
+![img15](https://cdn.discordapp.com/attachments/1035852765756411995/1121076191764418651/image.png)
 
