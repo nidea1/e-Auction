@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { detailCategories } from "../actions/categoryActions";
 import Loader from "../components/Loader";
@@ -25,8 +25,9 @@ function CategoryScreen() {
   const [searchParams] = useSearchParams()
   const keyword = searchParams.get('search')
 
-  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedBrands, setSelectedBrands] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
+  const [selectedOrdering, setSelectedOrdering] = useState('endDate')
 
   const {
     productReducers: { products }
@@ -34,12 +35,22 @@ function CategoryScreen() {
 
   useEffect(() => {
     if (keyword) {
-      dispatch(listProducts(keyword, undefined, selectedBrands, undefined, selectedStatus));
+      dispatch(listProducts({
+        keyword: keyword,
+        brands: selectedBrands,
+        status: selectedStatus,
+        ordering: selectedOrdering
+      }));
     } else {
-      dispatch(listProducts(undefined, id, selectedBrands, undefined, selectedStatus));
+      dispatch(listProducts({
+        category: id,
+        brands: selectedBrands,
+        status: selectedStatus,
+        ordering: selectedOrdering
+      }));
       dispatch(detailCategories(id))
     }
-  }, [dispatch, id, keyword, selectedBrands, selectedStatus]);
+  }, [dispatch, id, keyword, selectedBrands, selectedStatus, selectedOrdering]);
 
   const findTopLevelCategory = (categories, categoryId) => {
     for (const category of categories) {
@@ -62,6 +73,38 @@ function CategoryScreen() {
   } else {
     topLevelCategory = findTopLevelCategory(categories, parseInt(id));
   }
+  const orderings = [
+    {
+        'name': 'Time: Ending soonest',
+        'value': 'endDate',
+        'id': 'o-1'
+    },
+    {
+        'name': 'Time: Newly listed',
+        'value': '-endDate',
+        'id': 'o-2'
+    },
+    {
+        'name': 'Bid: Lowest first',
+        'value': 'price',
+        'id': 'o-3'
+    },
+    {
+        'name': 'Bid: Highest first',
+        'value': '-price',
+        'id': 'o-4'
+    },
+    {
+        'name': 'Name: A -> Z',
+        'value': 'name',
+        'id': 'o-5'
+    },
+    {
+        'name': 'Name: Z -> A',
+        'value': '-name',
+        'id': 'o-6'
+    }
+]
 
   return (
     products &&
@@ -90,13 +133,25 @@ function CategoryScreen() {
               </Row>
             </Col>
             <Col className="ms-md-4 my-3">
+              <Row className="flex-column flex-lg-row justify-content-end">
+                {categoryDetailsLoading ? '' : <Col>You search for <strong>{keyword ? keyword : category.name}</strong> lists {products.length} results</Col>}
+                <Col className="align-self-md-end col-md-6 col-lg-4 col-xl-3">
+                  <Form.Select value={selectedOrdering} size="sm" aria-label="ordering" className="shadow-sm fw-semibold my-3 my-md-0" onChange={(e) => setSelectedOrdering(e.target.value)}>
+                    {orderings.map((ordering) => (
+                      <option
+                        id={ordering.id.toString()}
+                        value={ordering.value.toString()}
+                      >
+                        {ordering.name}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Col>
+              </Row>
               {categoryDetailsLoading ?
                 <Loader />
               :
                 <>
-                  <Row>
-                    <Col>You search for <strong>{keyword ? keyword : category.name}</strong> lists {products.length} results</Col>
-                  </Row>
                   <Row>
                     {products.map((product) => (
                       <Col key={product._id} sm={12} md={6} lg={4} xl={3}>

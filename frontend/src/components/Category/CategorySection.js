@@ -25,8 +25,8 @@ function CategorySection({ topLevelCategory, searchMode }) {
             </Col>
           </li>
         )}
-        {(isTopLevel ? (searchMode ? category : category.subCategory) : category).map((subCategory) => (
-          <li key={subCategory._id} className="mt-3 mt-md-2 mt-xl-0 mx-2 mx-xl-0">
+        {(isTopLevel && !searchMode ? category.subCategory : category).map((subCategory) => (
+          <li key={subCategory._id} className="mt-3 mt-md-2 mt-xl-0 mx-2 mx-md-0">
             <Row className='d-flex flex-row justify-content-center align-items-center category-item rounded'>
               <Link to={`/categories/${subCategory.slug}-c-${subCategory._id}`} className='link-dark text-decoration-none col-9'>{subCategory.name}</Link>
               {subCategory.subCategory && (

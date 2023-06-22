@@ -3,17 +3,20 @@ import { utcToZonedTime } from 'date-fns-tz'
 import React, { useEffect } from 'react'
 import { Col, Image, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { addressDetail } from '../../../actions/addressActions'
 import { orderDetail } from '../../../actions/orderActions'
 import Loader from '../../Loader'
 import Message from '../../Message'
 
-function BuyOrderDetail() {
+function OrderDetail() {
 
     const { orderID : id}  = useParams()
 
     const dispatch = useDispatch()
+    const location = useLocation()
+
+    const seller = location.pathname === '/profile/orders/buying' ? false : true
 
     useEffect(() => {
         dispatch(orderDetail(id))
@@ -67,7 +70,7 @@ function BuyOrderDetail() {
                 <Row className='border rounded p-3 mx-3 my-3 justify-content-center'>
                     <Row className='rounded mx-4 bg-light p-2 mb-3'>
                         <Col>
-                        <span className='fw-semibold'>Seller: </span>&nbsp;{order.seller}
+                        <span className='fw-semibold'>{seller ? 'Buyer' : 'Seller'}: </span>&nbsp;{seller ? order.buyer : order.seller}
                         </Col>
                     </Row>
                     <Row className='border rounded justify-content-center align-items-center text-md-center text-lg-start flex-column flex-lg-row py-4'>
@@ -90,14 +93,19 @@ function BuyOrderDetail() {
                                 <small className='opacity-50 text-nowrap'>{calculateDate(order.createdAt)}</small>
                                 <small className='opacity-50 text-nowrap fw-semibold'>Confirmed at: </small>
                                 <small className='opacity-50 text-nowrap'>{calculateDate(order.confirmedAt)}</small>
-                                {order.isDelivered ?
-                                <>
-                                    <small className='opacity-50 text-nowrap fw-semibold'>Delivered at: </small>
-                                    <small className='opacity-50 text-nowrap'>{calculateDate(order.deliveredAt)}</small>
-                                </>
+                                {order.inShipping?
+                                    order.isDelivered ?
+                                    <>
+                                        <small className='opacity-50 text-nowrap fw-semibold'>Delivered at: </small>
+                                        <small className='opacity-50 text-nowrap'>{calculateDate(order.deliveredAt)}</small>
+                                    </>:
+                                    <>
+                                        <small className='opacity-50 text-nowrap fw-semibold'>Shipping at: </small>
+                                        <small className='opacity-50 text-nowrap'>{calculateDate(order.shippingAt)}</small>
+                                    </>
                                 :
                                 <>
-                                    <small className='opacity-50 text-nowrap fw-semibold mt-4'>Waiting for deliver.</small>
+                                    <small className='opacity-50 text-nowrap fw-semibold mt-4'>Waiting for shipping.</small>
                                 </>
                                 }
                             </Row>
@@ -115,13 +123,23 @@ function BuyOrderDetail() {
                                 <small className='fw-semibold'>Delivered at: </small>
                                 <small>{calculateDate(order.deliveredAt)}</small>
                             </>
-                            :
+                            : order.inShipping &&
                             <>
-                                <small className='fw-semibold'>Waiting for deliver.</small>
+                                <small className='fw-semibold my-2 my-lg-3 my-xl-2'>Waiting for deliver.</small>
                             </>
                         }
                         </Col>
-                        <Col>
+                        <Col className='d-flex flex-column text-center'>
+                        {order.inShipping ?
+                            <>
+                                <small className=' fw-semibold'>Shipping at: </small>
+                                <small>{calculateDate(order.shippingAt)}</small>
+                            </>
+                            :
+                            <>
+                                <small className='fw-semibold my-2 my-lg-3 my-xl-2'>Waiting for shipping.</small>
+                            </>
+                        }
                         </Col>
                     </Row>
                     <Row className='mt-4 mb-2'>
@@ -161,4 +179,4 @@ function BuyOrderDetail() {
     )
 }
 
-export default BuyOrderDetail
+export default OrderDetail

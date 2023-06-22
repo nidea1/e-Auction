@@ -66,10 +66,10 @@ function ProductByCategory({product}) {
                 </Row>
                 :
                 <Row>
-                  <Col md={6} className='card-text feature text-start text-md-center text-xl-start fw-semibold col-4 col-md-12 col-xl-4'>
+                  <Col className='card-text feature text-start text-md-center fw-semibold col-4 col-md-12'>
                     End date:
                   </Col>
-                  <Col md={6} className='card-text text-end text-md-center text-xl-end'>
+                  <Col className='card-text text-end text-md-center'>
                     {formattedEndDate}
                   </Col>
                 </Row>

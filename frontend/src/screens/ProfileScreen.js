@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import {Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
+import { sellList } from '../actions/orderActions';
 import { listProducts } from '../actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -20,7 +21,10 @@ function ProfileScreen() {
   useEffect(() => {
       if(user){
         dispatch(productSliceReset())
-        dispatch(listProducts(undefined,undefined,undefined,user._id))
+        dispatch(listProducts({
+          userID: user._id
+        }))
+        dispatch(sellList())
       }
   },[dispatch,user])
 

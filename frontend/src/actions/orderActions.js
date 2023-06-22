@@ -1,5 +1,5 @@
 import axios from "axios"
-import { buyOrderListFail, buyOrderListRequest, buyOrderListSuccess, confirmedOrderListFail, confirmedOrderListRequest, confirmedOrderListSuccess, orderDetailFail, orderDetailRequest, orderDetailSuccess, updateOrderFail, updateOrderRequest, updateOrderSuccess } from "../reducers/orderReducers"
+import { buyOrderListFail, buyOrderListRequest, buyOrderListSuccess, confirmedOrderListFail, confirmedOrderListRequest, confirmedOrderListSuccess, orderDetailFail, orderDetailRequest, orderDetailSuccess, sellerOrderListFail, sellerOrderListRequest, sellerOrderListSuccess, updateOrderFail, updateOrderRequest, updateOrderSuccess } from "../reducers/orderReducers"
 
 
 
@@ -60,7 +60,7 @@ export const confirmedList = (status=undefined, keyword=undefined) => async (dis
         dispatch(confirmedOrderListRequest())
 
         const api = createAPIinstance()
-        const { data } = await api.get('/confirmed/', {
+        const { data } = await api.get('/buyer/', {
             params: {
                 'isDelivered': status,
                 'search': keyword
@@ -90,6 +90,32 @@ export const orderDetail = (id) => async (dispatch) => {
         dispatch(orderDetailSuccess(data))
     } catch (error) {
         dispatch(orderDetailFail(
+            error.response && error.response.data.detail ?
+            error.response.data.detail :
+            error.message
+        ))
+    }
+
+}
+
+
+export const sellList = (deliverStatus=undefined, keyword=undefined, shippingStatus=undefined) => async (dispatch) => {
+
+    try {
+        dispatch(sellerOrderListRequest())
+
+        const api = createAPIinstance()
+        const { data } = await api.get('/seller/', {
+            params: {
+                'isDelivered': deliverStatus,
+                'search': keyword,
+                'inShipping': shippingStatus,
+            }
+        })
+
+        dispatch(sellerOrderListSuccess(data))
+    } catch (error) {
+        dispatch(sellerOrderListFail(
             error.response && error.response.data.detail ?
             error.response.data.detail :
             error.message

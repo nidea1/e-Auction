@@ -36,9 +36,13 @@ function HomeScreen() {
 
   useEffect(() => {
     if (selectedStatus){
-      dispatch(listProducts(undefined,undefined,undefined,undefined,selectedStatus))
+      dispatch(listProducts(
+        {
+          status : selectedStatus
+        }
+      ))
     }else{
-      dispatch(listProducts())
+      dispatch(listProducts({}))
     }
   },[dispatch,selectedStatus])
 

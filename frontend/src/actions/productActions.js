@@ -30,7 +30,7 @@ const createAPIinstance = () => {
 
 }
 
- export const listProducts = (keyword= undefined, category= undefined, brands= undefined, userID= undefined, status= undefined, ordering = 'endDate') => async (dispatch) => {
+ export const listProducts = ({keyword= undefined, category= undefined, brands= undefined, userID= undefined, status= undefined, ordering = 'endDate'}) => async (dispatch) => {
     try {
         dispatch(productListRequest());
 
@@ -49,7 +49,7 @@ const createAPIinstance = () => {
             params.user = userID;
         }
         if (status) {
-            params.status = status;
+            params.productStatus = status;
         }
         if (ordering) {
             params.ordering = ordering;

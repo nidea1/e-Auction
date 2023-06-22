@@ -36,9 +36,14 @@ function UsersProductsScreen() {
 
     useEffect(() => {
         if (selectedStatus && user){
-            dispatch(listProducts(undefined, undefined, undefined, user._id, selectedStatus))
+            dispatch(listProducts({
+                userID: user._id,
+                status: selectedStatus
+            }))
         } else if (user) {
-            dispatch(listProducts(undefined, undefined, undefined, user._id))
+            dispatch(listProducts({
+                userID: user._id
+            }))
         }
     }, [dispatch, user, selectedStatus])
 

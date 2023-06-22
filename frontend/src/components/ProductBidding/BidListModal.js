@@ -13,8 +13,8 @@ function BidListModal({show, onHide}) {
         <Modal show={show}>
             <Modal.Header className='border-0' closeButton onHide={onHide} />
             <Col className='fs-4 fw-bold text-center'>Users Who Have Bid</Col>
-            <Row className='justify-content-center mt-2'>
-                <Col className='border-bottom pb-2 col-10'/>
+            <Row className='justify-content-center mt-2 mx-0'>
+                <Col className='border-bottom pb-2 mx-4'/>
             </Row>
             <Modal.Body style={{ maxHeight: '495px', overflowY: 'auto' }}>
                 <ListGroup className='ms-0 p-3'>

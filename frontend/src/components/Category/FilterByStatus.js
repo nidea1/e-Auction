@@ -7,12 +7,12 @@ function FilterByStatus() {
     const statuses = [
         {
             'name': 'Ongoing',
-            'value': true,
+            'value': 1,
             'id': 's-1'
         },
         {
             'name': 'Finished',
-            'value': false,
+            'value': 3,
             'id': 's-2'
         },
         {
@@ -27,12 +27,12 @@ function FilterByStatus() {
     return (
         <>
         <Col className="text-center border-top border-bottom py-2 fw-bold">
-            Filter by Brand
+            Filter by Status
         </Col>
         <Col className='ms-xl-3'  style={{fontSize:'smaller'}}>
             {statuses.map((status) => (
                 <Col className='my-2'>
-                    {status.id !== 3 ?                                        
+                    {status.id !== 's-3' ?                                        
                         <Form.Check
                             type='radio'
                             id={status.id.toString()}

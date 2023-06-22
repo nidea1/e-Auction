@@ -191,6 +191,13 @@ function BidSection({dispatch, productID}) {
                         <ListGroup.Item>
                             <Row className='justify-content-center'>
                             {user ?
+                                product.user === user._id ?
+                                <Col md={12} className='d-flex justify-content-center'>
+                                    <Button disabled className="w-100 btn btn-danger my-2">
+                                        You can not bid your product.
+                                    </Button>
+                                </Col>
+                                :
                                 (!countdownFinished ?
                                 <Col md={12}>
                                     <Form onSubmit={submitHandler}>

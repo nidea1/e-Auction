@@ -3,26 +3,49 @@ import { utcToZonedTime } from 'date-fns-tz'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { confirmedList } from '../../../actions/orderActions'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { confirmedList, sellList } from '../../../actions/orderActions'
 import Loader from '../../Loader'
 import Message from '../../Message'
 
-function BuyingOrderScreen() {
+function OrderScreen() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const location = useLocation()
+
+    const seller = location.pathname === '/profile/orders/buying' ? false : true
 
     const [selectedStatus, setSelectedStatus] = useState(undefined)
+    const [shippingStatus, setShippingStatus] = useState(undefined)
     const [keyword, setKeyword] = useState(undefined)
+    const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(null)
+    const [orders, setOrders] = useState(null)
 
     useEffect(() => {
-        dispatch(confirmedList(selectedStatus, keyword))
-    }, [dispatch, selectedStatus, keyword])
+        if(!seller){
+            dispatch(confirmedList(selectedStatus, keyword))
+        }else{
+            dispatch(sellList(selectedStatus, keyword, shippingStatus))
+        }
+    }, [dispatch, selectedStatus, keyword, seller, shippingStatus])
 
-    const {
-        orderReducers : {orders, confirmedOrderLoading, confirmedOrderError}
-    } = useSelector((state) => state)
+    const orderReducers = useSelector((state) => state.orderReducers)
+
+    useEffect(() => {    
+        if(orderReducers){
+            if(location.pathname === '/profile/orders/buying'){
+                setError(orderReducers.confirmedOrderError)
+                setLoading(orderReducers.confirmedOrderLoading)
+                setOrders(orderReducers.orders)
+            }else{
+                setError(orderReducers.sellerOrderError)
+                setLoading(orderReducers.sellerOrderLoading)
+                setOrders(orderReducers.sellerOrders)
+            }
+        }
+    }, [dispatch, selectedStatus, keyword, location, orderReducers])
 
     const calculateDate = (date) => {
         const dateObject = parseISO(date)
@@ -42,6 +65,11 @@ function BuyingOrderScreen() {
             'id': 1
         },
         {
+            'name': 'Shipped',
+            'value': true,
+            'id': 3
+        },
+        {
             'name': 'Waiting',
             'value': false,
             'id': 2
@@ -49,7 +77,7 @@ function BuyingOrderScreen() {
         {
             'name': 'All Orders',
             'value': '',
-            'id': 3
+            'id': 4
         }
     ]
 
@@ -58,30 +86,38 @@ function BuyingOrderScreen() {
         <>  
             <Row className='mt-5 mt-md-0 mx-3 align-items-center'>
                 <Col md={2} className='fw-semibold text-center text-xl-start'>
-                    My Orders
+                    My Selling Orders
                 </Col>
                 <Col className='my-3 my-md-0'>
                     <Form role={'search'}>
                         <Form.Control
                         type='search'
-                        placeholder='Search a product or seller'
+                        placeholder='Search a product or buyer'
                         aria-label='Search'
                         onChange={(e) => setKeyword(e.target.value)}
                         />
                     </Form>
                 </Col>
-                <Col md={4} className='d-flex flex-column justify-content-end'>
+                <Col md={4} xl={5} className='d-flex flex-column justify-content-end'>
                     <Row>
                         {statuses.map((status) => (
                             <Col>
-                                {status.id !== 3 ?                                        
+                                {status.id !== 4 ?                                        
                                     <Form.Check
                                         type='radio'
                                         id={status.id.toString()}
                                         value={status.value.toString()}
                                         label={status.name}
                                         name='statusGroup'
-                                        onChange={(e) => setSelectedStatus(e.target.value)}
+                                        onChange={(e) =>{
+                                            if(status.id === 3){
+                                                setSelectedStatus(undefined)
+                                                setShippingStatus(e.target.value)
+                                            }else{
+                                                setSelectedStatus(e.target.value)
+                                                setShippingStatus(undefined)
+                                            }
+                                        }}
                                     />                                        
                                 :                                       
                                     <Form.Check
@@ -103,8 +139,8 @@ function BuyingOrderScreen() {
             <Col className='d-flex justify-content-center'>
                 <hr className='divider'/>
             </Col>
-            {confirmedOrderError && <Message variant={'danger'}>{confirmedOrderError}</Message>}
-            {confirmedOrderLoading ? <Loader /> :
+            {error && <Message variant={'danger'}>{error}</Message>}
+            {loading ? <Loader /> :
                 orders.length > 0 ?
                 <Row className='mx-3'>
                     <ListGroup variant={'flush'} className='rounded'>
@@ -120,31 +156,36 @@ function BuyingOrderScreen() {
                                 <Col className="d-sm-flex gap-2 w-100">
                                     <Col>
                                         <Col className='mb-0 h6'>{order.productName}</Col>
-                                        <Col className='mb-0 h6'><small className='opacity-50 text-nowrap'>Seller: <span className='opacity-50'>{order.seller}</span></small></Col>
-                                        <Col className='mb-3 mb-md-0 opacity-75'>You paid <span className='fw-semibold'>${order.paidPrice}</span></Col>
+                                        <Col className='mb-0 h6'><small className='opacity-50 text-nowrap'>{seller ? 'Buyer' : 'Seller'}: <span className='opacity-50'>{seller ? order.buyer : order.seller}</span></small></Col>
+                                        <Col className='mb-3 mb-md-0 opacity-75'>{seller ? 'You earn' : 'You paid'} <span className='fw-semibold'>${order.paidPrice}</span></Col>
                                         <Col className='mb-3 mb-md-0 opacity-50 fw-semibold mt-auto'>
-                                            {order.isDelivered ? 'Your order is delivered.' : 'Your order is received.'}
+                                            {seller ? 
+                                                order.isDelivered ? 'Your product is delivered to customer.'
+                                                : order.inShipping ? 'Your product in shipping.' : 'You must to ship the product.'
+                                            :
+                                                order.isDelivered ? 'Your order is delivered.'
+                                                :
+                                                order.inShipping ? 'Waiting for deliver.' : 'Your order is received.'
+                                            }
                                         </Col>
                                     </Col>
                                     <Col className='d-flex flex-column text-md-end'>
-                                    {order.isDelivered ?
-                                        <>
-                                            <Col className='opacity-50'>
-                                                <small className='fw-semibold'>Order date: </small>
-                                                <small className='text-nowrap'>{calculateDate(order.confirmedAt)}</small>
-                                            </Col>
+                                    <Col className='opacity-50'>
+                                        <small className='fw-semibold'>Order at: </small>
+                                        <small className='text-nowrap'>{calculateDate(order.confirmedAt)}</small>
+                                    </Col>
+                                    {order.inShipping ?
+                                        order.isDelivered ?
                                             <Col className='opacity-50 mt-auto'>
-                                                <small className='fw-semibold'>Delivered date: </small>
+                                                <small className='fw-semibold'>Delivered at: </small>
                                                 <small className='text-nowrap'>{calculateDate(order.deliveredAt)}</small>
                                             </Col>
-                                        </>
                                         :
-                                        <>
                                             <Col className='opacity-50'>
-                                                <small className='fw-semibold'>Order date: </small>
-                                                <small className='text-nowrap'>{calculateDate(order.confirmedAt)}</small>
+                                                <small className='fw-semibold'>Shipping at: </small>
+                                                <small className='text-nowrap'>{calculateDate(order.shippingAt)}</small>
                                             </Col>
-                                        </>
+                                    : ''
                                     }
                                     </Col>
                                 </Col>
@@ -172,4 +213,4 @@ function BuyingOrderScreen() {
     )
 }
 
-export default BuyingOrderScreen
+export default OrderScreen

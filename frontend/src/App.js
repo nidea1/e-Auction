@@ -22,8 +22,8 @@ import SocialRegisterScreen from "./screens/SocialRegisterScreen";
 import ShoppingCartScreen from "./screens/ShoppingCartScreen";
 import OrderScreenContainer from "./components/Orders/OrderScreenContainer";
 import CompleteOrders from "./components/Orders/CompleteOrders";
-import BuyingOrderScreen from "./components/Profile/Screens/BuyingOrderScreen";
-import BuyOrderDetail from "./components/Profile/Order/BuyOrderDetail";
+import OrderScreen from "./components/Profile/Screens/OrderScreen";
+import OrderDetail from "./components/Profile/Order/OrderDetail";
 
 
 function App() {
@@ -46,8 +46,10 @@ function App() {
               <Route path="cards" element={<CreditCardScreen />} />
               <Route path="addresses" element={<AddressScreen />} />
               <Route path="selling" element={<UsersProductsScreen />} />
-              <Route path="orders" element={<BuyingOrderScreen />} />
-              <Route path="orders/:orderID" element={<BuyOrderDetail />} />
+              <Route path="orders/buying" element={<OrderScreen />} />
+              <Route path="orders/selling" element={<OrderScreen />} />
+              <Route path="orders/buying/:orderID" element={<OrderDetail />} />
+              <Route path="orders/selling/:orderID" element={<OrderDetail />} />
             </Route>
             <Route path="/shopping-cart" element={<ShoppingCartScreen />}>
               <Route index element={<OrderScreenContainer />} />
