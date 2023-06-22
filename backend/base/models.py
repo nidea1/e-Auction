@@ -123,6 +123,8 @@ class Order(models.Model):
     address = models.ForeignKey(UserAddress, on_delete=models.SET_NULL, null=True, related_name='order_address')
     isConfirmed = models.BooleanField(default=False)
     confirmedAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    inShipping = models.BooleanField(default=False)
+    shippingAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     isDelivered = models.BooleanField(default=False)
     deliveredAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
@@ -136,5 +138,7 @@ class Order(models.Model):
             self.confirmedAt = timezone.now()
         if self.isDelivered is True and self.deliveredAt is None:
             self.deliveredAt = timezone.now()
+        if self.inShipping is True and self.shippingAt is None:
+            self.shippingAt = timezone.now()
 
         super().save(*args, **kwargs)
