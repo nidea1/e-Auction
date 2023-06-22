@@ -6,7 +6,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.response import Response
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.filters import OrderingFilter
 
 from datetime import timedelta
 from django.utils import timezone
@@ -14,9 +14,8 @@ from django.utils import timezone
 class ProductList(ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
     filterset_class = ProductFilter
-    search_fields = ['name', 'brand__name', 'category__name']
     ordering_fields = ['name', 'price', 'endDate']
 
     def perform_create(self, serializer):
