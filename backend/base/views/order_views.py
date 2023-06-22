@@ -7,6 +7,7 @@ from ..filters import OrderFilter
 from ..serializers import BuyingOrderSerializer, OrderDetailSerializer, ConfirmedOrderSerializer
 from ..models import Order
 
+
 class BuyingOrderList(ListAPIView):
 
     permission_classes = [IsAuthenticated]
@@ -23,12 +24,19 @@ class OrderDetail(RetrieveUpdateAPIView):
     queryset = Order.objects.all()
 
 
-class ConfirmedOrderList(ListAPIView):
-
+class BaseConfirmedOrderList(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ConfirmedOrderSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = OrderFilter
+
+class ForBuyerOrderList(BaseConfirmedOrderList):
     
     def get_queryset(self):
         return Order.objects.filter(buyer=self.request.user, isConfirmed = True)
+    
+
+class ForSellerOrderList(BaseConfirmedOrderList):
+    
+    def get_queryset(self):
+        return Order.objects.filter(seller=self.request.user, isConfirmed = True)
