@@ -34,10 +34,10 @@ function ProfileScreen() {
         : userDetailsError ? <Message variant={'danger'}>{userDetailsError}</Message>
         :
         <Row className='justify-content-center my-3 py-3'>
-            <Col md={4}>
+            <Col lg={4} className="mb-5 mb-lg-0">
               <ProfileCard />
             </Col>
-            <Col md={8}>
+            <Col lg={8}>
               <Outlet />
             </Col>
         </Row>

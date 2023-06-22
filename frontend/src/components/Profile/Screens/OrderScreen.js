@@ -84,7 +84,7 @@ function OrderScreen() {
     return (
         orders &&
         <>  
-            <Row className='mt-5 mt-md-0 mx-3 align-items-center'>
+            <Row className='mx-3 align-items-center'>
                 <Col md={2} className='fw-semibold text-center text-xl-start'>
                     My Selling Orders
                 </Col>

@@ -50,7 +50,7 @@ function UsersProductsScreen() {
     return (
         products &&
         <>
-            <Row className='mx-3 mt-5 mt-md-0'>
+            <Row className='mx-3'>
                 <Col md={4} className='fw-semibold'>
                     You listing {products.length} {products.length === 1 ? 'product:': 'products:'}
                 </Col>

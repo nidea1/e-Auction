@@ -29,7 +29,7 @@ function CreditCardScreen() {
             { loading ? <Loader />
             : error ? <Message variant='danger'>{error}</Message>
             :
-                <Row className='mx-3 mt-5 mt-md-0'>
+                <Row className='mx-3'>
                     <Col sm="12" md="4" lg="4" xl="3" onClick={createModalShow} className='border rounded mb-3 me-3' style={{cursor: 'pointer'}}>
                         <Card className='border-0 my-2'>
                             <Col className='text-center fw-semibold' style={{marginTop:'20px'}}>
