@@ -195,6 +195,13 @@ class BidSerializer(serializers.ModelSerializer):
     
     def validate_bid(self, value):
         product = self.context['request'].data.get('product')
+
+        if Product.objects.get(_id = product).user == self.context['request'].user:
+            raise serializers.ValidationError(
+                {
+                    'detail': 'You can not bid your product.'
+                }
+            )
         if Bid.objects.filter(bid__gte = value, product=product).exists():
             raise serializers.ValidationError(
                 {
@@ -210,15 +217,17 @@ class BidSerializer(serializers.ModelSerializer):
         return value
 
 
-class BuyingOrderSerializer(serializers.ModelSerializer):
+class OrderDetailSerializer(serializers.ModelSerializer):
     productName = serializers.SerializerMethodField(read_only=True)
     productImage = serializers.SerializerMethodField(read_only=True)
     paidPrice = serializers.SerializerMethodField(read_only=True)
     seller = serializers.SerializerMethodField(read_only=True)
+    buyer = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Order
-        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'createdAt']
+        fields = '__all__'
+
 
     def get_productName(self, obj):
         return obj.product.name
@@ -236,16 +245,20 @@ class BuyingOrderSerializer(serializers.ModelSerializer):
     def get_seller(self, obj):
         return obj.seller.first_name
 
-
-class OrderDetailSerializer(BuyingOrderSerializer):
-
-    class Meta:
-        model = Order
-        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'createdAt', 'isConfirmed', 'confirmedAt', 'address', 'isDelivered', 'deliveredAt']
+    def get_buyer(self, obj):
+        return obj.buyer.first_name
 
 
-class ConfirmedOrderSerializer(BuyingOrderSerializer):
+class BuyingOrderSerializer(OrderDetailSerializer):
 
     class Meta:
         model = Order
-        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'confirmedAt', 'address', 'isDelivered', 'deliveredAt']
+        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'createdAt']
+
+
+class ConfirmedOrderSerializer(OrderDetailSerializer):
+
+    class Meta:
+        model = Order
+        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'buyer','confirmedAt', 'address', 'inShipping', 'shippingAt', 'isDelivered', 'deliveredAt']
+
