@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 from django_filters.filters import ModelMultipleChoiceFilter, ModelChoiceFilter
-from .models import Product, Category, Brand, Order
+from .models import Product, Category, Brand, Order, Status
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db.models import Q
@@ -17,40 +17,60 @@ def get_all_children(category):
     return _children
 
 class ProductFilter(filters.FilterSet):
-    category = filters.CharFilter(method='filter_by_all_subcategories')
-    status = filters.BooleanFilter(label = 'Status', method='filter_by_active')
+        
+    search = filters.CharFilter(method='search_filter', label='Search a product, brand or category')
+    
+    productStatus = filters.ChoiceFilter(
+        choices = (
+            (Status.Active.value, 'Active'),
+            (Status.Passive.value, 'Passive'),
+        ),
+        label = 'Product Status',
+        method = 'status_filter'
+    )
+
+    category = filters.ModelChoiceFilter(
+        method = 'filter_by_all_subcategories',
+        queryset = Category.objects.all(),
+        label = 'Select a category'
+    )
 
     brand = ModelMultipleChoiceFilter(
-        field_name = 'brand___id',
-        to_field_name= '_id',
         queryset = Brand.objects.all(),
         conjoined = False,
+        label = 'Select a brands'
     )
 
     user = ModelChoiceFilter(
         queryset = User.objects.all(),
-        field_name = 'user__email',
-        to_field_name = 'id'
+        label = 'User from user email'
     )
 
     class Meta:
         model = Product
-        fields = ['category','brand','user','status']
+        fields = []
 
     def filter_by_all_subcategories(self, queryset, name, value):
-        category = Category.objects.get(_id=value)
-        all_categories = get_all_children(category)
+        all_categories = get_all_children(value)
         return queryset.filter(category__in=all_categories)
     
-    def filter_by_active(self, queryset, name, value):
-        current_time = timezone.now()
-        if value:
-            return queryset.filter(endDate__gte = current_time)
-        else:
-            return queryset.filter(endDate__lte = current_time)
+    def status_filter(self, queryset, name, value):
+        return queryset.filter(productStatus=value)
+        
+    def search_filter(self, queryset, name, value):
+        matching_categories = Category.objects.filter(name__icontains=value)
+        all_categories = []
+        for category in matching_categories:
+            all_categories.extend(get_all_children(category))
+        return queryset.filter(
+            Q(category__in=all_categories) |
+            Q(name__icontains=value) |
+            Q(brand__name__icontains=value)
+        )
 
 
 class OrderFilter(filters.FilterSet):
+    inShipping = filters.BooleanFilter(field_name='inShipping', label='Is in shipping?')
     isDelivered = filters.BooleanFilter(field_name='isDelivered', label='Status')
     search = filters.CharFilter(method='search_filter', label='Search')
 
@@ -59,7 +79,13 @@ class OrderFilter(filters.FilterSet):
         fields = []
 
     def search_filter(self, queryset, name, value):
-        return queryset.filter(
-            Q(product__name__icontains=value) |
-            Q(seller__first_name__icontains=value)
-        )
+        if 'buyer' in self.request.path:
+            return queryset.filter(
+                Q(product__name__icontains=value) |
+                Q(seller__first_name__icontains=value)
+            )
+        elif 'seller' in self.request.path:
+            return queryset.filter(
+                Q(product__name__icontains=value) |
+                Q(buyer__first_name__icontains=value)
+            )
