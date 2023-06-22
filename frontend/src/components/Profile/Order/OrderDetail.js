@@ -16,7 +16,8 @@ function OrderDetail() {
     const dispatch = useDispatch()
     const location = useLocation()
 
-    const seller = location.pathname === '/profile/orders/buying' ? false : true
+    const seller = location.pathname === `/profile/orders/buying/${id}` ? false : true
+    console.log(location.pathname)
 
     useEffect(() => {
         dispatch(orderDetail(id))

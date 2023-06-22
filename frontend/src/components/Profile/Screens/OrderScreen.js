@@ -35,7 +35,7 @@ function OrderScreen() {
 
     useEffect(() => {    
         if(orderReducers){
-            if(location.pathname === '/profile/orders/buying'){
+            if(!seller){
                 setError(orderReducers.confirmedOrderError)
                 setLoading(orderReducers.confirmedOrderLoading)
                 setOrders(orderReducers.orders)
@@ -86,13 +86,13 @@ function OrderScreen() {
         <>  
             <Row className='mx-3 align-items-center'>
                 <Col md={2} className='fw-semibold text-center text-xl-start'>
-                    My Selling Orders
+                    {seller ? 'My Selling Orders' : 'My Orders'}
                 </Col>
                 <Col className='my-3 my-md-0'>
                     <Form role={'search'}>
                         <Form.Control
                         type='search'
-                        placeholder='Search a product or buyer'
+                        placeholder={seller ? 'Search a product or buyer' : 'Search a product or seller'}
                         aria-label='Search'
                         onChange={(e) => setKeyword(e.target.value)}
                         />
