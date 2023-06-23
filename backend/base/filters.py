@@ -23,7 +23,8 @@ class ProductFilter(filters.FilterSet):
     productStatus = filters.ChoiceFilter(
         choices = (
             (Status.Active.value, 'Active'),
-            (Status.Passive.value, 'Passive'),
+            (Status.Modified.value, 'Modified'),
+            ('all', 'All Products'),
         ),
         label = 'Product Status',
         method = 'status_filter'
@@ -55,6 +56,8 @@ class ProductFilter(filters.FilterSet):
         return queryset.filter(category__in=all_categories)
     
     def status_filter(self, queryset, name, value):
+        if value == 'all':
+            return queryset.exclude(productStatus=Status.Passive.value)
         return queryset.filter(productStatus=value)
         
     def search_filter(self, queryset, name, value):
