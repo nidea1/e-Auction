@@ -163,10 +163,10 @@ function ProductAttr() {
                                     >
                                         <option />
                                         <option value={'Not Used'}>Not Used</option>
-                                        <option value={'0-1'}>0-1</option>
-                                        <option value={'1-3'}>1-3</option>
-                                        <option value={'3-5'}>3-5</option>
-                                        <option value={'5+'}>5+</option>
+                                        <option value={'0-1 Year'}>0-1</option>
+                                        <option value={'1-3 Year'}>1-3</option>
+                                        <option value={'3-5 Year'}>3-5</option>
+                                        <option value={'5+ Year'}>5+</option>
                                     </FormSelect>
                                 </FormGroup>
                             </Row>

@@ -92,10 +92,12 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
+    seller = serializers.SerializerMethodField()
+    brandName = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ['_id', 'images', 'slug', 'name', 'price', 'currentHighestBid', 'startDate', 'endDate']
+        fields = ['_id', 'images', 'slug', 'name', 'seller', 'brandName', 'videoURL', 'description', 'useStatus', 'province', 'district', 'brand', 'category', 'price', 'currentHighestBid', 'startDate', 'endDate', 'totalBids']
     
     def create(self, validated_data):
         images = self.context['request'].FILES.getlist('images')
@@ -107,20 +109,12 @@ class ProductSerializer(serializers.ModelSerializer):
             ProductImage.objects.create(product=product, image=image)
 
         return product
-
-
-class ProductDetailSerializer(ProductSerializer):
-    seller = serializers.SerializerMethodField()
-    brandName = serializers.SerializerMethodField()
-
+    
     def get_seller(self, obj):
         return obj.user.first_name
     
     def get_brandName(self, obj):
         return obj.brand.name
-    
-    class Meta(ProductSerializer.Meta):
-        fields = ProductSerializer.Meta.fields + ['seller', 'user', 'brandName', 'videoURL', 'description', 'useStatus', 'province', 'district', 'totalBids']
 
 
 class SubCategorySerializer(serializers.ModelSerializer):

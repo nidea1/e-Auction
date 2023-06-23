@@ -1,5 +1,5 @@
 from ..models import Product, Brand
-from ..serializers import ProductSerializer, BrandSerializer, ProductDetailSerializer
+from ..serializers import ProductSerializer, BrandSerializer
 from ..filters import ProductFilter
 
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
@@ -17,7 +17,7 @@ class ProductList(ListCreateAPIView):
 class ProductDetail(RetrieveUpdateDestroyAPIView):
 
 	queryset = Product.objects.all()
-	serializer_class = ProductDetailSerializer
+	serializer_class = ProductSerializer
 
 
 class BrandList(ListCreateAPIView):
