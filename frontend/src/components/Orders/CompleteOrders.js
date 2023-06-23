@@ -86,7 +86,7 @@ function CompleteOrders() {
                         }
                         <Row className='mx-3 pt-4 mt-1'>
                             <Col className='h5' style={{cursor: 'pointer'}} onClick={createModalShow}>
-                                <i class="fa-solid fa-location-plus" /> &nbsp; <span className='h5'>Add an address</span>
+                                <i className="fa-solid fa-location-plus" /> &nbsp; <span className='h5'>Add an address</span>
                             </Col>
 
                             <CreateAddressModal 

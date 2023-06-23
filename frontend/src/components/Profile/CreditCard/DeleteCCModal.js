@@ -30,7 +30,7 @@ function DeleteCCModal({show, onHide, dispatch, id}) {
             {cardDeleteError && <Message>{cardDeleteError}</Message>}
             <Form onSubmit={submitHandler} className='my-4 mx-2 d-flex justify-content-center'>
                 <Button type='submit' variant='danger' className='fw-semibold mx-auto'>
-                <i class="fa-regular fa-triangle-exclamation" /> Delete CC            
+                <i className="fa-regular fa-triangle-exclamation" /> Delete CC            
                 </Button>
                 <Button onClick={onHide} variant='primary' className='fw-semibold mx-auto'>
                 Go Back           

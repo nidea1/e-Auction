@@ -41,7 +41,7 @@ export const updateOrder = (orderID, updatedData) => async (dispatch) => {
 
         const api = createAPIinstance()
 
-        const { data } = await api.put(`/order/${orderID}`, updatedData)
+        const { data } = await api.put(`/${orderID}`, updatedData)
 
         dispatch(updateOrderSuccess(data))
     } catch (error) {

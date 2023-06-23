@@ -49,8 +49,8 @@ function LoginScreen() {
 
                 <Row className="kpx_loginOr mb-4">
                     <Col>
-                        <hr class="kpx_hrOr"/>
-                        <span class="kpx_spanOr">or</span>
+                        <hr className="kpx_hrOr"/>
+                        <span className="kpx_spanOr">or</span>
                     </Col>
                 </Row>
                 

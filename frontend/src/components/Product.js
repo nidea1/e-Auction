@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 
 function Product({ product }) {
 
+  const currentDate = new Date()
+  const startDate = new Date(product.startDate)
   const endDate = new Date(product.endDate)
   const formattedEndDate = endDate.toLocaleDateString()
-  const today = new Date()
+  const formattedStartedDate = startDate.toLocaleDateString()
 
   const renderImages = () => {
     return product.images.map((image) => (
@@ -33,47 +35,71 @@ function Product({ product }) {
                   <Card.Title>{product.name.substring(0,55)}{product.name.length > 55 ? '...' : ''}</Card.Title>
                 </Link>
                 <Col className='mt-3 fw-semibold'>
-                { product.currentHighestBid !== 0 ? 
-                  <Row>
-                    <Col className='text-nowrap'>
-                      Current max bid:
-                    </Col>
-                    <Col className='d-flex justify-content-end'>
-                      ${product.currentHighestBid}
-                    </Col>
-                  </Row>
-                :
-                  <Row>
+                <Row>
+                {endDate > currentDate ?
+                  startDate > currentDate ? 
+                  <>
                     <Col className='text-nowrap'>
                       Starting bid:
                     </Col>
                     <Col className='d-flex justify-content-end'>
                       ${product.price}
                     </Col>
-                  </Row>
+                  </>
+                  :
+                  <>
+                    <Col className='text-nowrap'>
+                      Current max bid:
+                    </Col>
+                    <Col className='d-flex justify-content-end'>
+                      ${product.currentHighestBid}
+                    </Col>
+                  </>
+                :
+                  <>
+                    <Col className='text-nowrap'>
+                      Sold to:
+                    </Col>
+                    <Col className='d-flex justify-content-end'>
+                      ${product.currentHighestBid}
+                    </Col>
+                  </>
                 }
-                { endDate < today ? 
-                  <Row className='my-3'>
+                </Row>
+                <Row className='my-3'>
+                { endDate < currentDate ?
+                  <>
                     <Col className='card-text text-nowrap'>
                       Ended at:
                     </Col>
                     <Col className='card-text d-flex justify-content-end'>
                       {formattedEndDate}
                     </Col>
-                  </Row>
+                  </>
                 :
-                  <Row className='my-3'>
+                  startDate < currentDate ?
+                  <>
                     <Col className='card-text text-nowrap'>
-                      End date:
+                      Ending at:
                     </Col>
                     <Col className='card-text d-flex justify-content-end'>
                       {formattedEndDate}
                     </Col>
-                  </Row>
+                  </>
+                  :
+                  <>
+                    <Col className='card-text text-nowrap'>
+                      Starting at:
+                    </Col>
+                    <Col className='card-text d-flex justify-content-end'>
+                      {formattedStartedDate}
+                    </Col>
+                  </>
                 }
+                </Row>
                 </Col>
                 <Link to={`/product/${product.slug}-p-${product._id}`}>
-                  <Button variant="dark">Detail</Button>
+                  <Button variant="dark">{endDate > currentDate && startDate < currentDate ? 'Place a bid' : 'Detail'}</Button>
                 </Link>
                 
             </Card.Body>

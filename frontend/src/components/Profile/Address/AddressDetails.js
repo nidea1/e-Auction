@@ -13,10 +13,10 @@ function AddressDetails({address, updateModalShow, deleteModalShow}) {
                 : address.description }
                 <Row>
                     <Col>
-                        <Button className="btn-primary edit-address" onClick={updateModalShow}><i class="fa-regular fa-map-location-dot"></i></Button>
+                        <Button className="btn-primary edit-address" onClick={updateModalShow}><i className="fa-regular fa-map-location-dot"></i></Button>
                     </Col>
                     <Col>
-                        <Button className="btn-danger delete-address" onClick={deleteModalShow}><i class="fa-regular fa-trash-can fa-lg"/></Button>
+                        <Button className="btn-danger delete-address" onClick={deleteModalShow}><i className="fa-regular fa-trash-can fa-lg"/></Button>
                     </Col>
                 </Row>
             </Card.Body>

@@ -31,7 +31,6 @@ function ShoppingSummary({orders, addressID}) {
         
         if(address){
             orderArray.map((order) => dispatch(updateOrder(order.id, {
-                '_id': order.id,
                 'address': address,
                 'isConfirmed': true,
             })))

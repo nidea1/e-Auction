@@ -118,7 +118,7 @@ function UpdateProfileModal({show, onHide, user, deleteModalShow}) {
                         </Col>  
                         <Col className='d-flex justify-content-center'>
                         <Button variant='danger' className='mb-2 fw-semibold' onClick={deleteModalShow}>
-                            <i class="fa-regular fa-triangle-exclamation" /> Delete Profile            
+                            <i className="fa-regular fa-triangle-exclamation" /> Delete Profile            
                         </Button>
                         </Col>                  
                     </Row>

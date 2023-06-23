@@ -20,13 +20,24 @@ function BidSection({dispatch, productID}) {
     const [highestBid, setHighestBid] = useState('')
     const [bidCount, setBidCount] = useState('')
     const [closeTime, setCloseTime] = useState('')
+    const [startTime, setStartTime] = useState('')
     const [bidInstance, setBidInstance] = useState('')
+
+    const [isStarted, setIsStarted] = useState(false)
 
     useEffect(() => {
         if(product){
+
+            const currentDate = new Date()
+            const startDate = new Date(product.startDate)
+            const hasStarted = currentDate > startDate
+
+            setIsStarted(hasStarted)
+
             setHighestBid(product.currentHighestBid)
             setBidCount(product.totalBids)
             setCloseTime(product.endDate)
+            setStartTime(product.startDate)
         }
     },[product])
 
@@ -140,19 +151,21 @@ function BidSection({dispatch, productID}) {
         product &&
         <>
             {closeTime &&
-            <Col lg={3} className='mt-md-5 mt-lg-0'>
+            <Col md={6} xl={3} className='mt-md-5 mt-lg-0'>
                 <Card className='shadow border-0'>
                     <ListGroup>
                         <ListGroup.Item>
                             <Row className='d-flex'>
                             <Col md={7}>
                                 {
-                                countdownFinished ? 'Sold to: '
-                                : 'Current highest bid: '                      
+                                !countdownFinished ?
+                                    isStarted ? 'Current highest bid: '
+                                    : 'Starting Price: '
+                                : 'Sold to: '                      
                                 }
                             </Col>
                             <Col md={5} className='h4 justify-content-end d-flex'>
-                                <strong>${highestBid}</strong>
+                                <strong>${isStarted ? highestBid : product.price}</strong>
                             </Col>
                             </Row>
                         </ListGroup.Item>
@@ -160,13 +173,13 @@ function BidSection({dispatch, productID}) {
                             <Row className={countdownFinished ? 'justify-content-center' : ''}>
                             {!countdownFinished ?
                             <Col md={4}>
-                                Closes in:
+                                {isStarted ? 'Closes in:' : 'Starts in:'}
                             </Col>:
                             ''
                             }
                             <Col md={!countdownFinished ? 8 : ''} className={!countdownFinished ? 'justify-content-end d-flex' : 'h5 text-center mt-2'}>
                                 <Row>
-                                <Countdown endDate={new Date(closeTime)} onCountdownUpdate={handleCountdownUpdate} />
+                                <Countdown endDate={new Date(isStarted ? closeTime : startTime)} onCountdownUpdate={handleCountdownUpdate} />
                                 </Row>
                             </Col>
                             </Row>
@@ -191,7 +204,7 @@ function BidSection({dispatch, productID}) {
                         <ListGroup.Item>
                             <Row className='justify-content-center'>
                             {user ?
-                                product.user === user._id ?
+                                product.user === user._id && isStarted ?
                                 <Col md={12} className='d-flex justify-content-center'>
                                     <Button disabled className="w-100 btn btn-danger my-2">
                                         You can not bid your product.
@@ -199,25 +212,46 @@ function BidSection({dispatch, productID}) {
                                 </Col>
                                 :
                                 (!countdownFinished ?
-                                <Col md={12}>
-                                    <Form onSubmit={submitHandler}>
-                                        <InputGroup className='mb-1'>
-                                            <InputGroup.Text style={{cursor:'default'}}>$</InputGroup.Text>
-                                            <Form.Control
-                                                required
-                                                placeholder='Enter your bid'
-                                                value={offer}
-                                                onChange={(e) => setOffer(e.target.value)}
-                                            />
-                                        </InputGroup>
-                                        <Col md={12} className='d-flex justify-content-center'>
-                                            <Button type='submit' className="w-100 rounded my-2 btn-dark">Place a bid</Button>
-                                        </Col>
-                                    </Form>
-                                </Col>
+                                    isStarted ?
+                                    <Col md={12}>
+                                        <Form onSubmit={submitHandler}>
+                                            <InputGroup className='mb-1'>
+                                                <InputGroup.Text style={{cursor:'default'}}>$</InputGroup.Text>
+                                                <Form.Control
+                                                    required
+                                                    type="number"
+                                                    placeholder='Enter your bid'
+                                                    value={offer}
+                                                    min={1}
+                                                    max={8}
+                                                    onChange={(e) => setOffer(e.target.value)}
+                                                    onKeyDown={(e) => {
+                                                        if(e.key === ',' | e.key === '.'){
+                                                            e.preventDefault()
+                                                        }
+                                                    }}
+                                                    onPaste={(e) => {
+                                                        const paste = e.clipboardData.getData('text')
+                                                        if (!(paste === '' || /^[0-9\b]+$/.test(paste))){
+                                                            e.preventDefault()
+                                                        }
+                                                    }}
+                                                />
+                                            </InputGroup>
+                                            <Col md={12} className='d-flex justify-content-center'>
+                                                <Button type='submit' className="w-100 rounded my-2 btn-dark">Place a bid</Button>
+                                            </Col>
+                                        </Form>
+                                    </Col>
+                                    :
+                                    <Col md={12} className='d-flex justify-content-center'>
+                                        <Link to="/" className="w-100 btn btn-danger my-2 rounded">
+                                            Auction has not yet started.
+                                        </Link>
+                                    </Col>
                                 : 
                                 <Col md={12} className='d-flex justify-content-center'>
-                                    <Link to="/" className="w-100 btn btn-dark my-2">
+                                    <Link to="/" className="w-100 btn btn-dark my-2 rounded">
                                     Go back
                                     </Link>
                                 </Col>

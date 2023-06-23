@@ -65,9 +65,9 @@ function SocialScreen() {
     return (
         <>
             <Row className='pt-3 justify-content-evenly'>
-                <Button onClick={discordLogin} className='btn-primary social-button justify-content-center align-items-center d-flex shadow-sm'><i class="fa-brands fa-2xl fa-discord" /></Button>
-                <Button onClick={googleLogin} className='btn-danger social-button justify-content-center align-items-center d-flex shadow-sm'><i class="fa-brands fa-google fa-2xl" /></Button>
-                <Button onClick={githubLogin} className='btn-dark social-button justify-content-center align-items-center d-flex shadow-sm'><i class="fa-brands fa-github fa-2xl" /></Button>
+                <Button onClick={discordLogin} className='btn-primary social-button justify-content-center align-items-center d-flex shadow-sm'><i className="fa-brands fa-2xl fa-discord" /></Button>
+                <Button onClick={googleLogin} className='btn-danger social-button justify-content-center align-items-center d-flex shadow-sm'><i className="fa-brands fa-google fa-2xl" /></Button>
+                <Button onClick={githubLogin} className='btn-dark social-button justify-content-center align-items-center d-flex shadow-sm'><i className="fa-brands fa-github fa-2xl" /></Button>
             </Row>
         </>
     )

@@ -47,7 +47,7 @@ function ProductScreen() {
         { productDetailsLoading ? <Loader />
           : productDetailsError ? <Message variant='danger'>{productDetailsError}</Message>  
           : 
-          <Row className='my-5'>
+          <Row className='my-5 justify-content-end'>
 
             <ProductDetail />
 

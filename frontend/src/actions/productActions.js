@@ -30,7 +30,7 @@ const createAPIinstance = () => {
 
 }
 
- export const listProducts = ({keyword= undefined, category= undefined, brands= undefined, userID= undefined, status= undefined, ordering = 'endDate'}) => async (dispatch) => {
+ export const listProducts = ({keyword= undefined, category= undefined, brands= undefined, userID= undefined, status='all', ordering = 'endDate'}) => async (dispatch) => {
     try {
         dispatch(productListRequest());
 
@@ -89,7 +89,11 @@ export const publishProduct = (product) => async (dispatch) => {
         dispatch(productPublishRequest())
 
         const api = createAPIinstance()
-        const { data } = await api.post('/', product)
+        const { data } = await api.post('/', product,{
+            headers: {
+                "Content-Type": 'multipart/form-data'
+            }
+        })
 
         dispatch(productPublishSuccess(data))
     }catch(error){

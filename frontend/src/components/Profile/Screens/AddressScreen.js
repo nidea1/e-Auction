@@ -29,7 +29,7 @@ function AddressScreen() {
         <>
             <Row className='mx-3'>
                 <Col md={4} className='h5' style={{cursor: 'pointer'}} onClick={createModalShow}>
-                    <i class="fa-solid fa-location-plus" /> &nbsp; <span className='h5'>Add an address</span>
+                    <i className="fa-solid fa-location-plus" /> &nbsp; <span className='h5'>Add an address</span>
                 </Col>
 
                 <CreateAddressModal 

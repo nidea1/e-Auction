@@ -33,7 +33,7 @@ function CreditCardScreen() {
                     <Col sm="12" md="4" lg="4" xl="3" onClick={createModalShow} className='border rounded mb-3 me-3' style={{cursor: 'pointer'}}>
                         <Card className='border-0 my-2'>
                             <Col className='text-center fw-semibold' style={{marginTop:'20px'}}>
-                                <i class="fa-solid fa-plus"></i> Add a new card
+                                <i className="fa-solid fa-plus"></i> Add a new card
                             </Col>
                         </Card>
                     </Col>

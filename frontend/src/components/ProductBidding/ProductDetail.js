@@ -29,20 +29,29 @@ function ProductDetail() {
               }
             </Col>
 
-            <Col md={6} lg={3}>
-              <ListGroup variant='flush'>
+            <Col md={6} xl={3}>
+              <ListGroup variant='flush' className='text-center text-md-start mb-3 mb-md-0'>
                 <ListGroup.Item>
-                  <h3>{product.name}</h3>
+                  <Col className='h4'>{product.name}</Col>
+                  <small className='opacity-50'>
+                    <span className='fw-semibold'>Brand: </span>{product.brandName.toUpperCase()} <br />
+                    <span className='fw-semibold'>Seller: </span>{product.seller} <br />
+                    <span className='fw-semibold'>Status: </span>{product.useStatus}
+                  </small>
                 </ListGroup.Item>
                 { product.videoURL &&
                 <ListGroup.Item>
                   <Col className='embed-responsive'>
-                    <iframe class="embed-responsive-item w-100 h-100" src={product.videoURL} title={product.name} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+                    <iframe className="embed-responsive-item w-100 h-100" src={product.videoURL} title={product.name} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
                   </Col>
                 </ListGroup.Item>
                 }
                 <ListGroup.Item>
                   {product.description}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <strong>Location</strong> <br />
+                  {product.district} / {product.province}
                 </ListGroup.Item>
                 <ListGroup.Item>
                   Starting bid: <strong>${product.price}</strong>

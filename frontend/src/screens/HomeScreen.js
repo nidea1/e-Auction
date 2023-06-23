@@ -17,17 +17,17 @@ function HomeScreen() {
   const statuses = [
     {
         'name': 'Ongoing',
-        'value': true,
+        'value': 1,
         'id': 1
     },
     {
         'name': 'Finished',
-        'value': false,
+        'value': 2,
         'id': 2
     },
     {
         'name': 'All Products',
-        'value': '',
+        'value': 'all',
         'id': 3
     }
   ]

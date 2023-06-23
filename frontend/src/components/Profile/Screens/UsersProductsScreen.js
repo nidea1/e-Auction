@@ -17,12 +17,12 @@ function UsersProductsScreen() {
     const statuses = [
         {
             'name': 'Ongoing',
-            'value': true,
+            'value': 1,
             'id': 1
         },
         {
             'name': 'Finished',
-            'value': false,
+            'value': 3,
             'id': 2
         },
         {

@@ -37,7 +37,7 @@ function DeleteAddressModal({id, show, onHide, dispatch}) {
                     
                 <Col className='d-flex justify-content-center'>
                     <Button type='submit' variant='danger' className='mb-2 fw-semibold'>
-                    <i class="fa-regular fa-triangle-exclamation" /> Are you sure?            
+                    <i className="fa-regular fa-triangle-exclamation" /> Are you sure?            
                     </Button>
                 </Col>        
 

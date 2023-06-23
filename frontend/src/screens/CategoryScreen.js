@@ -26,7 +26,7 @@ function CategoryScreen() {
   const keyword = searchParams.get('search')
 
   const [selectedBrands, setSelectedBrands] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('all');
   const [selectedOrdering, setSelectedOrdering] = useState('endDate')
 
   const {
@@ -139,8 +139,8 @@ function CategoryScreen() {
                   <Form.Select value={selectedOrdering} size="sm" aria-label="ordering" className="shadow-sm fw-semibold my-3 my-md-0" onChange={(e) => setSelectedOrdering(e.target.value)}>
                     {orderings.map((ordering) => (
                       <option
-                        id={ordering.id.toString()}
-                        value={ordering.value.toString()}
+                        id={ordering.id}
+                        value={ordering.value}
                       >
                         {ordering.name}
                       </option>

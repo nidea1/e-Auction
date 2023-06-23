@@ -193,7 +193,7 @@ function PaymentModal({show, onHide, bidInstance}) {
                     <Col md='6' onClick={createModalShow} className='border rounded mb-4 mx-3 col-10' style={{cursor: 'pointer'}}>
                         <Card className='border-0 my-2 d-flex'>
                             <Col className='text-center fw-semibold my-3'>
-                                <i class="fa-solid fa-plus" /> Add a new card
+                                <i className="fa-solid fa-plus" /> Add a new card
                             </Col>
                         </Card>
                     </Col>

@@ -12,12 +12,12 @@ function FilterByStatus() {
         },
         {
             'name': 'Finished',
-            'value': 3,
+            'value': 2,
             'id': 's-2'
         },
         {
             'name': 'All Products',
-            'value': '',
+            'value': 'all',
             'id': 's-3'
         }
     ]

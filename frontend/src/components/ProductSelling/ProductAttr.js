@@ -19,7 +19,7 @@ function ProductAttr() {
 
     const {
         brandReducers : { brands, loading, error},
-        userReducers: { userInfo },
+        userReducers: { user },
         productReducers: { product, productPublishSuccess}
     } = useSelector((state) => state)
 
@@ -89,12 +89,12 @@ function ProductAttr() {
         formData.append('district', productDistrict);
         formData.append('endDate', productEndDate);
         formData.append('category', productCategory);
-        formData.append('userID', userInfo._id);
+        formData.append('userID', user._id);
 
-        if(productVideo.slice(0,17) === 'https://youtu.be/'){
+        if(productVideo?.slice(0,17) === 'https://youtu.be/'){
             convertedURL += productVideo.slice(17)
             formData.append('videoURL', convertedURL);
-        }else if(productVideo.slice(0,32) === 'https://www.youtube.com/watch?v='){
+        }else if(productVideo?.slice(0,32) === 'https://www.youtube.com/watch?v='){
             convertedURL += productVideo.slice(32)
             formData.append('videoURL', convertedURL);
         }
@@ -109,9 +109,11 @@ function ProductAttr() {
     useEffect(() => {
         if(productPublishSuccess){
             dispatch(productPublishReset())
-            navigate(
-                `/product/${product.slug}-p-${product._id}`
-            )
+            if(product){
+                navigate(
+                    `/product/${product.slug}-p-${product._id}`
+                )
+            }
         }
     }, [productPublishSuccess, dispatch, product, navigate]);
 
@@ -215,8 +217,18 @@ function ProductAttr() {
                                             maxLength={8}
                                             value={productPrice}
                                             onChange={(e) => setProductPrice(e.target.value)}
-                                            inputMode='numeric'
                                             min={1}
+                                            onKeyDown={(e) => {
+                                                if(e.key === ',' | e.key === '.'){
+                                                    e.preventDefault()
+                                                }
+                                            }}
+                                            onPaste={(e) => {
+                                                const paste = e.clipboardData.getData('text')
+                                                if (!(paste === '' || /^[0-9\b]+$/.test(paste))){
+                                                    e.preventDefault()
+                                                }
+                                            }}
                                         />
                                     </InputGroup>
                                 </FormGroup>

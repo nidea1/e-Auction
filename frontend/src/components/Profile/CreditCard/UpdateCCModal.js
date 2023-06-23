@@ -146,7 +146,7 @@ function UpdateCCModal({card, pvCardNumber, show, onHide, deleteModalShow, dispa
                             </Col>  
                             <Col className='d-flex justify-content-center'>
                                 <Button variant='danger' className='mb-2 fw-semibold' style={{width:'130px'}} onClick={deleteModalShow}>
-                                    <i class="fa-regular fa-triangle-exclamation" /> Delete CC            
+                                    <i className="fa-regular fa-triangle-exclamation" /> Delete CC            
                                 </Button>
                             </Col>                  
                         </Row>

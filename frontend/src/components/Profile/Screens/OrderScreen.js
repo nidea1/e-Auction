@@ -45,7 +45,7 @@ function OrderScreen() {
                 setOrders(orderReducers.sellerOrders)
             }
         }
-    }, [dispatch, selectedStatus, keyword, location, orderReducers])
+    }, [dispatch, selectedStatus, keyword, location, orderReducers, seller])
 
     const calculateDate = (date) => {
         const dateObject = parseISO(date)
@@ -195,7 +195,7 @@ function OrderScreen() {
                 </Row> :
                 <Row className='mx-3 border rounded p-3 flex-column flex-lg-row align-items-center justify-content-center'>
                     <Col className='bg-light rounded-circle d-flex justify-content-center align-items-center shadow-sm col-1' style={{height: '75px', width: '75px'}}>
-                        <i class="fa-solid fa-cart-circle-exclamation fa-lg"></i>
+                        <i className="fa-solid fa-cart-circle-exclamation fa-lg"></i>
                     </Col>
                     <Col className='my-3 my-lg-0 col-10 col-lg-7'>
                         <Col className='ms-md-3 fs-6 fw-bold text-center'>

@@ -56,7 +56,7 @@ function ProfileDetails({ user, updateModalShow }) {
 
                 <Row>
                     <Col lg={4} className='d-flex justify-content-center align-items-center'>
-                        <i class="fa-solid fa-credit-card"></i>
+                        <i className="fa-solid fa-credit-card"></i>
                     </Col>
                     <Col lg={8}>
                         <Link to={'/profile/cards'} className='text-muted text-decoration-none'>My Cards</Link>
@@ -80,9 +80,9 @@ function ProfileDetails({ user, updateModalShow }) {
                     <hr className='divider'/>
                 </Col>
 
-                <Row className={`${products.length > 0 ? '' : 'mb-3'}`}>
+                <Row className={`${products.length > 0 || sellerOrders.length > 0 ? '' : 'mb-3'}`}>
                     <Col lg={4} className='d-flex justify-content-center align-items-center'>
-                    <i class="fa-solid fa-box"></i>
+                    <i className="fa-solid fa-box"></i>
                     </Col>
                     <Col lg={8}>
                         <Link to={'./orders/buying'} className='text-muted text-decoration-none'>My Orders</Link>
@@ -95,9 +95,9 @@ function ProfileDetails({ user, updateModalShow }) {
                         <hr className='divider'/>
                     </Col>
 
-                    <Row className={`${sellerOrders.length > 0 ? '' : 'mb-3'}`}>
+                    <Row className={`${sellerOrders.length > 0 ? 'mb-3' : ''}`}>
                         <Col lg={4} className='d-flex justify-content-center align-items-center'>
-                            <i class="fa-solid fa-badge-dollar"></i>
+                            <i className="fa-solid fa-badge-dollar"></i>
                         </Col>
                         <Col lg={8}>
                             <Link to={'./selling'} className='text-muted text-decoration-none'>My Products</Link>
@@ -115,7 +115,7 @@ function ProfileDetails({ user, updateModalShow }) {
 
                     <Row className='mb-3'>
                         <Col lg={4} className='d-flex justify-content-center align-items-center'>
-                            <i class="fa-solid fa-badge-dollar"></i>
+                            <i className="fa-solid fa-badge-dollar"></i>
                         </Col>
                         <Col lg={8}>
                             <Link to={'./orders/selling'} className='text-muted text-decoration-none'>My Sellings</Link>

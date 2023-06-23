@@ -89,12 +89,12 @@ function Header() {
 
     return (
         <>
-            <header class='p-3 mb-3 border-bottom shadow-sm'>
+            <header className='p-3 mb-3 border-bottom shadow-sm'>
                 <Container>
                     <Col className='d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start'>
                         <NavLink to='/' className={'nav-link link-dark d-flex align-items-center mb-2 mb-lg-0 fs-5'}>
                             <Navbar.Brand className='fw-semibold'>
-                            <i class="fa-sharp fa-solid fa-gavel fa-shake"/> &nbsp;eAuction
+                            <i className="fa-sharp fa-solid fa-gavel fa-shake"/> &nbsp;eAuction
                             </Navbar.Brand>
                         </NavLink>
                         &nbsp;&nbsp;
@@ -127,7 +127,7 @@ function Header() {
                                 >
                                     {buyOrders && buyOrders.length > 0 ?
                                         <>
-                                            <i class="fa-solid fa-cart-shopping"></i>
+                                            <i className="fa-solid fa-cart-shopping"></i>
                                             <Col
                                                 className='cart-item-count ms-1'
                                             >
@@ -136,14 +136,14 @@ function Header() {
                                         </>
                                         :
                                         <>
-                                        <i class="fa-regular fa-cart-shopping"></i>
+                                        <i className="fa-regular fa-cart-shopping"></i>
                                         </>
                                     }
                                 </NavLink>
                             </ListGroupItem>
                             <NavDropdown className='text-end' title={user && user.isSocialRegisterCompleted ? (
                                 <>
-                                    <i class="fa-solid fa-user"></i> {user.name}
+                                    <i className="fa-solid fa-user"></i> {user.name}
                                 </>
                             ) : 'Please set your account.'}>
                                 <NavDropdown.Item onClick={() => navigate('/profile')}>

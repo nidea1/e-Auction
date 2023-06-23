@@ -130,7 +130,7 @@ function CreateAddressModal({show, onHide, dispatch}) {
                     <Row className='d-flex flex-column justify-content-center'>
                         <Col className='d-flex justify-content-center'>
                         <Button type='submit' variant='primary' className='my-3 w-50'>
-                            Create Address            
+                            Create Address
                         </Button>
                         </Col>               
                     </Row>

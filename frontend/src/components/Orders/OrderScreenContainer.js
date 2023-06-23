@@ -31,7 +31,7 @@ function OrderScreenContainer() {
             :
                 <Row className='mx-3 mx-md-0 border rounded p-3 p-md-4 flex-column flex-md-row align-items-center justify-content-center'>
                     <Col className='bg-light rounded-circle d-flex justify-content-center align-items-center shadow-sm col-1' style={{height: '75px', width: '75px'}}>
-                        <i class="fa-solid fa-cart-circle-exclamation fa-lg"></i>
+                        <i className="fa-solid fa-cart-circle-exclamation fa-lg"></i>
                     </Col>
                     <Col className='my-3 my-md-0 col-10 col-md-6 col-lg-4'>
                         <Col className='ms-md-3 fs-6 fw-bold text-center text-md-start'>
