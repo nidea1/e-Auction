@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password, make_password
+from datetime import timedelta
+from django.utils import timezone
 
 from .models import *
 
@@ -93,7 +95,32 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ['_id', 'images', 'slug', 'name', 'price', 'currentHighestBid', 'startDate', 'endDate']
+    
+    def create(self, validated_data):
+        images = self.context['request'].FILES.getlist('images')
+        user = self.context['request'].user
+        start_date = timezone.localtime(timezone.now()) + timedelta(days=3)
+        product = Product.objects.create(user=user, startDate=start_date, **validated_data)
+
+        for image in images:
+            ProductImage.objects.create(product=product, image=image)
+
+        return product
+
+
+class ProductDetailSerializer(ProductSerializer):
+    seller = serializers.SerializerMethodField()
+    brandName = serializers.SerializerMethodField()
+
+    def get_seller(self, obj):
+        return obj.user.first_name
+    
+    def get_brandName(self, obj):
+        return obj.brand.name
+    
+    class Meta(ProductSerializer.Meta):
+        fields = ProductSerializer.Meta.fields + ['seller', 'user', 'brandName', 'videoURL', 'description', 'useStatus', 'province', 'district', 'totalBids']
 
 
 class SubCategorySerializer(serializers.ModelSerializer):
@@ -260,5 +287,5 @@ class ConfirmedOrderSerializer(OrderDetailSerializer):
 
     class Meta:
         model = Order
-        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'buyer','confirmedAt', 'address', 'inShipping', 'shippingAt', 'isDelivered', 'deliveredAt']
+        fields = ['_id', 'productName', 'productImage', 'paidPrice', 'seller', 'buyer','confirmedAt', 'address', 'inShipping', 'shippingAt', 'shippingCode', 'isDelivered', 'deliveredAt']
 
