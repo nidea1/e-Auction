@@ -41,7 +41,7 @@ def check_products_and_send_last_email():
                     send_loser_email(bid.user, product)
 
         product.lastEmailSent = True
-        product.productStatus = Status.Passive
+        product.productStatus = Status.Modified
         product.save()
 
     return "Done sending last mails."
