@@ -27,6 +27,8 @@ testaccount@eauction.com
 - Full responsive design
 - Search without bugs
 - Ordering in category screen
+- Starting countdown
+- Shipping detail modal
 
 ## Screenshots
 
@@ -47,5 +49,9 @@ testaccount@eauction.com
 ![img17](https://cdn.discordapp.com/attachments/1035852765756411995/1121463138622111874/image.png)
 ![img18](https://cdn.discordapp.com/attachments/1035852765756411995/1121461889751335084/image.png)
 ![img19](https://cdn.discordapp.com/attachments/1035852765756411995/1121455891904999506/image.png)
-![img19](https://cdn.discordapp.com/attachments/1035852765756411995/1121455970900508712/image.png)
+![img20](https://cdn.discordapp.com/attachments/1035852765756411995/1121455970900508712/image.png)
+![img21](https://cdn.discordapp.com/attachments/1035852765756411995/1121718891660443720/image.png)
+![img22](https://cdn.discordapp.com/attachments/1035852765756411995/1121718962900717620/image.png)
+![img23](https://cdn.discordapp.com/attachments/1035852765756411995/1121792050191421560/image.png)
+![img24](https://cdn.discordapp.com/attachments/1035852765756411995/1121798735928766616/image.png)
 
