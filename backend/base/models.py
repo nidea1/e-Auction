@@ -42,7 +42,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True)
     slug = models.SlugField(max_length=200, null=True,blank=True)
     description = models.TextField(max_length=750, null=True, blank=True)
-    price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    price = models.IntegerField(null=True, blank=True)
     useStatus = models.CharField(max_length=50, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='categories')
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True, related_name='brands')
@@ -67,6 +67,7 @@ class Product(models.Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(null=True,blank=True)
@@ -74,7 +75,8 @@ class ProductImage(models.Model):
     
     def __str__(self) -> str:
         return f'{self.product.name} - Image {self.pk}'
-    
+
+
 class Bid(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='bids')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -125,6 +127,8 @@ class Order(models.Model):
     confirmedAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     inShipping = models.BooleanField(default=False)
     shippingAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    shippingCode = models.CharField(null=True, blank=True)
+    shippingCompany = models.CharField(null=True, blank=True)
     isDelivered = models.BooleanField(default=False)
     deliveredAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
