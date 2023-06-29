@@ -117,7 +117,7 @@ class ProductSerializer(serializers.ModelSerializer):
         return obj.brand.name
 
 
-class SubCategorySerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['_id','name', 'slug', 'description', 'createdAt',  'subCategory']
@@ -126,24 +126,9 @@ class SubCategorySerializer(serializers.ModelSerializer):
 
     def get_subCategory(self, obj):
         if obj.children.exists():
-            return SubCategorySerializer(obj.children.all(), many=True, context=self.context).data
+            return CategorySerializer(obj.children.all(), many=True, context=self.context).data
         else:
-            return None
-
-
-class CategorySerializer(serializers.ModelSerializer):
-    subCategory = SubCategorySerializer(many=True, read_only=True, source='children')
-    class Meta:
-        model = Category
-        fields = ['_id','name', 'slug', 'description', 'createdAt', 'subCategory']
-
-
-class CategoryDetailSerializer(serializers.ModelSerializer):
-    subCategory = SubCategorySerializer(many=True, read_only=True, source='children')
-
-    class Meta:
-        model = Category
-        fields = ['_id', 'name', 'slug', 'description', 'createdAt', 'subCategory']
+            return []
     
 
 class UserAddressSerializer(serializers.ModelSerializer):

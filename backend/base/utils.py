@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-from .models import Status, Order
+from .models import Order
 
 
 class AccountActivationTokenGenerator(PasswordResetTokenGenerator):

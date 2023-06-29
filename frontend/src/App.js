@@ -24,6 +24,7 @@ import OrderScreenContainer from "./components/Orders/OrderScreenContainer";
 import CompleteOrders from "./components/Orders/CompleteOrders";
 import OrderScreen from "./components/Profile/Screens/OrderScreen";
 import OrderDetail from "./components/Profile/Order/OrderDetail";
+import HelpContact from "./screens/HelpContact";
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <Container>
           <Routes>
             <Route path="/" element={<HomeScreen />}/>
+            <Route path="/cs" element={<HelpContact />}/>
             <Route path="/login" element={<LoginScreen />}>
               <Route index element={<SocialScreen />}/>
               <Route path=":socialParams" element={<SocialScreen />}/>

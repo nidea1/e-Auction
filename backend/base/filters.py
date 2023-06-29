@@ -2,8 +2,8 @@ from django_filters import rest_framework as filters
 from django_filters.filters import ModelMultipleChoiceFilter, ModelChoiceFilter
 from .models import Product, Category, Brand, Order, Status
 from django.contrib.auth.models import User
-from django.utils import timezone
 from django.db.models import Q
+
 
 def get_all_children(category):
     _children = []
@@ -15,6 +15,7 @@ def get_all_children(category):
     _get_children(category.children.all())
     _children.append(category._id)
     return _children
+
 
 class ProductFilter(filters.FilterSet):
         

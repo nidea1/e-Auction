@@ -1,8 +1,9 @@
 from ..models import Category
-from ..serializers import CategorySerializer, CategoryDetailSerializer
+from ..serializers import CategorySerializer
 
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from django_filters.rest_framework import DjangoFilterBackend
+
 
 class CategoryList(ListAPIView):
     
@@ -14,5 +15,5 @@ class CategoryList(ListAPIView):
 
 class CategoryDetail(RetrieveAPIView):
 
-    serializer_class = CategoryDetailSerializer
+    serializer_class = CategorySerializer
     queryset = Category.objects.all()

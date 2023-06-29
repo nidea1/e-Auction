@@ -5,6 +5,7 @@ from celery import shared_task
 from .utils import send_ending_email, send_winner_email, send_loser_email, create_order
 from .models import Product, Status
 
+
 @shared_task
 def check_products_and_send_ending_email():
     now = timezone.now()
@@ -21,6 +22,7 @@ def check_products_and_send_ending_email():
         product.save()
 
     return "Done sending ending mails."
+
 
 @shared_task
 def check_products_and_send_last_email():

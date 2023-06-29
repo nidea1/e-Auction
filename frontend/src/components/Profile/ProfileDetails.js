@@ -15,7 +15,7 @@ function ProfileDetails({ user, updateModalShow }) {
         <Card className='border-0 shadow fs-6 text-center text-lg-start mx-3 mx-md-0'>
             <Card.Header className='text-center fw-bold p-3 h4'>User Profile</Card.Header>
             <Card.Body>
-                <Row className='mt-3'>
+                <Row className='mt-2'>
                     <Col lg={4} className='d-flex justify-content-center align-items-center'>
                         <i className="fa-solid fa-user"></i>
                     </Col>
