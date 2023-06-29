@@ -223,7 +223,7 @@ function BidSection({dispatch, productID}) {
                                                     placeholder='Enter your bid'
                                                     value={offer}
                                                     min={1}
-                                                    max={8}
+                                                    maxLength={8}
                                                     onChange={(e) => setOffer(e.target.value)}
                                                     onKeyDown={(e) => {
                                                         if(e.key === ',' | e.key === '.'){
