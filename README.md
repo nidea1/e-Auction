@@ -1,6 +1,8 @@
 # e-Auction Application with Django & React
 
-My e-auction project that I am currently developing.
+This project's main purpose is online auction. Users can list products for sale, place live bids to purchase products in this project. In this project used predominantly Django RestFramework and React.
+
+This project was undertaken as a self-improvement initiative, aimed at learning and implementing new technologies. If you identify any errors or areas for improvement within the project, please feel free to reach out to me. I am open to code reviews and appreciate any suggestions that can contribute to my personal development and enhance my skills.
 
 ## Live Test
 
@@ -10,44 +12,43 @@ You can live test from [here!](https://nidea1.com.tr)
 testaccount@eauction.com
 123
 ```
-##### Clear localstorage, if you logged in but you can not logged out.
 
 - Frontend deployed via [Netlify.](https://www.netlify.com)
 - Backend deployed via [AWS EC2.](https://aws.amazon.com/ec2/)
-- There may be minor errors, I continue to develop.
+- There may be minor errors or bugs, I continue to develop.
+##### If you found any error or bug please contact with me.
 
-## Features not available on the test server
+## Local Usage
+```bash
+git clone https://github.com/nidea1/e-Auction.git
+cd e-Auction
 
-- New My Bid List
-- Winner and Loser mails
-- New authentication system (so bug fixed)
-- Shopping cart
-- Order screens
-- User Orders (Seller and Buyer)
-- Full responsive design
-- Search without bugs
-- Ordering in category screen
-- Starting countdown
-- Shipping detail modal
+python -m venv myenv
+myenv\scripts\activate
+
+# BACKEND
+cd backend
+pip install -r requirements.txt
+# !!! don't forgot to edit os.environ.get lines
+
+py manage.py makemigrations
+py manage.py migrate
+py manage.py runserver # -> 127.0.0.1:8000
+
+# FRONTEND
+cd frontend
+npm start # -> 127.0.0.1:3000
+```
 
 ## Screenshots
 
 ![img1](https://cdn.discordapp.com/attachments/1035852765756411995/1117845844398444594/image.png)
 ![img2](https://cdn.discordapp.com/attachments/1035852765756411995/1117845778719842455/image.png)
-![img3](https://cdn.discordapp.com/attachments/1035852765756411995/1121461190938337390/image.png)
-![img5](https://cdn.discordapp.com/attachments/1035852765756411995/1117846190780842075/image.png)
-![img6](https://cdn.discordapp.com/attachments/1035852765756411995/1118556949101940787/image.png)
-![img7](https://cdn.discordapp.com/attachments/1035852765756411995/1118557007667003452/image.png)
 ![img9](https://cdn.discordapp.com/attachments/1035852765756411995/1120343199555264584/image.png)
 ![img10](https://cdn.discordapp.com/attachments/1035852765756411995/1118932173672677498/image.png)
 ![img11](https://cdn.discordapp.com/attachments/1035852765756411995/1120343338890047618/image.png)
 ![img12](https://cdn.discordapp.com/attachments/1035852765756411995/1120734141437198447/image.png)
 ![img13](https://cdn.discordapp.com/attachments/1035852765756411995/1120734374296567941/image.png)
-![img14](https://cdn.discordapp.com/attachments/1035852765756411995/1121076033685291078/image.png)
-![img15](https://cdn.discordapp.com/attachments/1035852765756411995/1121076191764418651/image.png)
-![img16](https://cdn.discordapp.com/attachments/1035852765756411995/1121460423254884413/image.png)
-![img17](https://cdn.discordapp.com/attachments/1035852765756411995/1121463138622111874/image.png)
-![img18](https://cdn.discordapp.com/attachments/1035852765756411995/1121461889751335084/image.png)
 ![img19](https://cdn.discordapp.com/attachments/1035852765756411995/1121455891904999506/image.png)
 ![img20](https://cdn.discordapp.com/attachments/1035852765756411995/1121455970900508712/image.png)
 ![img21](https://cdn.discordapp.com/attachments/1035852765756411995/1121718891660443720/image.png)
