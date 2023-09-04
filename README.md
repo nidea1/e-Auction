@@ -7,6 +7,7 @@ This project was undertaken as a self-improvement initiative, aimed at learning 
 ## Live Test
 
 You can live test from [here!](https://nidea1.com.tr)
+**(BACKEND CLOSED)**
 
 ```python
 testaccount@eauction.com
